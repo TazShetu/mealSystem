@@ -65,6 +65,7 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
+            'slug' => rand(0, 99).str_slug($data['name']).rand(0, 99),
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
