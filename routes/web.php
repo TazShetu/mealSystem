@@ -26,3 +26,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/h', function () {
     return view('mHome');
 });
+Route::get('/hh', function () {
+    return view('mmHome');
+});
+Route::get('/t', function () {
+    return view('t');
+});
+Route::get('/tt', function () {
+    return view('tt');
+});
