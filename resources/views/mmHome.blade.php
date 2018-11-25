@@ -240,6 +240,13 @@
 </div>
 
 
+{{--new user modal--}}
+@include('includes.nuModal')
+
+
+{{--Edit user modal--}}
+@include('includes.euModal')
+
 
 <!--script-->
 <script src="js/jquery.js"></script>

@@ -34,8 +34,10 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form></span>
-                        <a href="" class="dropdown-item">Edit Profile</a>
-                        <a href="" class="dropdown-item">Add a Meal Member</a>
+                        {{--<a href="" class="dropdown-item">Edit Profile</a>--}}
+                        <button class="dropdown-item" data-toggle="modal" data-target="#euModal">Edit Profile</button>
+                        {{--<a href="" class="dropdown-item">Add a Meal Member</a>--}}
+                        <button class="dropdown-item" data-toggle="modal" data-target="#nuModal">Add a Meal Member</button>
                     </div>
                 </li>
             </ul>

@@ -106,6 +106,9 @@
     </div>
 </div>
 
+{{--Edit user modal--}}
+@include('includes.euModal')
+
 <!--script-->
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
