@@ -15,9 +15,9 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="Email" required>
-                        @if ($errors->has('email'))
-                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
+                        <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="User Name" required>
+                        @if ($errors->has('username'))
+                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('username') }}</strong></span>
                         @endif
                     </div>
                     <div class="form-group text-center">

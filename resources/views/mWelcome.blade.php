@@ -78,12 +78,28 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
-
-
-                        {{--<a href="{{ route('login') }}" class="btn btn-success btn-block btn-lg">LOGIN</a><br>--}}
-                        <button class="btn btn-success btn-block btn-lg" data-toggle="modal" data-target="#loginModal">Login</button>
+                        <div class="card bg-success text-center card-form">
+                            <div class="card-body">
+                                <form method="POST" action="{{ route('login') }}">
+                                    @csrf
+                                    <div class="form-group">
+                                        {{--we are login with username, but the code i used must have id,.... email   --}}
+                                        <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>
+                                        @if ($errors->has('email'))
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
+                                        @endif
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
+                                        @if ($errors->has('password'))
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
+                                        @endif
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-light btn-block">Login</button>
+                                </form>
+                            </div>
+                        </div>
                         <br>
-
 
 
                         <div class="card bg-success text-center card-form">
@@ -178,50 +194,6 @@
 </div>
 
 
-<!-- .....Login Modal....  -->
-{{--<div class="modal fade text-dark" id="contactModal">--}}
-<div class="modal fade text-dark" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="contactModalTitle">Login</h5>
-                <button class="close" data-dismiss="modal"><span>&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" action="{{ route('login') }}">
-                    @csrf
-                    <div class="form-group">
-                        <label>Email</label>
-                        {{--<input type="text" class="form-control">--}}
-                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
-                        @if ($errors->has('email'))
-                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
-                        @endif
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        {{--<input type="text" class="form-control">--}}
-                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-                        @if ($errors->has('password'))
-                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
-                        @endif
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="remember">
-                            {{ __('Remember Me') }}
-                        </label>
-                    </div>
-                    <hr>
-                    <button type="submit" class="btn btn-success btn-block">Login</button>
-                </form>
-            </div>
-            {{--<div class="modal-footer">--}}
-                {{--<button class="btn btn-success btn-block" data-dismiss="modal">Login</button>--}}
-            {{--</div>--}}
-        </div>
-    </div>
-</div>
 
 
 
