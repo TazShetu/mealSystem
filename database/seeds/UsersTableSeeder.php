@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
         App\User::create([
             'name' => 'ADMIN admin',
             'slug' => str_slug('ADMIN-admin'),
-            'username' => 'adminBoss',
+            'username' => 'a',
             'password' => bcrypt('123456')
         ]);
 //        App\User::create([

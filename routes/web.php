@@ -44,3 +44,8 @@ Route::post('/MealManagerCreateWithMealSystem', [
     'uses' => 'MealsystemController@store',
     'as' => 'store.mM.mS'
 ]);
+
+Route::post('/MealMemberCreate', [
+    'uses' => 'userController@store',
+    'as' => 'store.user'
+]);

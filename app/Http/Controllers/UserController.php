@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\User;
+use App\Mealsystem;
 
 class UserController extends Controller
 {
@@ -34,7 +37,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|min:3|max:50',
+            'username' => 'required|unique:users',
+        ]);
+         // create member
+        $u = new User;
+        $u->name = $request->name;
+        $u->username = $request->username;
+        $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
+        $u->save();
+        // attach member to mealSystem same as mM
+        $a = Auth::user();
+        $mss = $a->mealsystems()->get();
+        foreach ($mss as $ms){
+//            dd($ms->id);
+            $ms->users()->attach($u);
+        }
+        return redirect()->back();
     }
 
     /**

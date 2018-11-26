@@ -5,7 +5,7 @@
                 <h5 class="modal-title" id="contactModalTitle">Add New Meal Member</h5>
                 <button class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
-            <form method="POST" action="">
+            <form method="POST" action="{{route('store.user')}}">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -22,6 +22,7 @@
                     </div>
                     <div class="form-group text-center">
                         <p>Default password is 123456 but member can change that later.</p>
+                        <p>Do not forget to tell give member his user-name personally.</p>
                     </div>
                     <input type="hidden" name="slug" value="">
                     {{--<button type="submit" class="btn btn-outline-light btn-block">Register</button>--}}

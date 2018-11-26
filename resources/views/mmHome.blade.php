@@ -253,5 +253,11 @@
 <script src="js/bootstrap.min.js"></script>
 <!--<script src="js/fontawesome.min.js"></script>-->
 
+<script>
+    @if (count($errors) > 0)
+        $('#nuModal').modal('show');
+    @endif
+</script>
+
 </body>
 </html>

@@ -18,29 +18,21 @@
 <body>
 
 <!--....NAV BAR....  -->
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top justify-content-between">
     <div class="container">
         <a href="index.html" class="navbar-brand">Meal System</a>
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="" class="nav-link active">Index</a>
-                </li>
-                <li class="nav-item">
-                    <a href="home.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="profile.html" class="nav-link">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a href="table.html" class="nav-link">Full Table</a>
-                </li>
-
-            </ul>
-        </div>
+        <form method="POST" action="{{ route('login') }}" class="form-inline">
+            @csrf
+            <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} mr-2 mb-1" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>
+            @if ($errors->has('email'))
+                <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
+            @endif
+            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} mr-2 mb-1" name="password" placeholder="Password" required>
+            @if ($errors->has('password'))
+                <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
+            @endif
+            <button type="submit" class="btn btn-outline-success">Login</button>
+        </form>
     </div>
 </nav>
 
@@ -77,31 +69,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="card bg-success text-center card-form">
-                            <div class="card-body">
-                                <form method="POST" action="{{ route('login') }}">
-                                    @csrf
-                                    <div class="form-group">
-                                        {{--we are login with username, but the code i used must have id,.... email   --}}
-                                        <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>
-                                        @if ($errors->has('email'))
-                                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
-                                        @endif
-                                    </div>
-                                    <div class="form-group">
-                                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
-                                        @if ($errors->has('password'))
-                                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
-                                        @endif
-                                    </div>
-                                    <button type="submit" class="btn btn-outline-light btn-block">Login</button>
-                                </form>
-                            </div>
-                        </div>
-                        <br>
-
-
+                    <div class="col-lg-4 mt-5">
                         <div class="card bg-success text-center card-form">
                             <div class="card-body">
                                 <h3>Register as <strong>Meal Manager</strong></h3>
