@@ -58,3 +58,8 @@ Route::post('/MealMemberUpdate/{slug}', [
     'uses' => 'UserController@update',
     'as' => 'update.user'
 ]);
+
+Route::get('/DataCreate', [
+    'uses' => 'DatamController@create',
+    'as' => 'data.create'
+]);

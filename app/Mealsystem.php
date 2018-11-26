@@ -12,4 +12,8 @@ class Mealsystem extends Model
         return $this->belongsToMany('App\User');
     }
 
+    public function datams(){
+        return $this->belongsToMany('App\Datam');
+    }
+
 }

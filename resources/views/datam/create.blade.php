@@ -1,64 +1,60 @@
 @include('includes.header')
 <!--....NAV BAR....  -->
 @include('includes.navbar')
-
-<header id="home-section" class="HomE">
+@role(['admin', 'mealManager'])
+<header id="home-section" class="createData">
     <div class="dark-overlay">
         <div class="home-inner">
-            <h1 class="text-center">Welcome back <strong>{{Auth::user()->name}}</strong></h1>
+            <h1 class="text-center">Enter/Edit Data</h1>
             <br>
             <div class="container">
-                @role(['admin', 'mealManager'])
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a href="{{route('data.create')}}" class="btn btn-info btn-block btn-lg">
-                                <b>Enter <span style="font-size: 25px;'">New</span> Data</b>
-                            </a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="#" class="btn btn-outline-info btn-block btn-lg" data-toggle="modal" data-target="#editModal">
-                                <b>Edit <span style="font-size: 25px;'">Old</span> Data</b>
-                            </a>
-                        </div>
-                    </div>
-                    <br>
-                @endrole
                 <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <div class="card bg-success text-center card-form">
+                    <div class="col-sm-12">
+                        <div class="card bg-success">
                             <div class="card-body">
-                                <h3 class="display-4">Meal-rate is <strong><b>100</b></strong> Tk/meal</h3>
+                                <form action="" method="post">
+                                    {{csrf_field()}}
+                                    <input type="hidden" value="{{$ms->id}}" name="mealsystem_id">
+                                    <div class="form-group">
+                                        <label class="lead"><b>Date</b></label>
+                                        <input type="date" class="form-control" name="date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="category">Name</label>
+                                        <select name="user_id" id="name" class="form-control">
+                                            <option value="" hidden disabled selected>Choose One</option>
+                                            @foreach($ms->users as $u)
+                                                <option value="{{$u->id}}">{{$u->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="lead"><b>Meal</b></label>
+                                        <input type="number" class="form-control" name="meal">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="lead"><b>Bazar</b></label>
+                                        <input type="number" class="form-control" name="bazar">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="text-center">
+                                            <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <br>
-                        <div class="card bg-info text-center card-form">
-                            <div class="card-body">
-                                <h3 class="display-6">Your balance <strong><b> + - 100</b></strong> Tk</h3>
-                            </div>
-                        </div>
-                        <br>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <a href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-bars" style="font-size: 20px;"></i>&nbsp; View personal Table</a>
-                    </div>
-                    <div class="col-sm-6">
-                        <a href="#" class="btn btn-lg btn-outline-success btn-block"><i class="fa fa-table" style="font-size: 20px;"></i>&nbsp; View full Table</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </header>
+@endrole
 
 
-
-
-<!--.......main Footer....  -->
-@include('includes.footer')
-
-<!--   editDataModal -->
+{{--///////////////////////////////////////////////////////////////////////////////////////--}}
 <div class="modal fade" id="editModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content Ms">
@@ -117,23 +113,14 @@
         </div>
     </div>
 </div>
+{{--///////////////////////////////////////////////////////////////////////////////////////////////////--}}
 
+@include('includes.footer')
 
-
-{{--Edit user modal--}}
-@include('includes.euModal')
-
-
-<!--script-->
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <!--<script src="js/fontawesome.min.js"></script>-->
 
-<script>
-    @if (count($errors) > 0)
-        $('#euModal').modal('show');
-    @endif
-</script>
 
 </body>
 </html>
