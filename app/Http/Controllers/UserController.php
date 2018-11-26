@@ -90,14 +90,23 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|min:3|max:50',
-            'username' => 'required|unique:users',
         ]);
         $u = User::where('slug', $slug)->first();
-//        dd($u);
+        if ($u->username !== $request->username){
+            $this->validate($request, [
+                'username' => 'required|unique:users',
+            ]);
+        }
+        if ($request->password){
+            $this->validate($request, [
+                'password' => 'required|confirmed|min:6',
+            ]);
+            $u->password = $request->password;
+        }
         $u->name = $request->name;
         $u->username = $request->username;
         $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
-//        dd($u);
+
         $u->save();
 
         return redirect()->back();
