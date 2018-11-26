@@ -1,0 +1,62 @@
+body {
+    background: #333;
+    color: #fff;
+}
+
+.navbar {
+    border-bottom: #2ecc71 3px solid;
+    /*opacity: 0.95;*/
+}
+
+
+#home-section {
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 900px;
+}
+#home-section .dark-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 900px;
+}
+#home-section .home-inner {
+    padding-top: 150px;
+}
+#home-section .card-form {
+    opacity: 0.8;
+}
+#home-section .fa {
+    color: #2ecc71;
+    background: #fff;
+    padding: 4px;
+    border-radius: 5px;
+    font-size: 30px;
+}
+
+.IndeX{
+    background: url("../img/index.jpg") no-repeat;
+}
+
+
+
+
+/*///////////////////////////////////////////////////////////////////////////////*/
+.HomE{
+    background: url("../img/home.jpg") no-repeat;
+}
+
+
+.ProfilE{
+    background: url("../img/profile.jpg") no-repeat;
+}
+
+.TablE{
+    background: url("../img/table.jpg") no-repeat;
+}
+
+.createData{
+    background: url("../img/createData.jpg") no-repeat;
+}

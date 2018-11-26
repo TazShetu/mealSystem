@@ -11,10 +11,55 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/test', function () {
+    dd(\Carbon\Carbon::now()->month);
 });
+
+
+Route::get('/', function () {
+    return view('mWelcome');
+});
+
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/h', function () {
+    return view('mHome');
+});
+Route::get('/hh', function () {
+    return view('mmHome');
+});
+Route::get('/t', function () {
+    return view('t');
+});
+Route::get('/tt', function () {
+    return view('tt');
+});
+
+
+// meal system
+Route::post('/MealManagerCreateWithMealSystem', [
+    'uses' => 'MealsystemController@store',
+    'as' => 'store.mM.mS'
+]);
+
+Route::get('/MealMemberCreate', [
+    'uses' => 'UserController@create',
+    'as' => 'create.user'
+]);
+Route::post('/MealMemberStore', [
+    'uses' => 'UserController@store',
+    'as' => 'store.user'
+]);
+
+Route::post('/MealMemberUpdate/{slug}', [
+    'uses' => 'UserController@update',
+    'as' => 'update.user'
+]);
+
+Route::get('/DataCreate', [
+    'uses' => 'DatamController@create',
+    'as' => 'data.create'
+]);
