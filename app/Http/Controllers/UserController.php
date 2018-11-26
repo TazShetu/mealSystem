@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\User;
+use App\Mealsystem;
 
 class UserController extends Controller
 {
@@ -23,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('createMember');
     }
 
     /**
@@ -34,7 +37,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|min:3|max:50',
+            'username' => 'required|unique:users',
+        ]);
+         // create member
+        $u = new User;
+        $u->name = $request->name;
+        $u->username = $request->username;
+        $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
+        $u->save();
+        // attach member to mealSystem same as mM
+        $a = Auth::user();
+        $mss = $a->mealsystems()->get();
+        foreach ($mss as $ms){
+//            dd($ms->id);
+            $ms->users()->attach($u);
+        }
+        return view('mmHome');
     }
 
     /**
@@ -66,9 +86,30 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|min:3|max:50',
+        ]);
+        $u = User::where('slug', $slug)->first();
+        if ($u->username !== $request->username){
+            $this->validate($request, [
+                'username' => 'required|unique:users',
+            ]);
+        }
+        if ($request->password){
+            $this->validate($request, [
+                'password' => 'required|confirmed|min:6',
+            ]);
+            $u->password = $request->password;
+        }
+        $u->name = $request->name;
+        $u->username = $request->username;
+        $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
+
+        $u->save();
+
+        return redirect()->back();
     }
 
     /**

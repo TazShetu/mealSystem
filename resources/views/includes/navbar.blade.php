@@ -29,15 +29,16 @@
                         <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
+                            <i class="fa fa-power-off"></i>&nbsp; {{ __('Logout') }}
                         </a><span>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form></span>
-                        {{--<a href="" class="dropdown-item">Edit Profile</a>--}}
-                        <button class="dropdown-item" data-toggle="modal" data-target="#euModal">Edit Profile</button>
-                        {{--<a href="" class="dropdown-item">Add a Meal Member</a>--}}
-                        <button class="dropdown-item" data-toggle="modal" data-target="#nuModal">Add a Meal Member</button>
+                        <button class="dropdown-item" data-toggle="modal" data-target="#euModal"><i class="fa fa-edit"></i>&nbsp; Edit Profile</button>
+                        @role(['admin','mealManager'])
+                            {{--<button class="dropdown-item" data-toggle="modal" data-target="#nuModal"><b>+</b><i class="fa fa-user"></i>&nbsp; Add a Meal Member</button>--}}
+                            <a href="{{route('create.user')}}" class="dropdown-item"><b>+</b><i class="fa fa-user"></i>&nbsp; Add a Meal Member</a>
+                        @endrole
                     </div>
                 </li>
             </ul>

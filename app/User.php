@@ -36,5 +36,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany('App\Mealsystem');
     }
 
+    public function datams(){
+        return $this->belongsToMany('App\Datam');
+    }
+
 
 }
