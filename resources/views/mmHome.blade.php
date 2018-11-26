@@ -23,7 +23,7 @@
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
         <div class="home-inner">
-            <h1 class="text-center">Welcome back <strong>Taz</strong></h1>
+            <h1 class="text-center">Welcome back <strong>{{Auth::user()->name}}</strong></h1>
             <br>
             <div class="container">
                 <div class="row">

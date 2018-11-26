@@ -89,7 +89,7 @@
                         <div class="card bg-success text-center card-form">
                             <div class="card-body">
                                 <h3>Register as <strong>Meal Manager</strong></h3>
-                                <form method="POST" action="{{ route('register') }}">
+                                <form method="POST" action="{{ route('store.mM.mS') }}">
                                     @csrf
                                     <div class="form-group">
                                         {{--<input type="text" class="form-control form-control-lg" placeholder="Username">--}}
@@ -100,9 +100,9 @@
                                     </div>
                                     <div class="form-group">
                                         {{--<input type="email" class="form-control form-control-lg" placeholder="Email">--}}
-                                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="Email" required>
-                                        @if ($errors->has('email'))
-                                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
+                                        <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="User Name" required>
+                                        @if ($errors->has('username'))
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('username') }}</strong></span>
                                         @endif
                                     </div>
                                     <div class="form-group">
@@ -118,7 +118,7 @@
                                     </div>
                                     {{--<input type="submit" class="btn btn-outline-light btn-block">--}}
                                     {{--<button type="submit" class="btn btn-primary">{{ __('Register') }}</button>--}}
-                                    <input type="hidden" name="slug" value="">
+                                    {{--<input type="hidden" name="slug" value="">--}}
                                     <button type="submit" class="btn btn-outline-light btn-block">Register</button>
                                 </form>
                             </div>
@@ -229,6 +229,16 @@
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <!--<script src="js/fontawesome.min.js"></script>-->
+
+
+<script>
+    $('#password, #confirm_password').on('keyup', function () {
+        if ($('#password').val() == $('#password-confirm').val()) {
+            $('#message').html('Matching').css('color', 'green');
+        } else
+            $('#message').html('Not Matching').css('color', 'red');
+    });
+</script>
 
 </body>
 </html>

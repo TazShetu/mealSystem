@@ -18,22 +18,22 @@ class UsersTableSeeder extends Seeder
 //        $faker = Factory::create();
 
         App\User::create([
-            'name' => 'ADMIN a',
-            'slug' => str_slug('ADMIN a'),
-            'email' => 'a@g.com',
+            'name' => 'ADMIN admin',
+            'slug' => str_slug('ADMIN-admin'),
+            'username' => 'adminBoss',
             'password' => bcrypt('123456')
         ]);
-        App\User::create([
-            'name' => 'TAZ the boss',
-            'slug' => str_slug('TAZ the boss'),
-            'email' => 't@g.com',
-            'password' => bcrypt('123456')
-        ]);
-        App\User::create([
-            'name' => 'Edwin kailu',
-            'slug' => str_slug('Edwin k'),
-            'email' => 'e@g.com',
-            'password' => bcrypt('123456')
-        ]);
+//        App\User::create([
+//            'name' => 'TAZ the boss',
+//            'slug' => str_slug('TAZ the boss'),
+//            'email' => 't@g.com',
+//            'password' => bcrypt('123456')
+//        ]);
+//        App\User::create([
+//            'name' => 'Edwin kailu',
+//            'slug' => str_slug('Edwin k'),
+//            'email' => 'e@g.com',
+//            'password' => bcrypt('123456')
+//        ]);
     }
 }

@@ -20,6 +20,11 @@ class RolesTableSeeder extends Seeder
         $admin->display_name = "ADMIN";
         $admin->save();
 
+        $mM = new Role();
+        $mM->name = "mealManager";
+        $mM->display_name = "Meal Manager";
+        $mM->save();
+
         $u1 = User::find(1);
         $u1->detachRole($admin);
         $u1->attachRole($admin);
