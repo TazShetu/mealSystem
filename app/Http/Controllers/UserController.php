@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('createMember');
     }
 
     /**
@@ -54,7 +54,7 @@ class UserController extends Controller
 //            dd($ms->id);
             $ms->users()->attach($u);
         }
-        return redirect()->back();
+        return view('mmHome');
     }
 
     /**
@@ -86,9 +86,21 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|min:3|max:50',
+            'username' => 'required|unique:users',
+        ]);
+        $u = User::where('slug', $slug)->first();
+//        dd($u);
+        $u->name = $request->name;
+        $u->username = $request->username;
+        $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
+//        dd($u);
+        $u->save();
+
+        return redirect()->back();
     }
 
     /**

@@ -36,7 +36,8 @@
                         </form></span>
                         <button class="dropdown-item" data-toggle="modal" data-target="#euModal"><i class="fa fa-edit"></i>&nbsp; Edit Profile</button>
                         @role(['admin','mealManager'])
-                            <button class="dropdown-item" data-toggle="modal" data-target="#nuModal"><b>+</b><i class="fa fa-user"></i>&nbsp; Add a Meal Member</button>
+                            {{--<button class="dropdown-item" data-toggle="modal" data-target="#nuModal"><b>+</b><i class="fa fa-user"></i>&nbsp; Add a Meal Member</button>--}}
+                            <a href="{{route('create.user')}}" class="dropdown-item"><b>+</b><i class="fa fa-user"></i>&nbsp; Add a Meal Member</a>
                         @endrole
                     </div>
                 </li>

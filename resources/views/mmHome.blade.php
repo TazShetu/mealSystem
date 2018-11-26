@@ -240,10 +240,6 @@
 </div>
 
 
-{{--new user modal--}}
-@include('includes.nuModal')
-
-
 {{--Edit user modal--}}
 @include('includes.euModal')
 
@@ -256,6 +252,9 @@
 <script>
     @if (count($errors) > 0)
         $('#nuModal').modal('show');
+    @endif
+    @if (count($errors) > 0)
+        $('#euModal').modal('show');
     @endif
 </script>
 
