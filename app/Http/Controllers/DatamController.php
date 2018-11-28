@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Mealsystem;
+use Illuminate\Support\Facades\Session;
 
 class DatamController extends Controller
 {
@@ -27,7 +28,7 @@ class DatamController extends Controller
      */
     public function create()
     {
-        // find Suthuser mealSystem of current month
+        // find Auth-user mealSystem of current month
         $a = Auth::user();
         $mss = $a->mealsystems()->get();
         $x = 0;
@@ -55,9 +56,44 @@ class DatamController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'date' => 'required',
+            'name' => 'required',
+        ]);
+        $date = $request->date;
+        if(date("m", strtotime($date)) == date("m"))
+        {
+            //if they are the same it will come here
+            dd($date);
+        }
+        else
+        {
+            return 'not current month';
+//            Session::flush('ncm', 'Please Select a date from current month.');
+//            return redirect()->back();
+        }
+//        // create member
+//        $u = new User;
+//        $u->name = $request->name;
+//        $u->username = $request->username;
+//        $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
+//        $u->save();
+
+
+
+
+//        $date = "2018-07-31";
+//
+//        if(date("m", strtotime($date)) == date("m"))
+//        {
+//            //if they are the same it will come here
+//        }
+//        else
+//        {
+//            // they aren't the same
+//        }
     }
 
     /**

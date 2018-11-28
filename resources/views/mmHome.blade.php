@@ -11,7 +11,7 @@
                 @role(['admin', 'mealManager'])
                     <div class="row">
                         <div class="col-sm-6">
-                            <a href="{{route('data.create')}}" class="btn btn-info btn-block btn-lg">
+                            <a href="{{route('datam.create')}}" class="btn btn-info btn-block btn-lg">
                                 <b>Enter <span style="font-size: 25px;'">New</span> Data</b>
                             </a>
                         </div>
