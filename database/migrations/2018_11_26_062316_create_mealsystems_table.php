@@ -15,10 +15,8 @@ class CreateMealsystemsTable extends Migration
     {
         Schema::create('mealsystems', function (Blueprint $table) {
             $table->increments('id');
-            //            month  >> will auto get current month
             $table->integer('month');
-//            meal rate
-            $table->integer('meal_rate')->unsigned()->nullable();
+            $table->float('meal_rate')->unsigned()->default(0);
             $table->timestamps();
         });
     }

@@ -1,7 +1,11 @@
 @include('includes.header')
 <!--....NAV BAR....  -->
 @include('includes.navbar')
-
+@php
+    $month = \Carbon\Carbon::now()->month;
+    $a = Auth::user();
+    $ms = $a->mealsystems()->where('month', $month)->first();
+@endphp
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
         <div class="home-inner">
@@ -27,13 +31,13 @@
                     <div class="col-lg-12 text-center">
                         <div class="card bg-success text-center card-form">
                             <div class="card-body">
-                                <h3 class="display-4">Meal-rate is <strong><b>100</b></strong> Tk/meal</h3>
+                                <h3 class="display-4">Meal-rate is <strong><b>{{$ms->meal_rate}}</b></strong> Tk/meal</h3>
                             </div>
                         </div>
                         <br>
                         <div class="card bg-info text-center card-form">
                             <div class="card-body">
-                                <h3 class="display-6">Your balance <strong><b> + - 100</b></strong> Tk</h3>
+                                <h3 class="display-6">Your balance <span id="amountt"><strong><b>{{\Illuminate\Support\Facades\Auth::user()->amount}}</b></strong></span> Tk</h3>
                             </div>
                         </div>
                         <br>
@@ -133,6 +137,20 @@
     @if (count($errors) > 0)
         $('#euModal').modal('show');
     @endif
+</script>
+
+
+<script>
+    $(function () {
+        var score = parseInt($('#amountt').text().trim());
+        var color = 'red';
+        if (!isNaN(score)) {
+            if (score >= 0) {
+                color = 'white';
+            }
+            $('#amountt').css('color', color);
+        }
+    });
 </script>
 
 </body>
