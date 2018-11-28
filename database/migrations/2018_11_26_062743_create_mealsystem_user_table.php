@@ -17,6 +17,7 @@ class CreateMealsystemUserTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('mealsystem_id');
+//            $table->integer('amount')->default(0);
             $table->timestamps();
         });
     }

@@ -30,7 +30,7 @@ Route::get('/h', function () {
 });
 Route::get('/hh', function () {
     return view('mmHome');
-});
+})->middleware('auth');
 Route::get('/t', function () {
     return view('t');
 });
@@ -59,7 +59,11 @@ Route::post('/MealMemberUpdate/{slug}', [
     'as' => 'update.user'
 ]);
 
-Route::get('/DataCreate', [
+Route::get('/Enter-Edit-Data', [
     'uses' => 'DatamController@create',
-    'as' => 'data.create'
+    'as' => 'datam.create'
+]);
+Route::post('/DatamStore/{id}', [
+    'uses' => 'DatamController@store',
+    'as' => 'store.datam'
 ]);
