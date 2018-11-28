@@ -12,9 +12,9 @@
                     <div class="col-sm-12">
                         <div class="card bg-success">
                             <div class="card-body">
-                                @if(session('ncm'))
+                                @if(session('alert'))
                                     <div class="alert alert-danger">
-                                        {{session('ncm')}}
+                                        {{session('alert')}}
                                     </div>
                                 @endif
                                 <form action="{{route('store.datam', ['id' => $ms->id])}}" method="post">

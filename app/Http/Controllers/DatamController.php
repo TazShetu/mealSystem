@@ -60,19 +60,31 @@ class DatamController extends Controller
     {
         $this->validate($request, [
             'date' => 'required',
-            'name' => 'required',
+//            'name' => 'required',
         ]);
         $date = $request->date;
         if(date("m", strtotime($date)) == date("m"))
         {
             //if they are the same it will come here
-            dd($date);
+
+//            $day = date("d", strtotime($request->date));
+//            dd($day);
+            $d = new Datam;
+            $d->user_id = $request->name;
+            $d->mealsystem_id = $id;
+            $day = date("d", strtotime($request->date));
+            $d->day = $day;
+            if ($request->has('meal')){
+                $d->meal = $request->meal;
+            }
+            if ($request->has('bazar')){
+                $d->bazar = $request->bazar;
+            }
+            $d->save();
         }
         else
         {
-            return 'not current month';
-//            Session::flush('ncm', 'Please Select a date from current month.');
-//            return redirect()->back();
+            return redirect()->back()->with('alert', 'Please Select a date from current month.');
         }
 //        // create member
 //        $u = new User;
