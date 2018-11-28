@@ -17,6 +17,7 @@ class CreateDatamsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('mealsystem_id')->unsigned();
+            $table->integer('month')->unsigned();
             $table->integer('day')->unsigned();
             $table->integer('meal')->nullable();
             $table->integer('bazar')->nullable();

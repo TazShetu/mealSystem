@@ -65,47 +65,57 @@ class DatamController extends Controller
         $date = $request->date;
         if(date("m", strtotime($date)) == date("m"))
         {
-            //if they are the same it will come here
-
-//            $day = date("d", strtotime($request->date));
-//            dd($day);
-            $d = new Datam;
-            $d->user_id = $request->name;
-            $d->mealsystem_id = $id;
+            $month = Carbon::now()->month;
             $day = date("d", strtotime($request->date));
-            $d->day = $day;
-            if ($request->has('meal')){
-                $d->meal = $request->meal;
+            $check = Datam::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
+            if ($check){
+                $check->user_id = $request->name;
+                $check->mealsystem_id = $id;
+                $check->month = $month;
+                $check->day = $day;
+                if ($request->has('meal')){
+                    $check->meal = $request->meal;
+                }
+                if ($request->has('bazar')){
+                    $check->bazar = $request->bazar;
+                }
+                $check->update();
+                return redirect('hh');
+            } else {
+                $d = new Datam;
+                $d->user_id = $request->name;
+                $d->mealsystem_id = $id;
+                $d->month = $month;
+                $d->day = $day;
+                if ($request->has('meal')){
+                    $d->meal = $request->meal;
+                }
+                if ($request->has('bazar')){
+                    $d->bazar = $request->bazar;
+                }
+                $d->save();
+                return redirect('hh');
             }
-            if ($request->has('bazar')){
-                $d->bazar = $request->bazar;
-            }
-            $d->save();
         }
-        else
-        {
+        else {
             return redirect()->back()->with('alert', 'Please Select a date from current month.');
         }
-//        // create member
-//        $u = new User;
-//        $u->name = $request->name;
-//        $u->username = $request->username;
-//        $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
-//        $u->save();
+
+        // calculate mealRate  ///////////////////////////////////////////
+        // get total bazar
+            // get mealSystem_id
+//      $id = 'mealSystem_id';
+
+        // get total meal
+
+        // bazar/meal
 
 
 
 
-//        $date = "2018-07-31";
-//
-//        if(date("m", strtotime($date)) == date("m"))
-//        {
-//            //if they are the same it will come here
-//        }
-//        else
-//        {
-//            // they aren't the same
-//        }
+
+        // enter meal rate to mealsystem table table
+
     }
 
     /**
