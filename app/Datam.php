@@ -16,4 +16,7 @@ class Datam extends Model
         return $this->belongsToMany('App\Mealsystem');
     }
 
+
+
+
 }

@@ -36,7 +36,7 @@
                                     </div>
 
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-light btn-block">Create Member</button>
+                                        <button type="submit" class="btn btn-light btn-block"><strong>Create Member</strong></button>
                                     </div>
                                 </form>
                             </div>
