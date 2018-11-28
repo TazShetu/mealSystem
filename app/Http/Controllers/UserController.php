@@ -101,7 +101,7 @@ class UserController extends Controller
             $this->validate($request, [
                 'password' => 'required|confirmed|min:6',
             ]);
-            $u->password = $request->password;
+            $u->password = bcrypt($request->password);
         }
         $u->name = $request->name;
         $u->username = $request->username;

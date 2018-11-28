@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMealsystemUserTable extends Migration
+class CreateAmountusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateMealsystemUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('mealsystem_user', function (Blueprint $table) {
+        Schema::create('amountus', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('mealsystem_id');
-//            $table->integer('amount')->default(0);
+            $table->integer('amount')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateMealsystemUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mealsystem_user');
+        Schema::dropIfExists('amountus');
     }
 }

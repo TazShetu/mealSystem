@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Amountu;
 use App\Datam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -108,8 +109,12 @@ class DatamController extends Controller
                     }
                     $mrr = round($mr);
                     $amount = $tb - ($mrr * $tm);
-                    $user->amount = $amount;
-                    $user->update();
+
+                    // get user_id($user->id) and mealsystem_id ($id)
+                    // find that row in amountus table
+                    $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $id)->first();
+                    $ar->amount = $amount;
+                    $ar->update();
                 }
 
                 return redirect('hh');
@@ -151,8 +156,17 @@ class DatamController extends Controller
                     }
                     $mrr = round($mr);
                     $amount = $tb - ($mrr * $tm);
-                    $user->amount = $amount;
-                    $user->update();
+                    $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $id)->first();
+                    if ($ar){
+                        $ar->amount = $amount;
+                        $ar->save();
+                    }else {
+                        $ar = new Amountu;
+                        $ar->user_id = $user->id;
+                        $ar->mealsystem_id = $id;
+                        $ar->amount = $amount;
+                        $ar->save();
+                    }
                 }
 
                 return redirect('hh');

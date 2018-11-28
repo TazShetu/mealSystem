@@ -5,6 +5,8 @@
     $month = \Carbon\Carbon::now()->month;
     $a = Auth::user();
     $ms = $a->mealsystems()->where('month', $month)->first();
+    $am = $a->amountus()->where('mealsystem_id', $ms->id)->first();
+    /// PROBLEM for newly created mM amount not showing
 @endphp
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
@@ -37,7 +39,11 @@
                         <br>
                         <div class="card bg-info text-center card-form">
                             <div class="card-body">
-                                <h3 class="display-6">Your balance <span id="amountt"><strong><b>{{\Illuminate\Support\Facades\Auth::user()->amount}}</b></strong></span> Tk</h3>
+                                @if($am)
+                                    <h3 class="display-6">Your balance <span id="amountt"><strong><b>{{$am->amount}}</b></strong></span> Tk</h3>
+                                @else
+                                    <h3 class="display-6">No amount to show</h3>
+                                @endif
                             </div>
                         </div>
                         <br>

@@ -50,6 +50,7 @@ class MealsystemController extends Controller
         $u->name = $request->name;
         $u->username = $request->username;
         $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
+        $u->password = bcrypt($request->password);
         $u->save();
         $u->attachRole('mealManager');
         Auth::loginUsingId($u->id);

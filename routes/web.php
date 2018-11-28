@@ -30,7 +30,7 @@ Route::get('/h', function () {
 });
 Route::get('/hh', function () {
     return view('mmHome');
-});
+})->middleware('auth');
 Route::get('/t', function () {
     return view('t');
 });
