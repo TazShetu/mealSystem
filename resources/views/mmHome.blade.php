@@ -5,8 +5,12 @@
     $month = \Carbon\Carbon::now()->month;
     $a = Auth::user();
     $ms = $a->mealsystems()->where('month', $month)->first();
-    $am = $a->amountus()->where('mealsystem_id', $ms->id)->first();
-    /// PROBLEM for newly created mM amount not showing
+    if ($ms){
+        $am = $a->amountus()->where('mealsystem_id', $ms->id)->first();
+    } else {
+        $am = 0;
+    }
+
 @endphp
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
@@ -33,25 +37,35 @@
                     <div class="col-lg-12 text-center">
                         <div class="card bg-success text-center card-form">
                             <div class="card-body">
-                                <h3 class="display-4">Meal-rate is <strong><b>{{$ms->meal_rate}}</b></strong> Tk/meal</h3>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="card bg-info text-center card-form">
-                            <div class="card-body">
-                                @if($am)
-                                    <h3 class="display-6">Your balance <span id="amountt"><strong><b>{{$am->amount}}</b></strong></span> Tk</h3>
+                                @if($ms)
+                                    <h3 class="display-4">Meal-rate is <strong><b>{{$ms->meal_rate}}</b></strong> Tk/meal</h3>
                                 @else
-                                    <h3 class="display-6">No amount to show</h3>
+                                    <h3>New month New meal-system</h3>
+                                    <h3>Do not forget to</h3>
+                                    <h3 class="display-3">Add member to new meal-system</h3>
                                 @endif
                             </div>
                         </div>
+                        <br>
+                        @if($am)
+                            <div class="card bg-info text-center card-form">
+                                <div class="card-body">
+                                    <h3 class="display-6">Your balance <span id="amountt"><strong><b>{{$am->amount}}</b></strong></span> Tk</h3>
+                                </div>
+                            </div>
+                            <br>
+                        @endif
+                        @role(['admin', 'mealManager'])
+                            <a href="{{route('oldm.attach', ['id' => $a->id])}}" class="btn btn-info btn-block"><i class="fa fa-user-plus"></i>&nbsp; <h3>Add old Meal Member to new meal-system</h3></a>
+                        @endrole
                         <br>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
-                        <a href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-bars" style="font-size: 20px;"></i>&nbsp; View personal Table</a>
+                        @if($ms)
+                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-lg btn-success btn-block"><i class="fa fa-bars" style="font-size: 20px;"></i>&nbsp; View personal Table</a>
+                        @endif
                     </div>
                     <div class="col-sm-6">
                         <a href="#" class="btn btn-lg btn-outline-success btn-block"><i class="fa fa-table" style="font-size: 20px;"></i>&nbsp; View full Table</a>

@@ -31,9 +31,9 @@ Route::get('/h', function () {
 Route::get('/hh', function () {
     return view('mmHome');
 })->middleware('auth');
-Route::get('/t', function () {
-    return view('t');
-});
+//Route::get('/t', function () {
+//    return view('t');
+//});
 Route::get('/tt', function () {
     return view('tt');
 });
@@ -66,4 +66,14 @@ Route::get('/Enter-Edit-Data', [
 Route::post('/DatamStore/{id}', [
     'uses' => 'DatamController@store',
     'as' => 'store.datam'
+]);
+
+Route::get('/personal-table/{slug}/{id}', [
+    'uses' => 'PtableController@index',
+    'as' => 'p.table'
+]);
+
+Route::get('/old-member-attach/{id}', [
+    'uses' => 'userController@oldma',
+    'as' => 'oldm.attach'
 ]);

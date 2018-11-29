@@ -10,7 +10,7 @@
                     <a href="index.html" class="nav-link">Index</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link active">Home</a>
+                    <a href="http://localhost:8000/hh" class="nav-link active">Home</a>
                 </li>
                 <li class="nav-item">
                     <a href="profile.html" class="nav-link">Profile</a>
@@ -37,7 +37,7 @@
                         <button class="dropdown-item" data-toggle="modal" data-target="#euModal"><i class="fa fa-edit"></i>&nbsp; Edit Profile</button>
                         @role(['admin','mealManager'])
                             {{--<button class="dropdown-item" data-toggle="modal" data-target="#nuModal"><b>+</b><i class="fa fa-user"></i>&nbsp; Add a Meal Member</button>--}}
-                            <a href="{{route('create.user')}}" class="dropdown-item"><b>+</b><i class="fa fa-user"></i>&nbsp; Add a Meal Member</a>
+                            <a href="{{route('create.user')}}" class="dropdown-item"><i class="fa fa-user-plus"></i>&nbsp; Add a Meal Member</a>
                         @endrole
                     </div>
                 </li>

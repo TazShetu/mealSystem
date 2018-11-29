@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -107,7 +108,7 @@ class UserController extends Controller
         $u->username = $request->username;
         $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
 
-        $u->save();
+        $u->update();
 
         return redirect()->back();
     }
@@ -122,4 +123,58 @@ class UserController extends Controller
     {
         //
     }
+
+
+    public function oldma($id){
+    // if Cms exist then do this
+        $mM = User::find($id);
+        $msOmm = $mM->mealsystems()->get();
+        $x = 0 ;
+        foreach ($msOmm as $m){
+            if ($m->month == Carbon::now()->month){
+                $x = 1;
+                break;
+            }
+        }
+        if ($x != 1){
+            $ms = new Mealsystem;
+            $ms->month = Carbon::now()->month;
+            $ms->save();
+            $ms->users()->attach($mM);
+        }
+        $cmonth = Carbon::now()->month;
+        if ($cmonth == 1){
+            $pmonth = 12;
+        }else {
+            $pmonth = $cmonth - 1 ;
+        }
+        $msPm = $mM->mealsystems()->where('month', $pmonth)->first();
+        $Pmembers = $msPm->users()->get();
+        // $Pmembers is an object that has collection of past month user(s)
+//        dd($Pmembers);
+        $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
+        $CMembers = $msCm->users()->get();
+        // $CMembers is an object that has collection of current month user(s)
+//        dd($CMembers);
+
+//        $members = (object)[];
+        $members = [];
+        foreach ($Pmembers as $pmm){
+            // $pmm is an user object
+//            dd($pmm);
+            if (!$CMembers->contains('name', $pmm->name)){
+                // here we het $pmm as user object that is not in current month
+//                dd($pmm);
+                // add $pmm to $members(collection of object)
+//                $pmm->push($members);          not working
+                $members[] = $pmm;
+            }
+        }
+//        dd($members);
+
+        return view('member.addOldMember', compact('members'));
+
+    // else create a new mS the do the upper
+    }
+
 }

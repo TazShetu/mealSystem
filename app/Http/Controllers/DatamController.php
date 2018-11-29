@@ -176,30 +176,6 @@ class DatamController extends Controller
             return redirect()->back()->with('alert', 'Please Select a date from current month.');
         }
 
-
-
-
-        // calculate amount+- for all user ////////////////////////////////
-        // get mealsystem_id >>>> $id
-        // get month >>>> month
-        // get all the user of that month>mealSystem
-//        $mealSystem = Mealsystem::find($id);      // $mealS
-//        $users = $mealSystem->users()->get();
-//        // foreach user
-//        foreach ($users as $user){
-//            // get users total bazar and total meal
-//            $dataA = Datam::where('user_id', $user->id)->where('month' , $month);
-//            $tb = 0;
-//            $tm = 0;
-//            foreach ($dataA as $data){
-//                $tb = $tb + $data->bazar;
-//                $tm = $tm + $data->meal;
-//            }
-//            // amount = (mealRate * total meal) - total bazar
-//            $amount = ($mr * $tm) - $tb;
-//            $user->amont = $amount;
-//            $user->update;
-
     }
 
 

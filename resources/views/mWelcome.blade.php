@@ -32,7 +32,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                If Meal Manager enter data for a member and also for the same date it will overwrite the old data.
+                                To edit data meal-manager can simply enter new data for the same date and same member. It will auto overwrite the old data.
                             </div>
                         </div>
                         <div class="d-flex flex-row">
@@ -40,7 +40,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta ut illo voluptates obcaecati odit reprehenderit qui ipsa, natus architecto aliquid, repellat dolore unde facere, nostrum voluptatum assumenda magnam hic officiis?
+                                Every new month will auto create a new meal-system under the meal-manager. Meal-manager will add member for new meal-system. Once added member can not be deleted but new month will auto erase all old member from last month.
                             </div>
                         </div>
                         <div class="d-flex flex-row">
@@ -48,7 +48,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                Beatae sunt impedit neque modi optio eos id. Nihil vero, culpa cumque.
+                                Lorem eatae sunt impedit neque modi optio eos id. Nihil vero, culpa cumque.
                             </div>
                         </div>
                     </div>
