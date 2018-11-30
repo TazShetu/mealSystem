@@ -10,6 +10,12 @@
     } else {
         $am = 0;
     }
+    if ($month == 1){
+            $pmonth = 12;
+    }else {
+            $pmonth = $month - 1 ;
+    }
+    $pms = $a->mealsystems()->where('month', $pmonth)->first();
 
 @endphp
 <header id="home-section" class="HomE">
@@ -56,7 +62,9 @@
                             <br>
                         @endif
                         @role(['admin', 'mealManager'])
-                            <a href="{{route('oldm.attach', ['id' => $a->id])}}" class="btn btn-info btn-block"><i class="fa fa-user-plus"></i>&nbsp; <h3>Add old Meal Member to new meal-system</h3></a>
+                            @if($pms)
+                                <a href="{{route('oldm.attach', ['id' => $a->id])}}" class="btn btn-info btn-block"><i class="fa fa-user-plus"></i>&nbsp; <h3>Add old Meal Member to new meal-system</h3></a>
+                            @endif
                         @endrole
                         <br>
                     </div>

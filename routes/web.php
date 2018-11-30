@@ -74,6 +74,10 @@ Route::get('/personal-table/{slug}/{id}', [
 ]);
 
 Route::get('/old-member-attach/{id}', [
-    'uses' => 'userController@oldma',
+    'uses' => 'UserController@oldma',
     'as' => 'oldm.attach'
+]);
+Route::post('/old-member-store/{msid}', [
+    'uses' => 'UserController@oldMadd',
+    'as' => 'old.add'
 ]);

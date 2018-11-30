@@ -27,6 +27,22 @@ class UserController extends Controller
      */
     public function create()
     {
+        // check mS exist for current month. if not create mS for new month and attach mM to that
+        $a = Auth::user();
+        $msOmm = $a->mealsystems()->get();
+        $x = 0 ;
+        foreach ($msOmm as $m){
+            if ($m->month == Carbon::now()->month){
+                $x = 1;
+                break;
+            }
+        }
+        if ($x != 1){
+            $ms = new Mealsystem;
+            $ms->month = Carbon::now()->month;
+            $ms->save();
+            $ms->users()->attach($a);
+        }
         return view('createMember');
     }
 
@@ -42,6 +58,7 @@ class UserController extends Controller
             'name' => 'required|min:3|max:50',
             'username' => 'required|unique:users',
         ]);
+
          // create member
         $u = new User;
         $u->name = $request->name;
@@ -55,7 +72,7 @@ class UserController extends Controller
 //            dd($ms->id);
             $ms->users()->attach($u);
         }
-        return view('mmHome');
+        return redirect('hh');
     }
 
     /**
@@ -125,8 +142,8 @@ class UserController extends Controller
     }
 
 
-    public function oldma($id){
-    // if Cms exist then do this
+    public function oldma($id)
+    {
         $mM = User::find($id);
         $msOmm = $mM->mealsystems()->get();
         $x = 0 ;
@@ -151,30 +168,45 @@ class UserController extends Controller
         $msPm = $mM->mealsystems()->where('month', $pmonth)->first();
         $Pmembers = $msPm->users()->get();
         // $Pmembers is an object that has collection of past month user(s)
-//        dd($Pmembers);
         $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
         $CMembers = $msCm->users()->get();
         // $CMembers is an object that has collection of current month user(s)
-//        dd($CMembers);
 
-//        $members = (object)[];
         $members = [];
         foreach ($Pmembers as $pmm){
             // $pmm is an user object
-//            dd($pmm);
             if (!$CMembers->contains('name', $pmm->name)){
                 // here we het $pmm as user object that is not in current month
-//                dd($pmm);
-                // add $pmm to $members(collection of object)
-//                $pmm->push($members);          not working
                 $members[] = $pmm;
             }
         }
+        $msid = $msCm->id;
 //        dd($members);
 
-        return view('member.addOldMember', compact('members'));
+        return view('member.addOldMember', compact('members', 'msid'));
 
-    // else create a new mS the do the upper
+
     }
+
+
+    public function oldMadd(Request $request, $msid)
+    {
+//        dd($msid);
+//        option field
+//        $u = User::find($request->member_id);
+//        $ms = Mealsystem::find($msid);
+//        $ms->users()->attach($u);
+//        return redirect('hh');
+        ///////////////
+        // Check Box
+        $ms = Mealsystem::find($msid);
+        $ids = $request->input('member_ids');
+        foreach ($ids as $id){
+            $u = User::find($id);
+            $ms->users()->attach($u);
+        }
+        return redirect('hh');
+    }
+
 
 }

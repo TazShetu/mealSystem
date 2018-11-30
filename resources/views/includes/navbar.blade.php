@@ -18,9 +18,11 @@
                 <li class="nav-item">
                     <a href="table.html" class="nav-link">Full Table</a>
                 </li>
-                {{--<li class="nav-item">--}}
-                {{--<a href="" class="nav-link btn btn-outline-success">Log Out</a>--}}
-                {{--</li>--}}
+                @role(['admin','mealManager'])
+                <li class="nav-item">
+                    <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add a Meal Member</a>
+                </li>
+                @endrole
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-outline-success" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->name }} <span class="caret"></span>
@@ -35,10 +37,9 @@
                             @csrf
                         </form></span>
                         <button class="dropdown-item" data-toggle="modal" data-target="#euModal"><i class="fa fa-edit"></i>&nbsp; Edit Profile</button>
-                        @role(['admin','mealManager'])
-                            {{--<button class="dropdown-item" data-toggle="modal" data-target="#nuModal"><b>+</b><i class="fa fa-user"></i>&nbsp; Add a Meal Member</button>--}}
-                            <a href="{{route('create.user')}}" class="dropdown-item"><i class="fa fa-user-plus"></i>&nbsp; Add a Meal Member</a>
-                        @endrole
+                        {{--@role(['admin','mealManager'])--}}
+                            {{--<a href="{{route('create.user')}}" class="dropdown-item"><i class="fa fa-user-plus"></i>&nbsp; Add a Meal Member</a>--}}
+                        {{--@endrole--}}
                     </div>
                 </li>
             </ul>
