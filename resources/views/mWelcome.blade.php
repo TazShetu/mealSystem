@@ -1,23 +1,30 @@
 @include('includes.header')
 
-<!--....NAV BAR....  -->
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top justify-content-between">
-    <div class="container">
-        <a href="index.html" class="navbar-brand">Meal System</a>
-        <form method="POST" action="{{ route('login') }}" class="form-inline">
-            @csrf
-            <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} mr-2 mb-1" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>
-            @if ($errors->has('email'))
-                <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
-            @endif
-            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} mr-2 mb-1" name="password" placeholder="Password" required>
-            @if ($errors->has('password'))
-                <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
-            @endif
-            <button type="submit" class="btn btn-outline-success">Login</button>
-        </form>
-    </div>
-</nav>
+@if (Route::has('login'))
+    @auth
+        @include('includes.navbar')
+    @else
+        <!--....NAV BAR before login....  -->
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top justify-content-between">
+            <div class="container">
+                <a href="index.html" class="navbar-brand">Meal System</a>
+                <form method="POST" action="{{ route('login') }}" class="form-inline">
+                    @csrf
+                    <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} mr-2 mb-1" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>
+                    @if ($errors->has('email'))
+                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
+                    @endif
+                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} mr-2 mb-1" name="password" placeholder="Password" required>
+                    @if ($errors->has('password'))
+                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
+                    @endif
+                    <button type="submit" class="btn btn-outline-success">Login</button>
+                </form>
+            </div>
+        </nav>
+    @endauth
+@endif
+
 
 <!--.....HOME section....  -->
 <header id="home-section" class="IndeX">
@@ -52,45 +59,62 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 mt-5">
-                        <div class="card bg-success text-center card-form">
-                            <div class="card-body">
-                                <h3>Register as <strong>Meal Manager</strong></h3>
-                                <form method="POST" action="{{ route('store.mM.mS') }}">
-                                    @csrf
-                                    <div class="form-group">
-                                        {{--<input type="text" class="form-control form-control-lg" placeholder="Username">--}}
-                                        <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" placeholder="Name" required>
-                                        @if ($errors->has('name'))
-                                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('name') }}</strong></span>
-                                        @endif
+                @if (Route::has('login'))
+                    @auth
+                        {{--aftere login--}}
+                            <div class="col-lg-4 mt-5">
+                                <div class="card bg-success text-center card-form">
+                                    <div class="card-header">
+                                        <h3>You are already logged in.</h3>
                                     </div>
-                                    <div class="form-group">
-                                        {{--<input type="email" class="form-control form-control-lg" placeholder="Email">--}}
-                                        <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="User Name" required>
-                                        @if ($errors->has('username'))
-                                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('username') }}</strong></span>
-                                        @endif
+                                    <div class="card-body">
+                                        <a href="http://localhost:8000/hh" class="btn btn-outline-light btn-block">Back to home. </a>
                                     </div>
-                                    <div class="form-group">
-                                        {{--<input type="password" class="form-control form-control-lg" placeholder="Password">--}}
-                                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
-                                        @if ($errors->has('password'))
-                                            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
-                                        @endif
-                                    </div>
-                                    <div class="form-group">
-                                        {{--<input type="password" class="form-control form-control-lg" placeholder="Confirm Password">--}}
-                                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" required>
-                                    </div>
-                                    {{--<input type="submit" class="btn btn-outline-light btn-block">--}}
-                                    {{--<button type="submit" class="btn btn-primary">{{ __('Register') }}</button>--}}
-                                    {{--<input type="hidden" name="slug" value="">--}}
-                                    <button type="submit" class="btn btn-outline-light btn-block">Register</button>
-                                </form>
+                                </div>
+                            </div>
+                    @else
+                        <!--....before login....  -->
+                        <div class="col-lg-4 mt-5">
+                            <div class="card bg-success text-center card-form">
+                                <div class="card-body">
+                                    <h3>Register as <strong>Meal Manager</strong></h3>
+                                    <form method="POST" action="{{ route('store.mM.mS') }}">
+                                        @csrf
+                                        <div class="form-group">
+                                            {{--<input type="text" class="form-control form-control-lg" placeholder="Username">--}}
+                                            <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" placeholder="Name" required>
+                                            @if ($errors->has('name'))
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('name') }}</strong></span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group">
+                                            {{--<input type="email" class="form-control form-control-lg" placeholder="Email">--}}
+                                            <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="User Name" required>
+                                            @if ($errors->has('username'))
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('username') }}</strong></span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group">
+                                            {{--<input type="password" class="form-control form-control-lg" placeholder="Password">--}}
+                                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
+                                            @if ($errors->has('password'))
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group">
+                                            {{--<input type="password" class="form-control form-control-lg" placeholder="Confirm Password">--}}
+                                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" required>
+                                        </div>
+                                        {{--<input type="submit" class="btn btn-outline-light btn-block">--}}
+                                        {{--<button type="submit" class="btn btn-primary">{{ __('Register') }}</button>--}}
+                                        {{--<input type="hidden" name="slug" value="">--}}
+                                        <button type="submit" class="btn btn-outline-light btn-block">Register</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        @endauth
+                    @endif
                 </div>
             </div>
         </div>
@@ -111,14 +135,7 @@
 <!--<script src="js/fontawesome.min.js"></script>-->
 
 
-<script>
-    $('#password, #confirm_password').on('keyup', function () {
-        if ($('#password').val() == $('#password-confirm').val()) {
-            $('#message').html('Matching').css('color', 'green');
-        } else
-            $('#message').html('Not Matching').css('color', 'red');
-    });
-</script>
+
 
 </body>
 </html>

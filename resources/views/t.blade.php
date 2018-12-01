@@ -2,6 +2,21 @@
 
 @include('includes.navbar')
 
+@php
+    // for previous month (route get {slug} {mSid})
+    $month = \Carbon\Carbon::now()->month;
+    $a = Auth::user();
+    $ms = $a->mealsystems()->where('month', $month)->first();
+
+    // previous month to current month (route get {slug} {mSid})
+    if ($month == 1){
+            $pmonth = 12;
+    }else {
+            $pmonth = $month - 1 ;
+    }
+    $pms = $a->mealsystems()->where('month', $pmonth)->first();
+
+@endphp
 
 
 <section id="home-section" class="ProfilE">
@@ -39,16 +54,16 @@
             </div>
             <div class="container">
                 <div class="row">
-
                     <div class="col-sm-6">
-                        <a href="" class="btn btn-success pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> Previous Month</a>
+                        @if($cmonth == (\Carbon\Carbon::now()->month) && $pms)
+                                <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $pms->id])}}" class="btn btn-success pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> Previous Month</a>
+                        @endif
                     </div>
-
-                    @if($cmonth !== \Carbon\Carbon::now()->month)
-                        <div class="col-sm-6">
-                            <a href="" class="btn btn-success pull-right">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
-                        </div>
-                    @endif
+                    <div class="col-sm-6">
+                        @if($cmonth !== \Carbon\Carbon::now()->month)
+                                <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-success pull-right">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

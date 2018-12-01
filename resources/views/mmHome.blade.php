@@ -28,12 +28,12 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <a href="{{route('datam.create')}}" class="btn btn-info btn-block btn-lg">
-                                <b>Enter <span style="font-size: 25px;'">New</span> Data</b>
+                                <b><span style="font-size: 25px;'">New</span> Data</b>
                             </a>
                         </div>
                         <div class="col-sm-6">
                             <a href="#" class="btn btn-outline-info btn-block btn-lg" data-toggle="modal" data-target="#editModal">
-                                <b>Edit <span style="font-size: 25px;'">Old</span> Data</b>
+                                <b><span style="font-size: 25px;'">Old</span> Data</b>
                             </a>
                         </div>
                     </div>

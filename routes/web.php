@@ -68,11 +68,6 @@ Route::post('/DatamStore/{id}', [
     'as' => 'store.datam'
 ]);
 
-Route::get('/personal-table/{slug}/{id}', [
-    'uses' => 'PtableController@index',
-    'as' => 'p.table'
-]);
-
 Route::get('/old-member-attach/{id}', [
     'uses' => 'UserController@oldma',
     'as' => 'oldm.attach'
@@ -80,4 +75,9 @@ Route::get('/old-member-attach/{id}', [
 Route::post('/old-member-store/{msid}', [
     'uses' => 'UserController@oldMadd',
     'as' => 'old.add'
+]);
+
+Route::get('/personal-table/{slug}/{id}', [
+    'uses' => 'PtableController@index',
+    'as' => 'p.table'
 ]);

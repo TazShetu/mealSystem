@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+<nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
     <div class="container">
         <a href="index.html" class="navbar-brand">Meal System</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="index.html" class="nav-link">Index</a>
+                    <a href="http://localhost:8000" class="nav-link">Index</a>
                 </li>
                 <li class="nav-item">
                     <a href="http://localhost:8000/hh" class="nav-link active">Home</a>
@@ -19,9 +19,9 @@
                     <a href="table.html" class="nav-link">Full Table</a>
                 </li>
                 @role(['admin','mealManager'])
-                <li class="nav-item">
-                    <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add a Meal Member</a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add a Meal Member</a>
+                    </li>
                 @endrole
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-outline-success" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
