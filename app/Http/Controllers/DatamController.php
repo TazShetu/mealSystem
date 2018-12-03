@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Amountu;
 use App\Datam;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -256,9 +257,12 @@ class DatamController extends Controller
      * @param  \App\Datam  $datam
      * @return \Illuminate\Http\Response
      */
-    public function edit(Datam $datam)
+    public function edit($slug, $msid, $m, $d)
     {
-        //
+//        dd($d);
+        $u = User::where('slug', $slug)->first();
+        $data = Datam::where('user_id', $u->id)->where('mealsystem_id', $msid)->where('month', $m)->where('day', $d)->first();
+        return view('datam.edit', compact('m', 'd', 'u', 'data'));
     }
 
     /**
@@ -268,9 +272,85 @@ class DatamController extends Controller
      * @param  \App\Datam  $datam
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Datam $datam)
+    public function update(Request $request, $did)
     {
-        //
+//        dd($did);
+        $d = Datam::find($did);
+        if ($request->has('meal')){
+            $d->meal = $request->meal;
+        }
+        if ($request->has('bazar')){
+            $d->bazar = $request->bazar;
+        }
+        if ($request->has('deposit')){
+            $d->deposit = $request->deposit;
+        }
+        $d->update();
+
+        $dCA = Datam::where('mealsystem_id', $d->mealsystem_id)->where('month', $d->month)->get();
+        $tb = 0;
+        $tm = 0;
+        foreach ($dCA as $dA){
+            $tb = $tb + $dA->bazar;
+            $tm = $tm + $dA->meal;
+        }
+        if ($tm){
+            $mr = $tb / $tm;
+        }else{
+            $mr = 0;
+        }
+        $mealS = Mealsystem::where('id', $d->mealsystem_id)->first();
+        $mealS->meal_rate = $mr;
+        $mealS->update();
+
+        $users = $mealS->users()->get();
+
+        $tdo = 0;
+        foreach ($users as $user){
+            $dataA = Datam::where('user_id', $user->id)->where('month' , $d->month)->get();
+            foreach ($dataA as $data){
+                $tdo = $tdo + $data->deposit;
+            }
+        }
+        foreach ($users as $user){
+            $dataA = Datam::where('user_id', $user->id)->where('month' , $d->month)->get();
+            $tb = 0;
+            $tm = 0;
+            $td = 0;
+            foreach ($dataA as $data){
+                $tb = $tb + $data->bazar;
+                $tm = $tm + $data->meal;
+                $td = $td + $data->deposit;
+            }
+
+            if ($user->hasRole('mealManager')){
+                if ($mr){
+                    $mrr = round($mr);
+                    $amount = $td - $tdo + $tb - ($mrr * $tm);
+                }else{
+                    $amount = $td - $tdo + $tb;
+                }
+            }else{
+                if ($mr){
+                    $mrr = round($mr);
+                    $amount = $td + $tb - ($mrr * $tm);
+                }else{
+                    $amount = $td + $tb;
+                }
+            }
+            $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $d->mealsystem_id)->first();
+            if ($ar){
+                $ar->amount = $amount;
+                $ar->update();
+            }else {
+                $ar = new Amountu;
+                $ar->user_id = $user->id;
+                $ar->mealsystem_id =  $d->mealsystem_id;
+                $ar->amount = $amount;
+                $ar->save();
+            }
+        }
+        return redirect()->route('f.table', ['msid' => $d->mealsystem_id]);
     }
 
     /**

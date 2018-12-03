@@ -32,7 +32,7 @@
                         </div>
                         <div class="col-sm-6 p-1">
                             <a href="#" class="btn btn-outline-info btn-block btn-lg" data-toggle="modal" data-target="#editModal">
-                                <b><span style="font-size: 25px;'">Old</span> Data</b>
+                                <b><span style="font-size: 25px;'">Previous month</span> Data</b>
                             </a>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                                     @role(['admin', 'mealManager'])
                                         <h3>New month New meal-system</h3>
                                         <h3>Do not forget to</h3>
-                                        <h1>Add member to new meal-system</h1>
+                                        <h1>Add old members to new meal-system</h1>
                                     @else
                                         <h3>Ask Meal Manager to add you to new meal-system personally.</h3>
                                     @endrole

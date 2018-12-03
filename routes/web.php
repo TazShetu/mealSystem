@@ -68,6 +68,14 @@ Route::post('/DatamStore/{id}', [
     'as' => 'store.datam'
 ]);
 
+Route::get('/Edit-Data/{slug}/{msid}/{m}/{d}', [
+    'uses' => 'DatamController@edit',
+    'as' => 'datam.t.edit'
+]);
+Route::post('/DatamUpdate/{did}', [
+    'uses' => 'DatamController@update',
+    'as' => 'datam.t.update'
+]);
 
 
 Route::get('/old-member-attach/{id}', [

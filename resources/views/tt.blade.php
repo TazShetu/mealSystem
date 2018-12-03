@@ -25,7 +25,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        @if($cmonth == (\Carbon\Carbon::now()->month))
+                        @if($cmonth == (\Carbon\Carbon::now()->month && $ms))
                             <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> View personal Table</span></a>
                         @endif
                         @if($cmonth !== \Carbon\Carbon::now()->month && $pms)
@@ -62,8 +62,9 @@
                                 <td>{{$d->bazar}}</td>
                                 <td>{{$d->deposit}}</td>
                                 @role(['admin', 'mealManager'])
-                                    <td><a href="" class="btn btn-outline-success">Edit</a></td>
-                                {{--route>controller should return datam.edit view--}}
+                                    @if($d->month == $month)
+                                        <td><a href="{{route('datam.t.edit', ['slug' => $d->user->slug, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm">Edit</a></td>
+                                    @endif
                                 @endrole
                         @endforeach
                         <!--loop end for member-->
@@ -81,7 +82,7 @@
                         @endif
                     </div>
                     <div class="col-sm-6">
-                        @if($cmonth !== \Carbon\Carbon::now()->month)
+                        @if($cmonth !== \Carbon\Carbon::now()->month && $ms)
                             <a href="{{route('f.table', ['msid' => $ms->id])}}" class="btn btn-success pull-right">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
                         @endif
                     </div>

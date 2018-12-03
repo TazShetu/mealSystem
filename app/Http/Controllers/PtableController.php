@@ -99,10 +99,6 @@ class PtableController extends Controller
         $ms = Mealsystem::find($msid);
         $cmonth = $ms->month;
 
-
-
-
-
         return view('tt', compact('datams', 'cmonth'));
     }
 
