@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -26,6 +27,22 @@ class UserController extends Controller
      */
     public function create()
     {
+        // check mS exist for current month. if not create mS for new month and attach mM to that
+        $a = Auth::user();
+        $msOmm = $a->mealsystems()->get();
+        $x = 0 ;
+        foreach ($msOmm as $m){
+            if ($m->month == Carbon::now()->month){
+                $x = 1;
+                break;
+            }
+        }
+        if ($x != 1){
+            $ms = new Mealsystem;
+            $ms->month = Carbon::now()->month;
+            $ms->save();
+            $ms->users()->attach($a);
+        }
         return view('createMember');
     }
 
@@ -41,6 +58,7 @@ class UserController extends Controller
             'name' => 'required|min:3|max:50',
             'username' => 'required|unique:users',
         ]);
+
          // create member
         $u = new User;
         $u->name = $request->name;
@@ -54,7 +72,7 @@ class UserController extends Controller
 //            dd($ms->id);
             $ms->users()->attach($u);
         }
-        return view('mmHome');
+        return redirect('hh');
     }
 
     /**
@@ -107,7 +125,7 @@ class UserController extends Controller
         $u->username = $request->username;
         $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
 
-        $u->save();
+        $u->update();
 
         return redirect()->back();
     }
@@ -122,4 +140,73 @@ class UserController extends Controller
     {
         //
     }
+
+
+    public function oldma($id)
+    {
+        $mM = User::find($id);
+        $msOmm = $mM->mealsystems()->get();
+        $x = 0 ;
+        foreach ($msOmm as $m){
+            if ($m->month == Carbon::now()->month){
+                $x = 1;
+                break;
+            }
+        }
+        if ($x != 1){
+            $ms = new Mealsystem;
+            $ms->month = Carbon::now()->month;
+            $ms->save();
+            $ms->users()->attach($mM);
+        }
+        $cmonth = Carbon::now()->month;
+        if ($cmonth == 1){
+            $pmonth = 12;
+        }else {
+            $pmonth = $cmonth - 1 ;
+        }
+        $msPm = $mM->mealsystems()->where('month', $pmonth)->first();
+        $Pmembers = $msPm->users()->get();
+        // $Pmembers is an object that has collection of past month user(s)
+        $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
+        $CMembers = $msCm->users()->get();
+        // $CMembers is an object that has collection of current month user(s)
+
+        $members = [];
+        foreach ($Pmembers as $pmm){
+            // $pmm is an user object
+            if (!$CMembers->contains('name', $pmm->name)){
+                // here we het $pmm as user object that is not in current month
+                $members[] = $pmm;
+            }
+        }
+        $msid = $msCm->id;
+//        dd($members);
+
+        return view('member.addOldMember', compact('members', 'msid'));
+
+
+    }
+
+
+    public function oldMadd(Request $request, $msid)
+    {
+//        dd($msid);
+//        option field
+//        $u = User::find($request->member_id);
+//        $ms = Mealsystem::find($msid);
+//        $ms->users()->attach($u);
+//        return redirect('hh');
+        ///////////////
+        // Check Box
+        $ms = Mealsystem::find($msid);
+        $ids = $request->input('member_ids');
+        foreach ($ids as $id){
+            $u = User::find($id);
+            $ms->users()->attach($u);
+        }
+        return redirect('hh');
+    }
+
+
 }

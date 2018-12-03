@@ -37,7 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function datams(){
-        return $this->belongsToMany('App\Datam');
+        return $this->hasMany('App\Datam');
     }
 
     public function amountus(){
