@@ -6,17 +6,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
+                {{------------------------------------------------------------------}}
                 <li class="nav-item">
                     <a href="http://localhost:8000" class="nav-link">Index</a>
                 </li>
+                {{------------------------------------------------------------------}}
                 <li class="nav-item">
                     <a href="http://localhost:8000/hh" class="nav-link active">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="profile.html" class="nav-link">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a href="table.html" class="nav-link">Full Table</a>
                 </li>
                 @role(['admin','mealManager'])
                     <li class="nav-item">

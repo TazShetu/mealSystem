@@ -33,6 +33,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 d-none d-lg-block">
+                        <h3>We are still in Beta. Your data might get lost !</h3>
                         <h1 class="display-4">Calculating <strong>MEAL</strong> has never been <strong>EASIER</strong></h1>
                         <div class="d-flex flex-row">
                             <div class="p-4 align-self-start">
@@ -130,8 +131,8 @@
 
 
 <!--script-->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/bootstrap.min.js')}}"></script>
 <!--<script src="js/fontawesome.min.js"></script>-->
 
 

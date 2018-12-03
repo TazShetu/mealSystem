@@ -90,4 +90,21 @@ class PtableController extends Controller
     {
         //
     }
+
+
+    public function tt($msid)
+    {
+        $datams = Datam::where('mealsystem_id', $msid)->get();
+
+        $ms = Mealsystem::find($msid);
+        $cmonth = $ms->month;
+
+
+
+
+
+        return view('tt', compact('datams', 'cmonth'));
+    }
+
+
 }

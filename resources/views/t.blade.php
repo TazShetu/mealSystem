@@ -2,6 +2,8 @@
 
 @include('includes.navbar')
 
+
+
 @php
     // for previous month (route get {slug} {mSid})
     $month = \Carbon\Carbon::now()->month;
@@ -15,7 +17,6 @@
             $pmonth = $month - 1 ;
     }
     $pms = $a->mealsystems()->where('month', $pmonth)->first();
-
 @endphp
 
 
@@ -25,7 +26,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <a href="#" class="btn btn-success btn-block" ><i class="fa fa-table" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> View full Table</span></a>
+                        @if($cmonth == (\Carbon\Carbon::now()->month))
+                            <a href="{{route('f.table', ['msid' => $ms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-table" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> View full Table</span></a>
+                        @endif
+                        @if($cmonth !== \Carbon\Carbon::now()->month && $pms)
+                            <a href="{{route('f.table', ['msid' => $pms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-table" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> View full Table</span></a>
+                        @endif
                         <br>
                     </div>
                 </div>
@@ -38,6 +44,7 @@
                             <th>Date</th>
                             <th>Bazar</th>
                             <th>Meal</th>
+                            <th>Deposit</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -46,6 +53,7 @@
                                     <td>{{$d->day}} / {{$d->month}}</td>
                                     <td>{{$d->bazar}}</td>
                                     <td>{{$d->meal}}</td>
+                                    <td>{{$d->deposit}}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -73,9 +81,11 @@
 <!--.......main Footer....  -->
 @include('includes.footer')
 
+
+@include('includes.euModal')
 <!--script-->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/bootstrap.min.js')}}"></script>
 <!--<script src="js/fontawesome.min.js"></script>-->
 
 </body>

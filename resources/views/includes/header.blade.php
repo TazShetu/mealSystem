@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
 
-    <title>Meal System</title>
+    <title>Meal System (beta)</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('img/icon.png')}}" />
 </head>
 <body>
