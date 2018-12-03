@@ -21,6 +21,7 @@ class CreateDatamsTable extends Migration
             $table->integer('day')->unsigned();
             $table->integer('meal')->nullable();
             $table->integer('bazar')->nullable();
+            $table->integer('deposit')->nullable();
             $table->timestamps();
         });
     }

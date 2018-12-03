@@ -13,9 +13,10 @@ body {
     background-size: cover;
     background-attachment: fixed;
     min-height: 900px;
+    /*min-height: 100%;*/
 }
 #home-section .dark-overlay {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     position: absolute;
     top: 0;
     left: 0;

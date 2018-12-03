@@ -61,9 +61,7 @@ class DatamController extends Controller
     {
         $this->validate($request, [
             'date' => 'required',
-            'name' => 'required',
-//            'meal' => 'integer',
-//            'bazar' => 'integer'
+            'name' => 'required'
         ]);
         $date = $request->date;
         if(date("m", strtotime($date)) == date("m"))
@@ -83,6 +81,9 @@ class DatamController extends Controller
                 if ($request->has('bazar')){
                     $check->bazar = $request->bazar;
                 }
+                if ($request->has('deposit')){
+                    $check->deposit = $request->deposit;
+                }
                 $check->update();
 
                 $dCA = Datam::where('mealsystem_id', $id)->where('month', $month)->get();
@@ -99,17 +100,39 @@ class DatamController extends Controller
                 $mealS->update();
 
                 $users = $mealS->users()->get();
+                $tdo = 0;
+                foreach ($users as $user){
+                    $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
+                    foreach ($dataA as $data){
+                        $tdo = $tdo + $data->deposit;
+                    }
+                }
                 foreach ($users as $user){
                     $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
                     $tb = 0;
                     $tm = 0;
+                    $td = 0;
                     foreach ($dataA as $data){
                         $tb = $tb + $data->bazar;
                         $tm = $tm + $data->meal;
+                        $td = $td + $data->deposit;
                     }
-                    $mrr = round($mr);
-                    $amount = $tb - ($mrr * $tm);
 
+                    if ($user->hasRole('mealManager')){
+                        if ($mr){
+                            $mrr = round($mr);
+                            $amount = $td - $tdo + $tb - ($mrr * $tm);
+                        }else{
+                            $amount = $td - $tdo + $tb;
+                        }
+                    }else{
+                        if ($mr){
+                            $mrr = round($mr);
+                            $amount = $td + $tb - ($mrr * $tm);
+                        }else{
+                            $amount = $td + $tb;
+                        }
+                    }
                     // get user_id($user->id) and mealsystem_id ($id)
                     // find that row in amountus table
                     $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $id)->first();
@@ -131,6 +154,9 @@ class DatamController extends Controller
                 if ($request->has('bazar')){
                     $d->bazar = $request->bazar;
                 }
+                if ($request->has('deposit')){
+                    $d->deposit = $request->deposit;
+                }
                 $d->save();
 
                 $dCA = Datam::where('mealsystem_id', $id)->where('month', $month)->get();
@@ -140,26 +166,54 @@ class DatamController extends Controller
                     $tb = $tb + $dA->bazar;
                     $tm = $tm + $dA->meal;
                 }
-                $mr = $tb / $tm;
+                if ($tm){
+                    $mr = $tb / $tm;
+                }else{
+                    $mr = 0;
+                }
                 $mealS = Mealsystem::where('id', $id)->where('month', $month)->first();
                 $mealS->meal_rate = $mr;
                 $mealS->update();
 
                 $users = $mealS->users()->get();
+
+                $tdo = 0;
+                foreach ($users as $user){
+                    $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
+                    foreach ($dataA as $data){
+                        $tdo = $tdo + $data->deposit;
+                    }
+                }
                 foreach ($users as $user){
                     $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
                     $tb = 0;
                     $tm = 0;
+                    $td = 0;
                     foreach ($dataA as $data){
                         $tb = $tb + $data->bazar;
                         $tm = $tm + $data->meal;
+                        $td = $td + $data->deposit;
                     }
-                    $mrr = round($mr);
-                    $amount = $tb - ($mrr * $tm);
+
+                    if ($user->hasRole('mealManager')){
+                        if ($mr){
+                            $mrr = round($mr);
+                            $amount = $td - $tdo + $tb - ($mrr * $tm);
+                        }else{
+                            $amount = $td - $tdo + $tb;
+                        }
+                    }else{
+                        if ($mr){
+                            $mrr = round($mr);
+                            $amount = $td + $tb - ($mrr * $tm);
+                        }else{
+                            $amount = $td + $tb;
+                        }
+                    }
                     $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $id)->first();
                     if ($ar){
                         $ar->amount = $amount;
-                        $ar->save();
+                        $ar->update();
                     }else {
                         $ar = new Amountu;
                         $ar->user_id = $user->id;
@@ -175,30 +229,6 @@ class DatamController extends Controller
         else {
             return redirect()->back()->with('alert', 'Please Select a date from current month.');
         }
-
-
-
-
-        // calculate amount+- for all user ////////////////////////////////
-        // get mealsystem_id >>>> $id
-        // get month >>>> month
-        // get all the user of that month>mealSystem
-//        $mealSystem = Mealsystem::find($id);      // $mealS
-//        $users = $mealSystem->users()->get();
-//        // foreach user
-//        foreach ($users as $user){
-//            // get users total bazar and total meal
-//            $dataA = Datam::where('user_id', $user->id)->where('month' , $month);
-//            $tb = 0;
-//            $tm = 0;
-//            foreach ($dataA as $data){
-//                $tb = $tb + $data->bazar;
-//                $tm = $tm + $data->meal;
-//            }
-//            // amount = (mealRate * total meal) - total bazar
-//            $amount = ($mr * $tm) - $tb;
-//            $user->amont = $amount;
-//            $user->update;
 
     }
 

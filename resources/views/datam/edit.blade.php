@@ -52,13 +52,6 @@
                                             <span class="help-block">{{$errors->first('bazar')}}</span>
                                         @endif
                                     </div>
-                                    <div class="form-group {{$errors->has('deposit') ? 'has-error' : ''}}">
-                                        <label class="lead"><b>Deposit</b></label>
-                                        <input type="number" class="form-control" name="deposit">
-                                        @if($errors->has('deposit'))
-                                            <span class="help-block">{{$errors->first('deposit')}}</span>
-                                        @endif
-                                    </div>
 
                                     <div class="form-group">
                                         <div class="text-center">

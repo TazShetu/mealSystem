@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Datam extends Model
 {
-    protected $fillable = ['user_id', 'mealsystem_id', 'day', 'meal', 'bazar'];
+    protected $fillable = ['user_id', 'mealsystem_id','month', 'day', 'meal', 'bazar'];
 
-    public function users(){
-        return $this->belongsToMany('App\User');
+    public function user(){
+        return $this->belongsTo('App\User');
     }
 
     public function mealsystems(){

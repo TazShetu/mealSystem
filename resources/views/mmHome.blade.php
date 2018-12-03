@@ -5,8 +5,17 @@
     $month = \Carbon\Carbon::now()->month;
     $a = Auth::user();
     $ms = $a->mealsystems()->where('month', $month)->first();
-    $am = $a->amountus()->where('mealsystem_id', $ms->id)->first();
-    /// PROBLEM for newly created mM amount not showing
+    if ($ms){
+        $am = $a->amountus()->where('mealsystem_id', $ms->id)->first();
+    } else {
+        $am = 0;
+    }
+    if ($month == 1){
+            $pmonth = 12;
+    }else {
+            $pmonth = $month - 1 ;
+    }
+    $pms = $a->mealsystems()->where('month', $pmonth)->first();
 @endphp
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
@@ -16,14 +25,14 @@
             <div class="container">
                 @role(['admin', 'mealManager'])
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 p-1">
                             <a href="{{route('datam.create')}}" class="btn btn-info btn-block btn-lg">
-                                <b>Enter <span style="font-size: 25px;'">New</span> Data</b>
+                                <b><span style="font-size: 25px;'">New</span> Data</b>
                             </a>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 p-1">
                             <a href="#" class="btn btn-outline-info btn-block btn-lg" data-toggle="modal" data-target="#editModal">
-                                <b>Edit <span style="font-size: 25px;'">Old</span> Data</b>
+                                <b><span style="font-size: 25px;'">Old</span> Data</b>
                             </a>
                         </div>
                     </div>
@@ -33,28 +42,56 @@
                     <div class="col-lg-12 text-center">
                         <div class="card bg-success text-center card-form">
                             <div class="card-body">
-                                <h3 class="display-4">Meal-rate is <strong><b>{{$ms->meal_rate}}</b></strong> Tk/meal</h3>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="card bg-info text-center card-form">
-                            <div class="card-body">
-                                @if($am)
-                                    <h3 class="display-6">Your balance <span id="amountt"><strong><b>{{$am->amount}}</b></strong></span> Tk</h3>
+                                @if($ms)
+                                    <h3 class="display-4">Meal-rate is <strong><b>{{$ms->meal_rate}}</b></strong> Tk/meal</h3>
                                 @else
-                                    <h3 class="display-6">No amount to show</h3>
+                                    @role(['admin', 'mealManager'])
+                                        <h3>New month New meal-system</h3>
+                                        <h3>Do not forget to</h3>
+                                        <h1>Add member to new meal-system</h1>
+                                    @else
+                                        <h3>Ask Meal Manager to add you to new meal-system personally.</h3>
+                                    @endrole
                                 @endif
                             </div>
                         </div>
                         <br>
+                        @if($am)
+                            <div class="card bg-info text-center card-form">
+                                <div class="card-body">
+                                    <h3 class="display-6">Your balance <span id="amountt"><strong><b>{{$am->amount}}</b></strong></span> Tk</h3>
+                                </div>
+                            </div>
+                            <br>
+                        @endif
+                        @role(['admin', 'mealManager'])
+                            @if($pms)
+                                <h4>Add old Meal Member to new meal-system</h4>
+                                <a href="{{route('oldm.attach', ['id' => $a->id])}}" class="btn btn-info "><i class="fa fa-user-plus"></i>&nbsp; </a>
+                            @endif
+                        @endrole
+                        <br>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
-                        <a href="#" class="btn btn-lg btn-success btn-block"><i class="fa fa-bars" style="font-size: 20px;"></i>&nbsp; View personal Table</a>
+
+                    <div class="col-md-6 p-1">
+                        @if($ms)
+                            <br>
+                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-lg btn-success btn-block"><i class="fa fa-bars" style="font-size: 20px;"></i>&nbsp; Personal Table</a>
+                        @elseif($pms)
+                            <br>
+                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $pms->id])}}" class="btn btn-lg btn-success btn-block"><i class="fa fa-bars" style="font-size: 20px;"></i>&nbsp; Last month</a>
+                        @endif
                     </div>
-                    <div class="col-sm-6">
-                        <a href="#" class="btn btn-lg btn-outline-success btn-block"><i class="fa fa-table" style="font-size: 20px;"></i>&nbsp; View full Table</a>
+                    <div class="col-md-6 p-1">
+                        @if($ms)
+                            <br>
+                            <a href="{{route('f.table', ['msid' => $ms->id])}}" class="btn btn-lg btn-outline-success btn-block"><i class="fa fa-table" style="font-size: 20px;"></i>&nbsp; Full Table</a>
+                        @elseif($pms)
+                            <br>
+                            <a href="{{route('f.table', ['msid' => $pms->id])}}" class="btn btn-lg btn-outline-success btn-block"><i class="fa fa-table" style="font-size: 20px;"></i>&nbsp; Last month</a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -62,81 +99,85 @@
     </div>
 </header>
 
+<body>
+
+</body>
 
 
 
-<!--.......main Footer....  -->
-@include('includes.footer')
 
 <!--   editDataModal -->
-<div class="modal fade" id="editModal">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content Ms">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">Edit Old Entry</h5>
-                <button class="close text-white" data-dismiss="modal"><span>&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="lead"><b>Date</b></label>
-                            <div class="input-group">
-                                <input type="date" class="form-control">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="fa fa-calendar"></i> &#160;Select Date</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <!--collapse btn-->
-                        <div class="form-group">
-                            <label >Select User</label>
-                            <select class="form-control">
-                                <option value="" hidden disabled selected>Name</option>
-                                <!--loop start-->
-                                <option value="">Taz</option>
-                                <!--loop end-->
-                                <option value="">Taz1</option>
-                                <option value="">Taz2</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <label class="lead text-dark"><b>Meal</b></label>
-                        <input type="number" value="2" class="form-control">
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="lead text-dark"><b>Bazar</b></label>
-                            <input type="number" value="0" class="form-control">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-success btn-block"><i class="fa fa-edit"></i> <b>Edit</b></button>
-            </div>
-        </div>
-    </div>
-</div>
+{{--<div class="modal fade" id="editModal">--}}
+    {{--<div class="modal-dialog modal-lg">--}}
+        {{--<div class="modal-content Ms">--}}
+            {{--<div class="modal-header bg-success text-white">--}}
+                {{--<h5 class="modal-title">Edit Old Entry</h5>--}}
+                {{--<button class="close text-white" data-dismiss="modal"><span>&times;</span></button>--}}
+            {{--</div>--}}
+            {{--<div class="modal-body">--}}
+                {{--<div class="row">--}}
+                    {{--<div class="col">--}}
+                        {{--<div class="form-group">--}}
+                            {{--<label class="lead"><b>Date</b></label>--}}
+                            {{--<div class="input-group">--}}
+                                {{--<input type="date" class="form-control">--}}
+                                {{--<div class="input-group-append">--}}
+                                    {{--<span class="input-group-text"><i class="fa fa-calendar"></i> &#160;Select Date</span>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="row">--}}
+                    {{--<div class="col">--}}
+                        {{--<!--collapse btn-->--}}
+                        {{--<div class="form-group">--}}
+                            {{--<label >Select User</label>--}}
+                            {{--<select class="form-control">--}}
+                                {{--<option value="" hidden disabled selected>Name</option>--}}
+                                {{--<!--loop start-->--}}
+                                {{--<option value="">Taz</option>--}}
+                                {{--<!--loop end-->--}}
+                                {{--<option value="">Taz1</option>--}}
+                                {{--<option value="">Taz2</option>--}}
+                            {{--</select>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="row">--}}
+                    {{--<div class="col">--}}
+                        {{--<label class="lead text-dark"><b>Meal</b></label>--}}
+                        {{--<input type="number" value="2" class="form-control">--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="row mt-2">--}}
+                    {{--<div class="col">--}}
+                        {{--<div class="form-group">--}}
+                            {{--<label class="lead text-dark"><b>Bazar</b></label>--}}
+                            {{--<input type="number" value="0" class="form-control">--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+            {{--<div class="modal-footer">--}}
+                {{--<button type="submit" class="btn btn-success btn-block"><i class="fa fa-edit"></i> <b>Edit</b></button>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+{{--</div>--}}
 
 
 
 {{--Edit user modal--}}
 @include('includes.euModal')
 
+<!--.......main Footer....  -->
+@include('includes.footer')
+
 
 <!--script-->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/bootstrap.min.js')}}"></script>
 <!--<script src="js/fontawesome.min.js"></script>-->
 
 <script>
