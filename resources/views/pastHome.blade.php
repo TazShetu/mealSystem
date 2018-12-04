@@ -62,7 +62,7 @@
                 @role(['admin', 'mealManager'])
                     <div class="row">
                         <div class="col text-center">
-                            <a href="{{route('datam.create')}}" class="btn btn-info btn-lg">
+                            <a href="{{route('datam.pcreate', ['msid' => $ms->id])}}" class="btn btn-info btn-lg">
                                 <b><span style="font-size: 25px;'">New</span> Data ({{$mn}})</b>
                             </a>
                         </div>
