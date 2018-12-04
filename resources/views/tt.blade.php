@@ -16,7 +16,10 @@
             $pmonth = $month - 1 ;
     }
     $pms = $a->mealsystems()->where('month', $pmonth)->first();
-
+    $co = DateTime::createFromFormat('!m', $month);
+    $mn = $co->format('F');
+    $po = DateTime::createFromFormat('!m', $pmonth);
+    $pmn = $po->format('F');
 @endphp
 
 <header id="home-section" class="TablE">
@@ -26,10 +29,10 @@
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         @if($cmonth == (\Carbon\Carbon::now()->month && $ms))
-                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> View personal Table</span></a>
+                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> View personal Table ({{$mn}})</span></a>
                         @endif
                         @if($cmonth !== \Carbon\Carbon::now()->month && $pms)
-                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $pms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> View personal Table</span></a>
+                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $pms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> View personal Table ({{$pmn}})</span></a>
                         @endif
                         <br>
                     </div>
@@ -78,12 +81,12 @@
                 <div class="row">
                     <div class="col-sm-6">
                         @if($cmonth == (\Carbon\Carbon::now()->month) && $pms)
-                            <a href="{{route('f.table', ['msid' => $pms->id])}}" class="btn btn-success pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> Previous Month</a>
+                            <a href="{{route('f.table', ['msid' => $pms->id])}}" class="btn btn-success pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>
                         @endif
                     </div>
                     <div class="col-sm-6">
                         @if($cmonth !== \Carbon\Carbon::now()->month && $ms)
-                            <a href="{{route('f.table', ['msid' => $ms->id])}}" class="btn btn-success pull-right">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
+                            <a href="{{route('f.table', ['msid' => $ms->id])}}" class="btn btn-success pull-right">{{$mn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
                         @endif
                     </div>
                 </div>

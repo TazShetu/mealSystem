@@ -96,3 +96,8 @@ Route::get('/full-table/{msid}', [
     'uses' => 'PtableController@tt',
     'as' => 'f.table'
 ]);
+
+Route::get('home/{msid}/Previous/month', [
+    'uses' => 'HomeController@lmonth',
+    'as' => 'lhome'
+]);
