@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mealsystem;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,4 +26,15 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function lmonth($msid){
+//        dd($msid);
+        $ms = Mealsystem::find($msid);
+        return view('pastHome', compact('ms'));
+    }
+
+
+
+
+
 }

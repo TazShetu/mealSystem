@@ -23,20 +23,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/h', function () {
-    return view('mHome');
-});
-Route::get('/hh', function () {
+//Route::get('/h', function () {
+//    return view('mHome');
+//});
+Route::get('/home', function () {
     return view('mmHome');
 })->middleware('auth');
 //Route::get('/t', function () {
 //    return view('t');
 //});
-Route::get('/tt', function () {
-    return view('tt');
-});
+//Route::get('/tt', function () {
+//    return view('tt');
+//});
 
 
 // meal system
@@ -68,6 +68,14 @@ Route::post('/DatamStore/{id}', [
     'as' => 'store.datam'
 ]);
 
+Route::get('/Edit-Data/{slug}/{msid}/{m}/{d}', [
+    'uses' => 'DatamController@edit',
+    'as' => 'datam.t.edit'
+]);
+Route::post('/DatamUpdate/{did}', [
+    'uses' => 'DatamController@update',
+    'as' => 'datam.t.update'
+]);
 
 
 Route::get('/old-member-attach/{id}', [
@@ -88,3 +96,26 @@ Route::get('/full-table/{msid}', [
     'uses' => 'PtableController@tt',
     'as' => 'f.table'
 ]);
+
+Route::get('home/{msid}/Previous/month', [
+    'uses' => 'HomeController@lmonth',
+    'as' => 'lhome'
+]);
+
+Route::get('/Enter-Edit-Old-Data/{msid}', [
+    'uses' => 'DatamController@pcreate',
+    'as' => 'datam.pcreate'
+]);
+Route::post('/DatamStoreP/{msid}', [
+    'uses' => 'DatamController@pstore',
+    'as' => 'store.pdatam'
+]);
+
+//Route::get('/Edit-Data/{slug}/{msid}/{m}/{d}', [
+//    'uses' => 'DatamController@edit',
+//    'as' => 'datam.t.edit'
+//]);
+//Route::post('/DatamUpdate/{did}', [
+//    'uses' => 'DatamController@update',
+//    'as' => 'datam.t.update'
+//]);

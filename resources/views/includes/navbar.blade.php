@@ -12,7 +12,7 @@
                 </li>
                 {{------------------------------------------------------------------}}
                 <li class="nav-item">
-                    <a href="http://localhost:8000/hh" class="nav-link active">Home</a>
+                    <a href="http://localhost:8000/home" class="nav-link active">Home</a>
                 </li>
                 @role(['admin','mealManager'])
                     <li class="nav-item">

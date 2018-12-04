@@ -72,7 +72,7 @@ class UserController extends Controller
 //            dd($ms->id);
             $ms->users()->attach($u);
         }
-        return redirect('hh');
+        return redirect('home');
     }
 
     /**
@@ -160,26 +160,54 @@ class UserController extends Controller
             $ms->users()->attach($mM);
         }
         $cmonth = Carbon::now()->month;
-        if ($cmonth == 1){
-            $pmonth = 12;
-        }else {
-            $pmonth = $cmonth - 1 ;
-        }
-        $msPm = $mM->mealsystems()->where('month', $pmonth)->first();
-        $Pmembers = $msPm->users()->get();
-        // $Pmembers is an object that has collection of past month user(s)
+//        if ($cmonth == 1){
+//            $pmonth = 12;
+//        }else {
+//            $pmonth = $cmonth - 1 ;
+//        }
+
+
         $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
         $CMembers = $msCm->users()->get();
-        // $CMembers is an object that has collection of current month user(s)
-
         $members = [];
-        foreach ($Pmembers as $pmm){
-            // $pmm is an user object
-            if (!$CMembers->contains('name', $pmm->name)){
-                // here we het $pmm as user object that is not in current month
-                $members[] = $pmm;
+        foreach ($msOmm as $pMs){
+            $Pmembers = $pMs->users()->get();
+            foreach ($Pmembers as $pmm){
+                // $pmm is an user object
+                if (!$CMembers->contains('name', $pmm->name)){
+                    // here we het $pmm as user object that is not in current month
+                    $members[] = $pmm;
+                }
             }
         }
+
+        // remove duplicate entries from $members[] as it will add all old members from all month
+        $userdupe=array();
+        foreach ($members as $index=>$t) {
+            if (isset($userdupe[$t["slug"]])) {
+                unset($members[$index]);
+                continue;
+            }
+            $userdupe[$t["slug"]]=true;
+        }
+//        dd($members);
+
+//        $msPm = $mM->mealsystems()->where('month', $pmonth)->first();
+//        $Pmembers = $msPm->users()->get();
+//        // $Pmembers is an object that has collection of past month user(s)
+//        $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
+//        $CMembers = $msCm->users()->get();
+//        // $CMembers is an object that has collection of current month user(s)
+//
+//        $members = [];
+//        foreach ($Pmembers as $pmm){
+//            // $pmm is an user object
+//            if (!$CMembers->contains('name', $pmm->name)){
+//                // here we het $pmm as user object that is not in current month
+//                $members[] = $pmm;
+//            }
+//        }
+
         $msid = $msCm->id;
 //        dd($members);
 
@@ -196,7 +224,7 @@ class UserController extends Controller
 //        $u = User::find($request->member_id);
 //        $ms = Mealsystem::find($msid);
 //        $ms->users()->attach($u);
-//        return redirect('hh');
+//        return redirect('home');
         ///////////////
         // Check Box
         $ms = Mealsystem::find($msid);
@@ -205,7 +233,7 @@ class UserController extends Controller
             $u = User::find($id);
             $ms->users()->attach($u);
         }
-        return redirect('hh');
+        return redirect('home');
     }
 
 
