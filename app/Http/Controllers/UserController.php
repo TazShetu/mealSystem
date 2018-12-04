@@ -72,7 +72,7 @@ class UserController extends Controller
 //            dd($ms->id);
             $ms->users()->attach($u);
         }
-        return redirect('hh');
+        return redirect('home');
     }
 
     /**
@@ -224,7 +224,7 @@ class UserController extends Controller
 //        $u = User::find($request->member_id);
 //        $ms = Mealsystem::find($msid);
 //        $ms->users()->attach($u);
-//        return redirect('hh');
+//        return redirect('home');
         ///////////////
         // Check Box
         $ms = Mealsystem::find($msid);
@@ -233,7 +233,7 @@ class UserController extends Controller
             $u = User::find($id);
             $ms->users()->attach($u);
         }
-        return redirect('hh');
+        return redirect('home');
     }
 
 

@@ -30,17 +30,18 @@
 <header id="home-section" class="IndeX">
     <div class="dark-overlay">
         <div class="home-inner">
+            <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 d-none d-lg-block">
-                        <h3>We are still in Beta. Your data might get lost !</h3>
+                        <h3>Thi is a meal-manager controlled meal-system.</h3>
                         <h1 class="display-4">Calculating <strong>MEAL</strong> has never been <strong>EASIER</strong></h1>
                         <div class="d-flex flex-row">
                             <div class="p-4 align-self-start">
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                To edit data meal-manager can simply enter new data for the same date and same member. It will auto overwrite the old data.
+                                Enter new data for the same date and same member will auto overwrite the old data.
                             </div>
                         </div>
                         <div class="d-flex flex-row">
@@ -48,7 +49,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                Every new month will auto create a new meal-system under the meal-manager. Meal-manager will add member for new meal-system. Once added member can not be deleted but new month will auto erase all old member from last month.
+                                Every new month will auto create a new meal-system under the meal-manager. Meal-manager can add old member for new meal-system. Once added member can not be deleted but new month will auto erase all old member from last month.
                             </div>
                         </div>
                         <div class="d-flex flex-row">
@@ -56,7 +57,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                Lorem eatae sunt impedit neque modi optio eos id. Nihil vero, culpa cumque.
+                                And do not forget to wash your hand before eating.
                             </div>
                         </div>
                     </div>
@@ -69,7 +70,7 @@
                                         <h3>You are already logged in.</h3>
                                     </div>
                                     <div class="card-body">
-                                        <a href="http://localhost:8000/hh" class="btn btn-outline-light btn-block">Back to home. </a>
+                                        <a href="http://localhost:8000/home" class="btn btn-outline-light btn-block">Back to home. </a>
                                     </div>
                                 </div>
                             </div>

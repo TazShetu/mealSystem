@@ -14,7 +14,7 @@
                 </li>
                 {{------------------------------------------------------------------}}
                 <li class="nav-item">
-                    <a href="http://localhost:8000/hh" class="nav-link">Home</a>
+                    <a href="http://localhost:8000/home" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-outline-success" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -47,12 +47,13 @@
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
         <div class="home-inner">
+            <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
                     <div class="col-sm-4"></div>
                     <div class="col-sm-4 text-center mb-1"><h1><strong>{{$mn}}</strong></h1></div>
                     <div class="col-sm-4">
-                        <a href="http://localhost:8000/hh" class="btn btn-success pull-left btn-sm">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
+                        <a href="http://localhost:8000/home" class="btn btn-success pull-left btn-sm">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
                     </div>
                 </div>
             </div>

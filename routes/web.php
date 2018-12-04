@@ -23,20 +23,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/h', function () {
-    return view('mHome');
-});
-Route::get('/hh', function () {
+//Route::get('/h', function () {
+//    return view('mHome');
+//});
+Route::get('/home', function () {
     return view('mmHome');
 })->middleware('auth');
 //Route::get('/t', function () {
 //    return view('t');
 //});
-Route::get('/tt', function () {
-    return view('tt');
-});
+//Route::get('/tt', function () {
+//    return view('tt');
+//});
 
 
 // meal system

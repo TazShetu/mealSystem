@@ -27,6 +27,7 @@
 <section id="home-section" class="ProfilE">
     <div class="dark-overlay">
         <div class="home-inner">
+            <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">

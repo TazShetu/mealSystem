@@ -25,6 +25,7 @@
 <header id="home-section" class="TablE">
     <div class="dark-overlay">
         <div class="home-inner">
+            <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
@@ -65,9 +66,7 @@
                                 <td>{{$d->bazar}}</td>
                                 <td>{{$d->deposit}}</td>
                                 @role(['admin', 'mealManager'])
-                                    @if($d->month == $month)
-                                        <td><a href="{{route('datam.t.edit', ['slug' => $d->user->slug, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm">Edit</a></td>
-                                    @endif
+                                    <td><a href="{{route('datam.t.edit', ['slug' => $d->user->slug, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm">Edit</a></td>
                                 @endrole
                         @endforeach
                         <!--loop end for member-->
