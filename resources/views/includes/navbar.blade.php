@@ -14,11 +14,11 @@
                 <li class="nav-item">
                     <a href="{{route('home')}}" class="nav-link">Home</a>
                 </li>
-                @role(['admin','mealManager'])
-                    <li class="nav-item">
-                        <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add a Meal Member</a>
-                    </li>
-                @endrole
+                {{--@role(['admin','mealManager'])--}}
+                    {{--<li class="nav-item">--}}
+                        {{--<a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add a Meal Member</a>--}}
+                    {{--</li>--}}
+                {{--@endrole--}}
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-outline-success" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->name }} <span class="caret"></span>

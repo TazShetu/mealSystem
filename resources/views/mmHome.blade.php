@@ -12,7 +12,7 @@
                 </li>
                 @role(['admin','mealManager'])
                     <li class="nav-item">
-                        <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add a Meal Member</a>
+                        <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add new Meal Member</a>
                     </li>
                 @endrole
                 <li class="nav-item dropdown">
@@ -61,13 +61,13 @@
             <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-md-4">
                         @if($pms)
                             <a href="{{route('lhome', ['msid' => $pms->id])}}" class="btn btn-success pull-left btn-sm"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>
                         @endif
                     </div>
-                    <div class="col-sm-4 text-center mb-1"><h1><strong>{{$mn}}</strong></h1></div>
-                    <div class="col-sm-4"></div>
+                    <div class="col-md-4 text-center mb-1"><h1><strong>{{$mn}}</strong></h1></div>
+                    <div class="col-md-4"></div>
                 </div>
             </div>
             <hr>
@@ -141,8 +141,7 @@
         </div>
     </div>
 </header>
-<body>
-</body>
+
 
 {{--Edit user modal--}}
 @include('includes.euModal')

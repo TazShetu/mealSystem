@@ -50,10 +50,10 @@
             <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-4"></div>
-                    <div class="col-sm-4 text-center mb-1"><h1><strong>{{$mn}}</strong></h1></div>
-                    <div class="col-sm-4">
-                        <a href="{{route('home')}}" class="btn btn-success pull-left btn-sm">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 text-center mb-1"><h1><strong>{{$mn}}</strong></h1></div>
+                    <div class="col-md-4">
+                        <a href="{{route('home')}}" class="btn btn-success pull-right btn-sm">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
                     </div>
                 </div>
             </div>

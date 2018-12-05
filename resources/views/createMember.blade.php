@@ -3,13 +3,14 @@
 <!--....NAV BAR....  -->
 @include('includes.navbar')
 
-<header id="home-section" class="HomE">
+<header id="home-section" class="cM">
     <div class="dark-overlay">
         <div class="home-inner">
             <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-4">
                         <div class="card bg-success text-center card-form">
                             <div class="card-body">
                                 <h2><strong>Create new Member</strong></h2>
@@ -43,6 +44,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-4"></div>
                 </div>
             </div>
         </div>

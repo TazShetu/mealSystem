@@ -23,17 +23,17 @@
 @endphp
 
 <header id="home-section" class="TablE">
-    <div class="dark-overlay">
+    <div class="t-overlay">
         <div class="home-inner">
             <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         @if($cmonth == (\Carbon\Carbon::now()->month && $ms))
-                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> View personal Table ({{$mn}})</span></a>
+                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> Own info {{$mn}}</span></a>
                         @endif
                         @if($cmonth !== \Carbon\Carbon::now()->month && $pms)
-                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $pms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> View personal Table ({{$pmn}})</span></a>
+                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $pms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> Own info {{$pmn}}</span></a>
                         @endif
                         <br>
                     </div>
@@ -89,6 +89,7 @@
                         @endif
                     </div>
                 </div>
+                <hr>
             </div>
         </div>
     </div>
@@ -96,7 +97,7 @@
 
 
 <!--.......main Footer....  -->
-@include('includes.footer')
+{{--@include('includes.footer')--}}
 
 <!--script-->
 <script src="{{asset('js/jquery.js')}}"></script>
