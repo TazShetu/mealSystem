@@ -12,11 +12,11 @@
                     @csrf
                     <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} mr-2 mb-1" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>
                     @if ($errors->has('email'))
-                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
+                        <span class="invalid-feedback pb-1" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
                     @endif
                     <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} mr-2 mb-1" name="password" placeholder="Password" required>
                     @if ($errors->has('password'))
-                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
+                        <span class="invalid-feedback pb-1" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
                     @endif
                     <button type="submit" class="btn btn-outline-success">Login</button>
                 </form>
@@ -112,6 +112,10 @@
                                         <button type="submit" class="btn btn-outline-light btn-block">Register</button>
                                     </form>
                                 </div>
+                            </div>
+                            <br>
+                            <div class="card bg-success">
+                                <a href="{{ route('password.request') }}" class="btn btn-outline-light">forget password</a>
                             </div>
                         </div>
                         @endauth

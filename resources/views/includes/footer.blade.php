@@ -1,48 +1,35 @@
-<!--.......main Footer....  -->
-{{--<footer class="bg-dark">--}}
-    {{--<div class="container">--}}
-        {{--<div class="row">--}}
-            {{--<div class="col-sm-12 text-center">--}}
-                {{--<div class="py-4">--}}
-                    {{--<h5 class="h3">Taz Inc. <span style="font-size: 17px;">Copyright &copy; 2018</span></h5>--}}
-                    {{--<button class="btn btn-success" data-toggle="modal" data-target="#contactModal">Contact Us</button>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-{{--</footer>--}}
 <footer>
-    <div class="text-center">
-        <h5 class="h3">Taz Inc. <span style="font-size: 17px;">Copyright &copy; 2018</span></h5>
+    <div class="text-center pt-1">
+        <h5>
+            Taz Inc. <span style="font-size: 17px;">Copyright &copy; 2018</span>
+            <small><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#usesModal">Usage</button></small>
+        </h5>
     </div>
 </footer>
 <!-- .....Contact Modal....  -->
-{{--<div class="modal fade text-dark" id="contactModal">--}}
-    {{--<div class="modal-dialog">--}}
-        {{--<div class="modal-content">--}}
-            {{--<div class="modal-header">--}}
-                {{--<h5 class="modal-title" id="contactModalTitle">Contact US</h5>--}}
-                {{--<button class="close" data-dismiss="modal"><span>&times;</span></button>--}}
-            {{--</div>--}}
-            {{--<div class="modal-body">--}}
-                {{--<form>--}}
-                    {{--<div class="form-group">--}}
-                        {{--<label>Name</label>--}}
-                        {{--<input type="text" class="form-control">--}}
-                    {{--</div>--}}
-                    {{--<div class="form-group">--}}
-                        {{--<label>Email</label>--}}
-                        {{--<input type="text" class="form-control">--}}
-                    {{--</div>--}}
-                    {{--<div class="form-group">--}}
-                        {{--<label>Mesage</label>--}}
-                        {{--<textarea class="form-control"></textarea>--}}
-                    {{--</div>--}}
-                {{--</form>--}}
-            {{--</div>--}}
-            {{--<div class="modal-footer">--}}
-                {{--<button class="btn btn-success btn-block">Submit</button>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-{{--</div>--}}
+<div class="modal fade text-dark" id="usesModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="modal-title text-light">Usage</h5>
+                <button class="close text-light" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Member has to personally collect user-name from meal-manager.</li>
+                    <li>Member created by meal-manager has a default password 123456</li>
+                    <li>Change the default password from edit profile menu.</li>
+                    <li>Member has to personally tell meal-manager about their meal, bazar etc.</li>
+                    <li>Only meal-manager can enter/edit data.</li>
+                    <li>Enter new data for the same date and same member will auto overwrite the old data.</li>
+                    <li>Every new month will auto create a new meal-system under the meal-manager. Meal-manager can add old member to the new meal-system. Once added member can not be removed but new month will auto erase all old member from last month. </li>
+                    <li>Database only store 2 months data. So user can only see last month's data as past data.</li>
+                    <li>Provide email address at edit profile menu to recover forgotten password.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <p>Fell free to send your feedback to <br>mealsystemtaz@gmail.com</p>
+            </div>
+        </div>
+    </div>
+</div>

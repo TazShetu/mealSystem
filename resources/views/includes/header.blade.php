@@ -10,7 +10,7 @@
 
     {{--basic SEO--}}
     <meta name="description" content="Calculating meal, Meal manager who controls meal system. Meal calculation is so easy here in ms.ttazs.com.">
-    <meta name="keywords" content="meal, system, manager, meal-system, meal-manager, calculation, calculating, calculating meal, member, meal-member, bazar, bazar khorosh">
+    <meta name="keywords" content="meal, system, manager, meal-system, meal-manager, calculation, calculating, calculating meal, member, meal-member, bazar, bazar khorosh, ttazs, ms.ttazs, ms.ttazs.com">
 
 
     <!--link-->

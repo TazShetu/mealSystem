@@ -121,6 +121,12 @@ class UserController extends Controller
             ]);
             $u->password = bcrypt($request->password);
         }
+        if ($request->email){
+            $this->validate($request, [
+                'email' => 'required|unique:users',
+            ]);
+            $u->email = $request->email;
+        }
         $u->name = $request->name;
         $u->username = $request->username;
         $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
