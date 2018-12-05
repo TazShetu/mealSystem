@@ -120,3 +120,10 @@ Route::post('/DatamStoreP/{msid}', [
 //    'uses' => 'DatamController@update',
 //    'as' => 'datam.t.update'
 //]);
+
+
+// ADMIN
+route::get('/sfdssffdgdtfhERFRGsdg', [
+    'uses' => 'HomeController@admin',
+    'as' => 'admin.delete'
+])->middleware('admin');

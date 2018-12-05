@@ -140,8 +140,17 @@
         </div>
     </div>
 </header>
-
-
+@role(['admin'])
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <a href="{{route('admin.delete')}}" class="btn btn-outline-danger">Delete 2 Months Old Data</a>
+                </div>
+            </div>
+        </div>
+    </section>
+@endrole
 {{--Edit user modal--}}
 @include('includes.euModal')
 

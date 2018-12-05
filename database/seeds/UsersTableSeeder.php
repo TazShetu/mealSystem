@@ -20,8 +20,8 @@ class UsersTableSeeder extends Seeder
         App\User::create([
             'name' => 'ADMIN',
             'slug' => str_slug('admin'),
-            'username' => 'admin',
-            'password' => bcrypt('asc+5866')
+            'username' => 'a',
+            'password' => bcrypt('123456')
         ]);
 //        App\User::create([
 //            'name' => 'TAZ the boss',
