@@ -47,7 +47,6 @@
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
         <div class="home-inner">
-            <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
                     <div class="col-md-4"></div>
@@ -74,14 +73,14 @@
                     <div class="col-lg-12 text-center">
                         <div class="card bg-success text-center card-form">
                             <div class="card-body">
-                                <h3 class="display-4">Meal-rate is <strong><b>{{$ms->meal_rate}}</b></strong> Tk/meal</h3>
+                                <h3 class="display-4">Meal-rate is <em>{{$ms->meal_rate}}</em> &nbsp;Tk/meal</h3>
                             </div>
                         </div>
                         <br>
                         @if($am)
                             <div class="card bg-info text-center card-form">
                                 <div class="card-body">
-                                    <h3 class="display-6">Your balance <span id="amountt"><strong><b>{{$am->amount}}</b></strong></span> Tk</h3>
+                                    <h3 class="display-6">Your balance <span id="amountt"><em>{{$am->amount}}</em></span> &nbsp;Tk</h3>
                                 </div>
                             </div>
                             <br>

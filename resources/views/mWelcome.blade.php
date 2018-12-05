@@ -30,12 +30,11 @@
 <header id="home-section" class="IndeX">
     <div class="dark-overlay">
         <div class="home-inner">
-            <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 d-none d-lg-block">
-                        <h3>This is a meal-manager controlled meal-system.</h3>
-                        <h1 class="display-4">Calculating <strong>MEAL</strong> has never been <strong>EASIER</strong></h1>
+                        <h1 class="display-4">Calculating <em>MEAL</em> has never been <em>EASIER</em></h1>
+                        <h3>This is a meal-manager controlled meal-system</h3>
                         <div class="d-flex flex-row">
                             <div class="p-4 align-self-start">
                                 <i class="fa fa-check"></i>
@@ -49,7 +48,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                Every new month will auto create a new meal-system under the meal-manager. Meal-manager can add old member for new meal-system. Once added member can not be deleted but new month will auto erase all old member from last month.
+                                Every new month will auto create a new meal-system under the meal-manager. Meal-manager can add old member to the new meal-system. Once added member can not be removed but new month will auto erase all old member from last month.
                             </div>
                         </div>
                         <div class="d-flex flex-row">

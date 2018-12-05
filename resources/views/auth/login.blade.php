@@ -27,16 +27,6 @@
                 <div class="card-header text-center">
                     <h3>You have to be logged in to view the page !</h3>
                 </div>
-                {{--<div class="card-body">--}}
-                    {{--<ul class="list-group">--}}
-                        {{--<li class="list-group-item">--}}
-                            {{--<a href="/forum">Forum</a>--}}
-                        {{--</li>--}}
-                    {{--</ul>--}}
-                {{--</div>--}}
-                {{--<div class="card-footer">--}}
-                    {{----}}
-                {{--</div>--}}
             </div>
         </div>
     </div>
