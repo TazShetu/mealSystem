@@ -1,6 +1,8 @@
 body {
     background: #333;
     color: #fff;
+    /*add font here*/
+    font-family: 'Lato', sans-serif;
 }
 
 .navbar {
@@ -68,4 +70,13 @@ body {
 
 #home-section .t-overlay {
     background-color: rgba(42, 42, 42, 0.8);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Alegreya', serif;
 }
