@@ -7,7 +7,7 @@
         <!--....NAV BAR before login....  -->
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top justify-content-between">
             <div class="container">
-                <a href="index.html" class="navbar-brand">Meal System</a>
+                <a href="{{url('/')}}" class="navbar-brand">Meal System</a>
                 <form method="POST" action="{{ route('login') }}" class="form-inline">
                     @csrf
                     <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} mr-2 mb-1" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>
@@ -34,7 +34,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 d-none d-lg-block">
-                        <h3>Thi is a meal-manager controlled meal-system.</h3>
+                        <h3>This is a meal-manager controlled meal-system.</h3>
                         <h1 class="display-4">Calculating <strong>MEAL</strong> has never been <strong>EASIER</strong></h1>
                         <div class="d-flex flex-row">
                             <div class="p-4 align-self-start">
@@ -57,7 +57,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                And do not forget to wash your hand before eating.
+                                And do not forget to wash your hands before eating.
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                                         <h3>You are already logged in.</h3>
                                     </div>
                                     <div class="card-body">
-                                        <a href="http://localhost:8000/home" class="btn btn-outline-light btn-block">Back to home. </a>
+                                        <a href="{{route('home')}}" class="btn btn-outline-light btn-block">Back to home. </a>
                                     </div>
                                 </div>
                             </div>

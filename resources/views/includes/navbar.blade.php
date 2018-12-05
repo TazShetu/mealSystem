@@ -1,18 +1,18 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
     <div class="container">
-        <a href="index.html" class="navbar-brand">Meal System</a>
+        <a href="{{url('/')}}" class="navbar-brand">Meal System</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
                 {{------------------------------------------------------------------}}
-                <li class="nav-item">
-                    <a href="http://localhost:8000" class="nav-link">Index</a>
-                </li>
+                {{--<li class="nav-item">--}}
+                    {{--<a href="http://localhost:8000" class="nav-link">Index</a>--}}
+                {{--</li>--}}
                 {{------------------------------------------------------------------}}
                 <li class="nav-item">
-                    <a href="http://localhost:8000/home" class="nav-link active">Home</a>
+                    <a href="{{route('home')}}" class="nav-link">Home</a>
                 </li>
                 @role(['admin','mealManager'])
                     <li class="nav-item">

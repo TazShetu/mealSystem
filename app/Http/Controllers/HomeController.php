@@ -27,6 +27,11 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public function me(){
+        return view('mmHome');
+    }
+
+
     public function lmonth($msid){
 //        dd($msid);
         $ms = Mealsystem::find($msid);

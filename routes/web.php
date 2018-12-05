@@ -28,9 +28,10 @@ Auth::routes();
 //Route::get('/h', function () {
 //    return view('mHome');
 //});
-Route::get('/home', function () {
-    return view('mmHome');
-})->middleware('auth');
+Route::get('/home', [
+    'uses' => 'HomeController@me',
+    'as' => 'home'
+])->middleware('auth');
 //Route::get('/t', function () {
 //    return view('t');
 //});

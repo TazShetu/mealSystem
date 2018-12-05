@@ -2,19 +2,19 @@
 <!--....NAV BAR....  -->
 <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
     <div class="container">
-        <a href="index.html" class="navbar-brand">Meal System</a>
+        <a href="{{url('/')}}" class="navbar-brand">Meal System</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
                 {{------------------------------------------------------------------}}
-                <li class="nav-item">
-                    <a href="http://localhost:8000" class="nav-link">Index</a>
-                </li>
+                {{--<li class="nav-item">--}}
+                    {{--<a href="http://localhost:8000" class="nav-link">Index</a>--}}
+                {{--</li>--}}
                 {{------------------------------------------------------------------}}
                 <li class="nav-item">
-                    <a href="http://localhost:8000/home" class="nav-link">Home</a>
+                    <a href="{{route('home')}}" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-outline-success" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -53,7 +53,7 @@
                     <div class="col-sm-4"></div>
                     <div class="col-sm-4 text-center mb-1"><h1><strong>{{$mn}}</strong></h1></div>
                     <div class="col-sm-4">
-                        <a href="http://localhost:8000/home" class="btn btn-success pull-left btn-sm">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
+                        <a href="{{route('home')}}" class="btn btn-success pull-left btn-sm">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
                     </div>
                 </div>
             </div>
