@@ -135,6 +135,7 @@ class MemdataController extends Controller
 
     public function showmemd(){
         // get msid of mM
+        
         // get all data
 
 
