@@ -18,8 +18,8 @@ class UsersTableSeeder extends Seeder
 //        $faker = Factory::create();
 
         App\User::create([
-            'name' => 'ADMIN admin',
-            'slug' => str_slug('ADMIN-admin'),
+            'name' => 'ADMIN',
+            'slug' => str_slug('admin'),
             'username' => 'a',
             'password' => bcrypt('123456')
         ]);

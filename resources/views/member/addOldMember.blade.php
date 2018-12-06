@@ -2,43 +2,15 @@
 <!--....NAV BAR....  -->
 @include('includes.navbar')
 
-<header id="home-section" class="HomE">
+<header id="home-section" class="oM">
     <div class="dark-overlay">
         <div class="home-inner">
             <h1 class="text-center">Choose, who to add in current month</h1>
             <br>
             <div class="container">
                 <div class="row">
-                    {{--<div class="col-sm-12">--}}
-                        {{--<div class="card text-center bg-success">--}}
-                            {{--<div class="card-body">--}}
-                                {{--@if(empty($members))--}}
-                                    {{--<h2>No old member to add !</h2>--}}
-                                {{--@else--}}
-                                    {{--<form action="" method="post">--}}
-                                        {{--{{csrf_field()}}--}}
-                                        {{--<input type="hidden" name="msid" value="{{$msid}}">--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label for="member"><h4>Select member from last month</h4></label>--}}
-                                            {{--<select name="member_id" id="member" class="form-control">--}}
-                                                {{--<option value="" hidden disabled selected>Choose One</option>--}}
-                                                {{--@foreach($members as $m)--}}
-                                                    {{--<option value="{{$m->id}}">{{$m->name}}</option>--}}
-                                                {{--@endforeach--}}
-                                            {{--</select>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<div class="text-center">--}}
-                                                {{--<button class="btn btn-primary btn-block" type="submit">Add (XXX)</button>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</form>--}}
-                                {{--@endif--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--<br>--}}
-                    {{--</div>--}}
-                    <div class="col-sm-12">
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-4">
                         <div class="card text-center bg-success">
                             @if(empty($members))
                                 <div class="card-header">
@@ -70,6 +42,8 @@
                             @endif
                         </div>
                     </div>
+                    <div class="col-lg-4"></div>
+
                 </div>
             </div>
         </div>
@@ -87,8 +61,8 @@
 
 
 <!--script-->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/bootstrap.min.js')}}"></script>
 <!--<script src="js/fontawesome.min.js"></script>-->
 
 

@@ -7,16 +7,16 @@
         <!--....NAV BAR before login....  -->
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top justify-content-between">
             <div class="container">
-                <a href="index.html" class="navbar-brand">Meal System</a>
+                <a href="{{url('/')}}" class="navbar-brand">Meal System</a>
                 <form method="POST" action="{{ route('login') }}" class="form-inline">
                     @csrf
                     <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} mr-2 mb-1" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>
                     @if ($errors->has('email'))
-                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
+                        <span class="invalid-feedback pb-1" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
                     @endif
                     <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} mr-2 mb-1" name="password" placeholder="Password" required>
                     @if ($errors->has('password'))
-                        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
+                        <span class="invalid-feedback pb-1" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
                     @endif
                     <button type="submit" class="btn btn-outline-success">Login</button>
                 </form>
@@ -30,12 +30,11 @@
 <header id="home-section" class="IndeX">
     <div class="dark-overlay">
         <div class="home-inner">
-            <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 d-none d-lg-block">
-                        <h3>Thi is a meal-manager controlled meal-system.</h3>
-                        <h1 class="display-4">Calculating <strong>MEAL</strong> has never been <strong>EASIER</strong></h1>
+                        <h1 class="display-4">Calculating <em>MEAL</em> has never been <em>EASIER</em></h1>
+                        <h3>This is a meal-manager controlled meal-system</h3>
                         <div class="d-flex flex-row">
                             <div class="p-4 align-self-start">
                                 <i class="fa fa-check"></i>
@@ -49,7 +48,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                Every new month will auto create a new meal-system under the meal-manager. Meal-manager can add old member for new meal-system. Once added member can not be deleted but new month will auto erase all old member from last month.
+                                Every new month will auto create a new meal-system under the meal-manager. Meal-manager can add old member to the new meal-system. Once added member can not be removed but new month will auto erase all old member from last month.
                             </div>
                         </div>
                         <div class="d-flex flex-row">
@@ -57,7 +56,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                And do not forget to wash your hand before eating.
+                                And do not forget to wash your hands before eating.
                             </div>
                         </div>
                     </div>
@@ -70,7 +69,7 @@
                                         <h3>You are already logged in.</h3>
                                     </div>
                                     <div class="card-body">
-                                        <a href="http://localhost:8000/home" class="btn btn-outline-light btn-block">Back to home. </a>
+                                        <a href="{{route('home')}}" class="btn btn-outline-light btn-block">Back to home. </a>
                                     </div>
                                 </div>
                             </div>
@@ -113,6 +112,10 @@
                                         <button type="submit" class="btn btn-outline-light btn-block">Register</button>
                                     </form>
                                 </div>
+                            </div>
+                            <br>
+                            <div class="card bg-success">
+                                <a href="{{ route('password.request') }}" class="btn btn-outline-light">forget password</a>
                             </div>
                         </div>
                         @endauth

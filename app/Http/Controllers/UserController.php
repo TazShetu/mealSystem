@@ -72,7 +72,7 @@ class UserController extends Controller
 //            dd($ms->id);
             $ms->users()->attach($u);
         }
-        return redirect('home');
+        return redirect()->route('home');
     }
 
     /**
@@ -120,6 +120,12 @@ class UserController extends Controller
                 'password' => 'required|confirmed|min:6',
             ]);
             $u->password = bcrypt($request->password);
+        }
+        if ($request->email){
+            $this->validate($request, [
+                'email' => 'required|unique:users',
+            ]);
+            $u->email = $request->email;
         }
         $u->name = $request->name;
         $u->username = $request->username;
@@ -224,7 +230,7 @@ class UserController extends Controller
 //        $u = User::find($request->member_id);
 //        $ms = Mealsystem::find($msid);
 //        $ms->users()->attach($u);
-//        return redirect('home');
+//        return redirect()->route('home');
         ///////////////
         // Check Box
         $ms = Mealsystem::find($msid);
@@ -233,7 +239,7 @@ class UserController extends Controller
             $u = User::find($id);
             $ms->users()->attach($u);
         }
-        return redirect('home');
+        return redirect()->route('home');
     }
 
 

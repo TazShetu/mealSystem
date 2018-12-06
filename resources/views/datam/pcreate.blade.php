@@ -9,7 +9,8 @@
             <br>
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-4">
                         <div class="card bg-success">
                             <div class="card-body">
                                 {{--@if(session('alert'))--}}
@@ -77,6 +78,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-4"></div>
                 </div>
             </div>
         </div>

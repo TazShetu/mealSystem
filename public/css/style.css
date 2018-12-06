@@ -1,6 +1,8 @@
 body {
     background: #333;
     color: #fff;
+    /*add font here*/
+    font-family: 'Lato', sans-serif;
 }
 
 .navbar {
@@ -12,16 +14,19 @@ body {
 #home-section {
     background-size: cover;
     background-attachment: fixed;
-    min-height: 900px;
+    min-height: 1110px;
     /*min-height: 100%;*/
 }
 #home-section .dark-overlay {
     background-color: rgba(0, 0, 0, 0.8);
+}
+#home-section .dark-overlay,
+#home-section .t-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    min-height: 900px;
+    min-height: 1110px;
 }
 #home-section .home-inner {
     padding-top: 150px;
@@ -49,15 +54,29 @@ body {
     background: url("../img/home.jpg") no-repeat;
 }
 
-
-.ProfilE{
-    background: url("../img/profile.jpg") no-repeat;
-}
-
-.TablE{
-    background: url("../img/table.jpg") no-repeat;
-}
-
 .createData{
     background: url("../img/createData.jpg") no-repeat;
+}
+
+.oM{
+    background: url("../img/oM.jpg") no-repeat;
+}
+
+.cM{
+    background: url("../img/cM.jpg") no-repeat;
+}
+
+
+
+#home-section .t-overlay {
+    background-color: rgba(42, 42, 42, 0.8);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Alegreya', serif;
 }

@@ -62,8 +62,7 @@ class MealsystemController extends Controller
         $ms->save();
         $ms->users()->attach($u);
 
-        return redirect('home');
-        // just for now we have a /home route
+        return redirect()->route('home');
     }
 
     /**
