@@ -1,4 +1,4 @@
-## Live (beta)
+## Live (v0.95)
 
 http://ms.ttazs.com/
 

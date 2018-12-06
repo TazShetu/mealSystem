@@ -28,10 +28,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        @if(($cmonth * 1) === (\Carbon\Carbon::now()->month && $ms))
+                        @if((($cmonth * 1) === (\Carbon\Carbon::now()->month)) && $ms)
                             <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> Own info {{$mn}}</span></a>
                         @endif
-                        @if(($cmonth * 1) !== \Carbon\Carbon::now()->month && $pms)
+                        @if((($cmonth * 1) !== (\Carbon\Carbon::now()->month)) && $pms)
                             <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $pms->id])}}" class="btn btn-success btn-block" ><i class="fa fa-bars" aria-hidden="true"></i>&nbsp; <span style="font-size: 25px;"> Own info {{$pmn}}</span></a>
                         @endif
                         <br>
@@ -78,12 +78,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        @if(($cmonth * 1) === (\Carbon\Carbon::now()->month) && $pms)
+                        @if((($cmonth * 1) === (\Carbon\Carbon::now()->month)) && $pms)
                             <a href="{{route('f.table', ['msid' => $pms->id])}}" class="btn btn-success pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>
                         @endif
                     </div>
                     <div class="col-sm-6">
-                        @if(($cmonth * 1) !== \Carbon\Carbon::now()->month && $ms)
+                        @if((($cmonth * 1) !== (\Carbon\Carbon::now()->month)) && $ms)
                             <a href="{{route('f.table', ['msid' => $ms->id])}}" class="btn btn-success pull-right">{{$mn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
                         @endif
                     </div>

@@ -1,7 +1,7 @@
 @include('includes.header')
 <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
     <div class="container">
-        <a href="{{url('/')}}" class="navbar-brand">Meal System</a>
+        <a href="{{route('home')}}" class="navbar-brand">Meal System</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
