@@ -60,13 +60,12 @@
         <div class="home-inner">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         @if($pms)
                             <a href="{{route('lhome', ['msid' => $pms->id])}}" class="btn btn-success pull-left btn-sm"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>
                         @endif
                     </div>
-                    <div class="col-md-4 text-center mb-1"><h1><strong>{{$mn}}</strong></h1></div>
-                    <div class="col-md-4"></div>
+                    <div class="col-md-12 text-center mt-1"><h1><strong>{{$mn}}</strong></h1></div>
                 </div>
             </div>
             <hr>

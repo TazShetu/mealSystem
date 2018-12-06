@@ -8,11 +8,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
-                {{------------------------------------------------------------------}}
-                {{--<li class="nav-item">--}}
-                    {{--<a href="http://localhost:8000" class="nav-link">Index</a>--}}
-                {{--</li>--}}
-                {{------------------------------------------------------------------}}
                 <li class="nav-item">
                     <a href="{{route('home')}}" class="nav-link">Home</a>
                 </li>
@@ -39,9 +34,18 @@
 
 @php
     $a = Auth::user();
+    $am = $a->amountus()->where('mealsystem_id', $ms->id)->first();
+
     $o = DateTime::createFromFormat('!m', $ms->month);
     $mn = $o->format('F');
-    $am = $a->amountus()->where('mealsystem_id', $ms->id)->first();
+
+    if (($ms->month) === 12){
+        $nm = 1;
+    }else{
+        $nm = ($ms->month) + 1;
+    }
+    $no = DateTime::createFromFormat('!m', $nm);
+    $nmn = $no->format('F');
 
 @endphp
 <header id="home-section" class="HomE">
@@ -49,11 +53,10 @@
         <div class="home-inner">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4 text-center mb-1"><h1><strong>{{$mn}}</strong></h1></div>
-                    <div class="col-md-4">
-                        <a href="{{route('home')}}" class="btn btn-success pull-right btn-sm">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
+                    <div class="col-md-12">
+                        <a href="{{route('home')}}" class="btn btn-success pull-right btn-sm">{{$nmn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
                     </div>
+                    <div class="col-md-12 text-center mt-1"><h1><strong>{{$mn}}</strong></h1></div>
                 </div>
             </div>
 
