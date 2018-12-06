@@ -127,3 +127,28 @@ route::get('/sfdssffdgdtfhERFRGsdg', [
     'uses' => 'HomeController@admin',
     'as' => 'admin.delete'
 ])->middleware('admin');
+
+
+Route::get('/Enter-Edit-Data-Member', [
+    'uses' => 'MemdataController@create',
+    'as' => 'memdata.create'
+])->middleware('auth');
+Route::post('/Member-DataStore/{msid}', [
+    'uses' => 'MemdataController@store',
+    'as' => 'memdata.store'
+])->middleware('auth');
+
+//Route::get('/Edit-Data/{slug}/{msid}/{m}/{d}', [
+//    'uses' => 'DatamController@edit',
+//    'as' => 'datam.t.edit'
+//])->middleware('auth', 'mM');
+//Route::post('/DatamUpdate/{did}', [
+//    'uses' => 'DatamController@update',
+//    'as' => 'datam.t.update'
+//])->middleware('auth', 'mM');
+
+
+Route::get('/Enter-Edit-Data-Member', [
+    'uses' => 'MemdataController@showmemd',
+    'as' => 'show.memd'
+])->middleware('auth', 'mM');

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDatamsTable extends Migration
+class CreateMemdatasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateDatamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('datams', function (Blueprint $table) {
+        Schema::create('memdatas', function (Blueprint $table) {
             $table->increments('id');
-//            $table->boolean('status');
             $table->integer('user_id')->unsigned();
             $table->integer('mealsystem_id')->unsigned();
             $table->integer('month')->unsigned();
@@ -34,6 +33,6 @@ class CreateDatamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('datams');
+        Schema::dropIfExists('memdatas');
     }
 }

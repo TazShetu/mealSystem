@@ -1,0 +1,1 @@
+It will work like a Full table
