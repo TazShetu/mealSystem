@@ -142,7 +142,7 @@ class DatamController extends Controller
                     $ar->update();
                 }
 
-                return redirect('home');
+                return redirect()->route('home');
 
             } else {
                 $d = new Datam;
@@ -225,7 +225,7 @@ class DatamController extends Controller
                     }
                 }
 
-                return redirect('home');
+                return redirect()->route('home');
             }
         }
         else {

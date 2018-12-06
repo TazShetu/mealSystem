@@ -2,19 +2,14 @@
 <!--....NAV BAR....  -->
 <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
     <div class="container">
-        <a href="index.html" class="navbar-brand">Meal System</a>
+        <a href="{{route('home')}}" class="navbar-brand">Meal System</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
-                {{------------------------------------------------------------------}}
                 <li class="nav-item">
-                    <a href="http://localhost:8000" class="nav-link">Index</a>
-                </li>
-                {{------------------------------------------------------------------}}
-                <li class="nav-item">
-                    <a href="http://localhost:8000/home" class="nav-link">Home</a>
+                    <a href="{{route('home')}}" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-outline-success" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -39,22 +34,29 @@
 
 @php
     $a = Auth::user();
+    $am = $a->amountus()->where('mealsystem_id', $ms->id)->first();
+
     $o = DateTime::createFromFormat('!m', $ms->month);
     $mn = $o->format('F');
-    $am = $a->amountus()->where('mealsystem_id', $ms->id)->first();
+
+    if (($ms->month) === 12){
+        $nm = 1;
+    }else{
+        $nm = ($ms->month) + 1;
+    }
+    $no = DateTime::createFromFormat('!m', $nm);
+    $nmn = $no->format('F');
 
 @endphp
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
         <div class="home-inner">
-            <p>This is a beta version. Your data might get lost.</p>
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-4"></div>
-                    <div class="col-sm-4 text-center mb-1"><h1><strong>{{$mn}}</strong></h1></div>
-                    <div class="col-sm-4">
-                        <a href="http://localhost:8000/home" class="btn btn-success pull-left btn-sm">Current Month <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
+                    <div class="col-md-12">
+                        <a href="{{route('home')}}" class="btn btn-success pull-right btn-sm">{{$nmn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
                     </div>
+                    <div class="col-md-12 text-center mt-1"><h1><strong>{{$mn}}</strong></h1></div>
                 </div>
             </div>
 
@@ -74,14 +76,14 @@
                     <div class="col-lg-12 text-center">
                         <div class="card bg-success text-center card-form">
                             <div class="card-body">
-                                <h3 class="display-4">Meal-rate is <strong><b>{{$ms->meal_rate}}</b></strong> Tk/meal</h3>
+                                <h3 class="display-4">Meal-rate is <em>{{$ms->meal_rate}}</em> &nbsp;Tk/meal</h3>
                             </div>
                         </div>
                         <br>
                         @if($am)
                             <div class="card bg-info text-center card-form">
                                 <div class="card-body">
-                                    <h3 class="display-6">Your balance <span id="amountt"><strong><b>{{$am->amount}}</b></strong></span> Tk</h3>
+                                    <h3 class="display-6">Your balance <span id="amountt"><em>{{$am->amount}}</em></span> &nbsp;Tk</h3>
                                 </div>
                             </div>
                             <br>

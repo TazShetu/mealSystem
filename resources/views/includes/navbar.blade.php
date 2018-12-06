@@ -1,24 +1,24 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
     <div class="container">
-        <a href="index.html" class="navbar-brand">Meal System</a>
+        <a href="{{route('home')}}" class="navbar-brand">Meal System</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
                 {{------------------------------------------------------------------}}
-                <li class="nav-item">
-                    <a href="http://localhost:8000" class="nav-link">Index</a>
-                </li>
+                {{--<li class="nav-item">--}}
+                    {{--<a href="http://localhost:8000" class="nav-link">Index</a>--}}
+                {{--</li>--}}
                 {{------------------------------------------------------------------}}
                 <li class="nav-item">
-                    <a href="http://localhost:8000/home" class="nav-link active">Home</a>
+                    <a href="{{route('home')}}" class="nav-link">Home</a>
                 </li>
-                @role(['admin','mealManager'])
-                    <li class="nav-item">
-                        <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add a Meal Member</a>
-                    </li>
-                @endrole
+                {{--@role(['admin','mealManager'])--}}
+                    {{--<li class="nav-item">--}}
+                        {{--<a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add a Meal Member</a>--}}
+                    {{--</li>--}}
+                {{--@endrole--}}
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-outline-success" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->name }} <span class="caret"></span>
