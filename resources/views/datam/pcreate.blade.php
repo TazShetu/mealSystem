@@ -13,11 +13,6 @@
                     <div class="col-lg-4">
                         <div class="card bg-success">
                             <div class="card-body">
-                                {{--@if(session('alert'))--}}
-                                    {{--<div class="alert alert-danger">--}}
-                                        {{--{{session('alert')}}--}}
-                                    {{--</div>--}}
-                                {{--@endif--}}
                                 <form action="{{route('store.pdatam', ['msid' => $ms->id])}}" method="post">
                                     {{csrf_field()}}
                                     <div class="form-group">
@@ -86,6 +81,7 @@
 </header>
 @endrole
 
+@include('includes.euModal')
 
 @include('includes.footer')
 

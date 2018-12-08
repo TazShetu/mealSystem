@@ -52,6 +52,7 @@
 
 
 
+@include('includes.euModal')
 
 @include('includes.footer')
 

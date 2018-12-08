@@ -67,6 +67,7 @@
                                 @role(['admin', 'mealManager'])
                                     <td><a href="{{route('datam.t.edit', ['slug' => $d->user->slug, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm">Edit</a></td>
                                 @endrole
+                            </tr>
                         @endforeach
                         <!--loop end for member-->
                         </tbody>
@@ -94,6 +95,7 @@
     </div>
 </header>
 
+@include('includes.euModal')
 
 <!--.......main Footer....  -->
 {{--@include('includes.footer')--}}

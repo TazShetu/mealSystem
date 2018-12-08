@@ -112,14 +112,7 @@ Route::post('/DatamStoreP/{msid}', [
     'as' => 'store.pdatam'
 ])->middleware('auth', 'mM');
 
-//Route::get('/Edit-Data/{slug}/{msid}/{m}/{d}', [
-//    'uses' => 'DatamController@edit',
-//    'as' => 'datam.t.edit'
-//]);
-//Route::post('/DatamUpdate/{did}', [
-//    'uses' => 'DatamController@update',
-//    'as' => 'datam.t.update'
-//]);
+
 
 
 // ADMIN
@@ -127,3 +120,45 @@ route::get('/sfdssffdgdtfhERFRGsdg', [
     'uses' => 'HomeController@admin',
     'as' => 'admin.delete'
 ])->middleware('admin');
+
+
+Route::get('/Enter-Data/Member', [
+    'uses' => 'MemdataController@create',
+    'as' => 'memdata.create'
+])->middleware('auth');
+Route::post('/Member-DataStore/{msid}', [
+    'uses' => 'MemdataController@store',
+    'as' => 'memdata.store'
+])->middleware('auth');
+
+
+Route::get('/Enter-Data/Member/Past-Month', [
+    'uses' => 'MemdataController@Pcreate',
+    'as' => 'memdata.p.create'
+])->middleware('auth');
+Route::post('/Member-DataStore/Past-month/{msid}', [
+    'uses' => 'MemdataController@Pstore',
+    'as' => 'memdata.Pstore'
+])->middleware('auth');
+
+
+Route::get('/Enter-Edit-Data-Member/{month}', [
+    'uses' => 'MemdataController@showmemd',
+    'as' => 'show.memd'
+])->middleware('auth', 'mM');
+
+Route::get('/Delete-Data-Member/{id}', [
+    'uses' => 'MemdataController@destroy',
+    'as' => 'memdata.delete'
+])->middleware('auth', 'mM');
+
+Route::get('/memdata/store/{id}', [
+//    this os npt working as post method
+    'uses' => 'MemdataController@saveE',
+    'as' => 'memdata.accept'
+])->middleware('auth', 'mM');
+
+Route::post('/Edit&Store-MemData/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@es',
+    'as' => 'memdata.ea'
+])->middleware('auth', 'mM');
