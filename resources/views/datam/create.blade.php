@@ -78,6 +78,7 @@
 </header>
 @endrole
 
+@include('includes.euModal')
 
 @include('includes.footer')
 

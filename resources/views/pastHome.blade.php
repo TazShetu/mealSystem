@@ -47,6 +47,7 @@
     $no = DateTime::createFromFormat('!m', $nm);
     $nmn = $no->format('F');
 
+    $pm = $ms->month;
 @endphp
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
@@ -64,8 +65,22 @@
             <div class="container">
                 @role(['admin', 'mealManager'])
                     <div class="row">
+                        <div class="col-md-6 text-center pb-1">
+                            <a href="{{route('datam.pcreate', ['msid' => $ms->id])}}" class="btn btn-info">
+                                <b><span style="font-size: 25px;'">New</span> Data ({{$mn}})</b>
+                            </a>
+                        </div>
+                        <div class="col-md-6 text-center pb-1">
+                            <a href="{{route('show.memd', ['month' => $pm])}}" class="btn btn-outline-info">
+                                <b><span style="font-size: 25px;'">Member</span> Data ({{$mn}})</b>
+                            </a>
+                        </div>
+                    </div>
+                    <br>
+                @else
+                    <div class="row">
                         <div class="col text-center">
-                            <a href="{{route('datam.pcreate', ['msid' => $ms->id])}}" class="btn btn-info btn-lg">
+                            <a href="{{route('memdata.p.create')}}" class="btn btn-info">
                                 <b><span style="font-size: 25px;'">New</span> Data ({{$mn}})</b>
                             </a>
                         </div>
@@ -111,6 +126,7 @@
     </div>
 </header>
 
+@include('includes.euModal')
 
 <!--.......main Footer....  -->
 @include('includes.footer')

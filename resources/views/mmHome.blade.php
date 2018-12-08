@@ -72,8 +72,22 @@
             <div class="container">
                 @role(['admin', 'mealManager'])
                     <div class="row">
+                        <div class="col-md-6 text-center pb-1">
+                            <a href="{{route('datam.create')}}" class="btn btn-info ">
+                                <b><span style="font-size: 25px;'">New</span> Data ({{$mn}})</b>
+                            </a>
+                        </div>
+                        <div class="col-md-6 text-center pb-1">
+                            <a href="{{route('show.memd', ['month' => $month])}}" class="btn btn-outline-info">
+                                <b><span style="font-size: 25px;'">M</span> Data ({{$mn}})</b>
+                            </a>
+                        </div>
+                    </div>
+                    <br>
+                @else
+                    <div class="row">
                         <div class="col text-center">
-                            <a href="{{route('datam.create')}}" class="btn btn-info btn-lg">
+                            <a href="{{route('memdata.create')}}" class="btn btn-info btn-lg">
                                 <b><span style="font-size: 25px;'">New</span> Data ({{$mn}})</b>
                             </a>
                         </div>

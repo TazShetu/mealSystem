@@ -44,5 +44,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\Amountu');
     }
 
+    public function memdatas(){
+        return $this->hasMany('App\Memdata');
+    }
+
 
 }
