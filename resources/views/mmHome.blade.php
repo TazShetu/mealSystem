@@ -88,7 +88,7 @@
                     <div class="row">
                         <div class="col text-center">
                             <a href="{{route('memdata.create')}}" class="btn btn-info btn-lg">
-                                <b><span style="font-size: 25px;'">New</span> Data ({{$mn}}) member</b>
+                                <b><span style="font-size: 25px;'">New</span> Data ({{$mn}})</b>
                             </a>
                         </div>
                     </div>

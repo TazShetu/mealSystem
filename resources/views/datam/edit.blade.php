@@ -29,7 +29,7 @@
                                         <h3 class="bg-light text-dark p-1">{{$d}} - {{$mn}}</h3>
                                     </div>
                                     <div class="form-group">
-                                        <label for="category">Name</label>
+                                        <label class="lead">Name</label>
                                         <h3 class="bg-light text-dark p-1">{{$u->name}}</h3>
                                     </div>
                                     <div class="form-group {{$errors->has('meal') ? 'has-error' : ''}}">

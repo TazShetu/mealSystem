@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Datam;
 use App\Mealsystem;
+use App\Memdata;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,10 @@ class PtableController extends Controller
         $dA = Datam::where('user_id', $uid)->where('mealsystem_id', $id)->get();
         $ms = Mealsystem::find($id);
         $cmonth = $ms->month;
-        return view('t', compact('dA' , 'cmonth'));
+
+        $naD = Memdata::where('user_id', $uid)->where('mealsystem_id', $id)->get();
+
+        return view('t', compact('dA' , 'cmonth', 'naD'));
     }
 
     /**

@@ -42,6 +42,32 @@
             </div>
             <div class="container">
                 <div class="row">
+                   @if(!$naD->isEmpty())
+                       <div class="col">
+                           <h3 class="text-center bg-light text-dark">Still Not Accepted Data</h3>
+
+                            <table class="table table-hover bg-light text-dark">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Meal</th>
+                                    <th>Bazar</th>
+                                    <th>Deposit</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($naD as $d)
+                                    <tr>
+                                        <td>{{$d->day}} / {{$d->month}}</td>
+                                        <td>{{$d->meal}}</td>
+                                        <td>{{$d->bazar}}</td>
+                                        <td>{{$d->deposit}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                       </div>
+                   @endif
                     <table class="table table-hover">
                         <thead>
                         <tr>
