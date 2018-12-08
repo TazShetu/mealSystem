@@ -19,12 +19,13 @@
                     <li>Member has to personally collect user-name from meal-manager.</li>
                     <li>Member created by meal-manager has a default password 123456</li>
                     <li>Change the default password from edit profile menu.</li>
-                    <li>Member has to personally tell meal-manager about their meal, bazar etc.</li>
-                    <li>Only meal-manager can enter/edit data.</li>
+                    <li>Member can enter data but it will not be added into calculation until meal-manager accept that.</li>
                     <li>Enter new data for the same date and same member will auto overwrite the old data.</li>
-                    <li>Every new month will auto create a new meal-system under the meal-manager. Meal-manager can add old member to the new meal-system. Once added member can not be removed but new month will auto erase all old member from last month. </li>
+                    <li>Only meal-manager can Edit data.</li>
+                    <li>Every new month will auto create a new meal-system under the meal-manager. Meal-manager can add old member to the new meal-system. Once added, member can not be removed but new month will auto erase all old member from last month. </li>
                     <li>Database only store 2 months data. So user can only see last month's data as past data.</li>
                     <li>Provide email address at edit profile menu to recover forgotten password.</li>
+                    <li>Use <i class="fa fa-user"></i> <i class="fa fa-arrows-h"></i> <i class="fa fa-user-o"></i> this icon to make someone else meal-manager.</li>
                 </ul>
             </div>
             <div class="modal-footer">

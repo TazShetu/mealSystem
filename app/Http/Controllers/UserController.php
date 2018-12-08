@@ -59,7 +59,6 @@ class UserController extends Controller
             'username' => 'required|unique:users',
         ]);
 
-         // create member
         $u = new User;
         $u->name = $request->name;
         $u->username = $request->username;
@@ -166,11 +165,6 @@ class UserController extends Controller
             $ms->users()->attach($mM);
         }
         $cmonth = Carbon::now()->month;
-//        if ($cmonth == 1){
-//            $pmonth = 12;
-//        }else {
-//            $pmonth = $cmonth - 1 ;
-//        }
 
 
         $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
@@ -186,8 +180,6 @@ class UserController extends Controller
                 }
             }
         }
-
-        // remove duplicate entries from $members[] as it will add all old members from all month
         $userdupe=array();
         foreach ($members as $index=>$t) {
             if (isset($userdupe[$t["slug"]])) {
@@ -196,26 +188,7 @@ class UserController extends Controller
             }
             $userdupe[$t["slug"]]=true;
         }
-//        dd($members);
-
-//        $msPm = $mM->mealsystems()->where('month', $pmonth)->first();
-//        $Pmembers = $msPm->users()->get();
-//        // $Pmembers is an object that has collection of past month user(s)
-//        $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
-//        $CMembers = $msCm->users()->get();
-//        // $CMembers is an object that has collection of current month user(s)
-//
-//        $members = [];
-//        foreach ($Pmembers as $pmm){
-//            // $pmm is an user object
-//            if (!$CMembers->contains('name', $pmm->name)){
-//                // here we het $pmm as user object that is not in current month
-//                $members[] = $pmm;
-//            }
-//        }
-
         $msid = $msCm->id;
-//        dd($members);
 
         return view('member.addOldMember', compact('members', 'msid'));
 
@@ -225,20 +198,63 @@ class UserController extends Controller
 
     public function oldMadd(Request $request, $msid)
     {
-//        dd($msid);
-//        option field
-//        $u = User::find($request->member_id);
-//        $ms = Mealsystem::find($msid);
-//        $ms->users()->attach($u);
-//        return redirect()->route('home');
-        ///////////////
-        // Check Box
+        $this->validate($request, [
+            'names' => 'required'
+        ]);
         $ms = Mealsystem::find($msid);
-        $ids = $request->input('member_ids');
+        $ids = $request->input('names');
         foreach ($ids as $id){
             $u = User::find($id);
             $ms->users()->attach($u);
         }
+        return redirect()->route('home');
+    }
+
+
+
+    public function mmchange(){
+        $mM = Auth::user();
+        $msOmm = $mM->mealsystems()->get();
+        $x = 0 ;
+        foreach ($msOmm as $m){
+            if ($m->month == Carbon::now()->month){
+                $x = 1;
+                break;
+            }
+        }
+        if ($x != 1){
+            $ms = new Mealsystem;
+            $ms->month = Carbon::now()->month;
+            $ms->save();
+            $ms->users()->attach($mM);
+        }
+        $cmonth = Carbon::now()->month;
+        $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
+        $CMembers = $msCm->users()->get();
+
+        $members = [];
+        foreach ($CMembers as $p){
+            if (!$p->hasRole('mealManager')){
+                $members[] = $p;
+            }
+        }
+        $msid = $msCm->id;
+        return view('member.mm_change', compact('members', 'msid'));
+    }
+
+
+
+    public function mmstore(Request $request)
+    {
+        $this->validate($request, [
+            'member_id' => 'required'
+        ]);
+        $mm = Auth::user();
+        $Nmm = User::find($request->member_id);
+
+        $Nmm->attachRole('mealManager');
+        $mm->detachRole('mealManager');
+
         return redirect()->route('home');
     }
 

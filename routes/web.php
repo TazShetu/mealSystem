@@ -162,3 +162,12 @@ Route::post('/Edit&Store-MemData/{uid}/{msid}/{m}/{d}', [
     'uses' => 'MemdataController@es',
     'as' => 'memdata.ea'
 ])->middleware('auth', 'mM');
+
+Route::get('meal-manager/change', [
+    'uses' => 'UserController@mmchange',
+    'as' => 'mm.change'
+])->middleware('auth', 'mM');
+Route::post('meal-manager/change/store', [
+    'uses' => 'UserController@mmstore',
+    'as' => 'mm.store'
+])->middleware('auth', 'mM');
