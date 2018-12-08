@@ -42,8 +42,22 @@ class MemdataController extends Controller
         }
         // for new month
         if ($x !== 1){
-            return view('member.noms');
+            return view('member.no_ms');
         }
+    }
+
+    public function Pcreate()
+    {
+//        dd('dgdsg');
+        $a = Auth::user();
+        $cm = Carbon::now()->month;
+        if ($cm == 1){
+            $pm = 12;
+        }else {
+            $pm = $cm - 1 ;
+        }
+        $ms = $a->mealsystems()->where('month', $pm)->first();
+        return view('member.Pcdata', compact('ms'));
     }
 
     /**
@@ -63,7 +77,7 @@ class MemdataController extends Controller
             $month = Carbon::now()->month;
             $day = date("d", strtotime($request->date));
 
-            $check = Memdata::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
+            $check = Memdata::where('user_id', Auth::id())->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
             if ($check){
                 $check->delete();
             }
@@ -87,6 +101,36 @@ class MemdataController extends Controller
         else {
             return redirect()->back()->with('alert', 'Please Select a date from current month.');
         }
+    }
+
+
+    public function Pstore(Request $request, $msid)
+    {
+        $this->validate($request, [
+            'day' => 'required'
+        ]);
+        $ms = Mealsystem::find($msid);
+        $check = Memdata::where('user_id', Auth::id())->where('mealsystem_id', $msid)->where('day', $request->day)->where('month', $ms->month)->first();
+        if ($check){
+            $check->delete();
+        }
+        $d = new Memdata;
+        $d->user_id = Auth::id();
+        $d->mealsystem_id = $msid;
+        $d->month = $ms->month;
+        $d->day = $request->day;
+        if ($request->has('meal')){
+            $d->meal = $request->meal;
+        }
+        if ($request->has('bazar')){
+            $d->bazar = $request->bazar;
+        }
+        if ($request->has('deposit')){
+            $d->deposit = $request->deposit;
+        }
+        $d->save();
+
+        return redirect()->route('lhome', ['msid' => $msid]);
     }
 
     /**
@@ -138,13 +182,20 @@ class MemdataController extends Controller
 
 
 
-    public function showmemd(){
+    public function showmemd($month){
         $mm = Auth::user();
-        $cm = Carbon::now()->month;
-        $ms = $mm->mealsystems()->where('month', $cm)->first();
-        $memdata = Memdata::where('mealsystem_id', $ms->id)->get();
-        // $memdata is a collection of array
-//        dd($memdata);
+        $ms = $mm->mealsystems()->where('month', $month)->first();
+        if ($ms){
+            $memdata = Memdata::where('mealsystem_id', $ms->id)->get();
+        } else {
+            $ms = new Mealsystem;
+            $ms->month = Carbon::now()->month;
+            $ms->save();
+            $ms->users()->attach($mm);
+            $memdata = Memdata::where('mealsystem_id', 0)->get();
+            // tecnique to create empty collection of array
+        }
+
         return view('member.datashowtable', compact('memdata'));
     }
 
@@ -266,8 +317,8 @@ class MemdataController extends Controller
         $data->save();
 
         // delete memdata
-        $a = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-        $a->delete();
+        $mdata = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        $mdata->delete();
 
 
         $dCA = Datam::where('mealsystem_id', $msid)->where('month', $m)->get();
@@ -282,7 +333,7 @@ class MemdataController extends Controller
         }else{
             $mr = 0;
         }
-        $mealS = Mealsystem::where('id', $msid)->where('month', $m)->first();
+        $mealS = Mealsystem::find($msid);
         $mealS->meal_rate = $mr;
         $mealS->update();
 

@@ -3,9 +3,11 @@
 <!--....NAV BAR....  -->
 @include('includes.navbar')
 
-@php
+{{--@php--}}
 
-@endphp
+
+
+{{--@endphp--}}
 
 @role(['admin', 'mealManager'])
 <header id="home-section" class="TablE">
@@ -17,6 +19,11 @@
                     @if(!$memdata->isEmpty())
                         @foreach($memdata->groupBy('day') as $ds)
                             {{--$ds is a collection of array--}}
+                            @php
+                                $month = $ds[0]->month;
+                                $co = DateTime::createFromFormat('!m', $month);
+                                $mn = $co->format('F');
+                            @endphp
                             <h1 class="text-center pull-right">{{$ds[0]->day}} - {{$ds[0]->month}}</h1>
                             <table class="table table-hover">
                                 <thead>
@@ -58,7 +65,7 @@
                                                             <div class="modal-body bg-success">
                                                                 <div class="form-group">
                                                                     <label class="lead"><b>Date</b></label>
-                                                                    <h3 class="bg-light text-dark p-1">{{$d->day}} - {{$d->month}}</h3>
+                                                                    <h3 class="bg-light text-dark p-1">{{$d->day}} - {{$mn}}</h3>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label class="lead">Name</label>
@@ -123,6 +130,7 @@
 
 
 
+@include('includes.euModal')
 
 
 @endrole
@@ -133,6 +141,13 @@
 <script src="{{asset('js/jquery.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <!--<script src="js/fontawesome.min.js"></script>-->
+
+{{--<script>--}}
+    {{--@if (count($errors) > 0)--}}
+    {{--$('#nuModal').modal('show');--}}
+    {{--@endif--}}
+{{--</script>--}}
+
 
 </body>
 </html>

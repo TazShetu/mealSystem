@@ -112,14 +112,7 @@ Route::post('/DatamStoreP/{msid}', [
     'as' => 'store.pdatam'
 ])->middleware('auth', 'mM');
 
-//Route::get('/Edit-Data/{slug}/{msid}/{m}/{d}', [
-//    'uses' => 'DatamController@edit',
-//    'as' => 'datam.t.edit'
-//]);
-//Route::post('/DatamUpdate/{did}', [
-//    'uses' => 'DatamController@update',
-//    'as' => 'datam.t.update'
-//]);
+
 
 
 // ADMIN
@@ -138,17 +131,18 @@ Route::post('/Member-DataStore/{msid}', [
     'as' => 'memdata.store'
 ])->middleware('auth');
 
-//Route::get('/Edit-Data/{slug}/{msid}/{m}/{d}', [
-//    'uses' => 'DatamController@edit',
-//    'as' => 'datam.t.edit'
-//])->middleware('auth', 'mM');
-//Route::post('/DatamUpdate/{did}', [
-//    'uses' => 'DatamController@update',
-//    'as' => 'datam.t.update'
-//])->middleware('auth', 'mM');
+
+Route::get('/Enter-Data/Member/Past-Month', [
+    'uses' => 'MemdataController@Pcreate',
+    'as' => 'memdata.p.create'
+])->middleware('auth');
+Route::post('/Member-DataStore/Past-month/{msid}', [
+    'uses' => 'MemdataController@Pstore',
+    'as' => 'memdata.Pstore'
+])->middleware('auth');
 
 
-Route::get('/Enter-Edit-Data-Member', [
+Route::get('/Enter-Edit-Data-Member/{month}', [
     'uses' => 'MemdataController@showmemd',
     'as' => 'show.memd'
 ])->middleware('auth', 'mM');

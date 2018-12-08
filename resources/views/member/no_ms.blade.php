@@ -21,6 +21,7 @@
 </div>
 
 
+@include('includes.euModal')
 
 <!--.......main Footer....  -->
 <footer class="fixed-bottom">

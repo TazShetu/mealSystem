@@ -95,6 +95,7 @@
     </div>
 </header>
 
+@include('includes.euModal')
 
 <!--.......main Footer....  -->
 {{--@include('includes.footer')--}}

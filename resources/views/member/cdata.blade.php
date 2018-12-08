@@ -27,18 +27,6 @@
                                             <span class="help-block text-danger">{{$errors->first('date')}}</span>
                                         @endif
                                     </div>
-                                    {{--<div class="form-group {{$errors->has('name') ? 'has-error' : ''}}">--}}
-                                        {{--<label for="category">Name</label>--}}
-                                        {{--<select name="name" id="name" class="form-control">--}}
-                                            {{--<option value="" hidden disabled selected>Choose One</option>--}}
-                                            {{--@foreach($ms->users as $u)--}}
-                                                {{--<option value="{{$u->id}}">{{$u->name}}</option>--}}
-                                            {{--@endforeach--}}
-                                        {{--</select>--}}
-                                        {{--@if($errors->has('name'))--}}
-                                            {{--<span class="help-block text-danger">{{$errors->first('name')}}</span>--}}
-                                        {{--@endif--}}
-                                    {{--</div>--}}
                                     <div class="form-group {{$errors->has('meal') ? 'has-error' : ''}}">
                                         <label class="lead"><b>Meal</b></label>
                                         <input type="number" class="form-control" name="meal">
@@ -78,6 +66,7 @@
 </header>
 
 
+@include('includes.euModal')
 
 @include('includes.footer')
 
