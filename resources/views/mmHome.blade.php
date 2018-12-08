@@ -29,6 +29,9 @@
                             @csrf
                         </form></span>
                         <button class="dropdown-item" data-toggle="modal" data-target="#euModal"><i class="fa fa-edit"></i>&nbsp; Edit Profile</button>
+                        @role(['admin','mealManager'])
+                            <a href="{{route('mm.change')}}" class="dropdown-item"><i class="fa fa-user"></i> <i class="fa fa-arrows-h"></i> <i class="fa fa-user-o"></i></a>
+                        @endrole
                     </div>
                 </li>
             </ul>
