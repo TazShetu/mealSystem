@@ -5,7 +5,7 @@
 <header id="home-section" class="oM">
     <div class="dark-overlay">
         <div class="home-inner">
-            <h1 class="text-center">Choose, who to add in current month</h1>
+            <h2 class="text-center">Choose, who do you want to make meal-manager.</h2>
             <br>
             <div class="container">
                 <div class="row">
@@ -14,30 +14,31 @@
                         <div class="card text-center bg-success">
                             @if(empty($members))
                                 <div class="card-header">
-                                    <h2>No old member to add !</h2>
+                                    <h3>No Member in Current Meal-System !</h3>
+                                    <p>First add member in current meal-system.</p>
                                 </div>
                             @else
                                 <div class="card-header">
-                                    <h3>Select member from last month</h3>
+                                    <h4>Select who will be meal-manager.</h4>
                                 </div>
                                 <div class="card-body">
-                                    <form action="{{route('old.add', ['msid' => $msid])}}" method="post">
+                                    <form action="{{route('mm.store')}}" method="post">
                                         {{csrf_field()}}
-                                        @foreach($members as $m)
-                                            <div class="form-check {{$errors->has('names') ? 'has-error' : ''}}">
-                                                <input class="form-check-input" type="checkbox" name="names[]" value="{{$m->id}}" id="defaultCheck1">
-                                                <label class="form-check-label" for="defaultCheck1">
-                                                    {{$m->name}}
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                        @if($errors->has('names'))
-                                            <span class="help-block text-danger">{{$errors->first('names')}}</span>
-                                        @endif
+                                        <div class="form-group {{$errors->has('member_id') ? 'has-error' : ''}}">
+                                            <select name="member_id" id="member" class="form-control">
+                                                <option value="" hidden disabled selected>Choose One</option>
+                                                @foreach($members as $m)
+                                                    <option value="{{$m->id}}">{{$m->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @if($errors->has('member_id'))
+                                                <span class="help-block text-warning">{{$errors->first('member_id')}}</span>
+                                            @endif
+                                        </div>
                                         <hr>
                                         <div class="form-group">
                                             <div class="text-center">
-                                                <button class="btn btn-primary btn-block" type="submit">Add</button>
+                                                <button class="btn btn-danger" type="submit" onclick="return confirm('You will no longer be meal-manager. Are you sure ?');">Meal-Manager Change</button>
                                             </div>
                                         </div>
                                     </form>
