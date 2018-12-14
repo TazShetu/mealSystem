@@ -65,7 +65,10 @@
                                 <td>{{$d->bazar}}</td>
                                 <td>{{$d->deposit}}</td>
                                 @role(['admin', 'mealManager'])
-                                    <td><a href="{{route('datam.t.edit', ['slug' => $d->user->slug, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm">Edit</a></td>
+                                    <td>
+                                        <a href="{{route('datam.t.edit', ['slug' => $d->user->slug, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm">Edit</a>
+                                        <a href="{{route('datam.t.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this entry?')">&#10006;</a>
+                                    </td>
                                 @endrole
                             </tr>
                         @endforeach

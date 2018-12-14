@@ -64,61 +64,10 @@
                                         <td>{{$d->bazar}}</td>
                                         <td>{{$d->deposit}}</td>
                                         <td>
-                                            <button class="btn btn-outline-success btn-sm mr-1 mb-1" data-toggle="modal" data-target="#editModal">Edit</button>
+                                            <a href="{{route('memdata.ea.own', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm mr-1 mb-1">Edit</a>
                                             <a href="{{route('member.DownD', ['id' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">&#10006;</a>
                                         </td>
                                     </tr>
-                                                {{--Edit Modal--}}
-                                                <div class="modal fade " id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-success text-white">
-                                                                <h5 class="modal-title">Edit Data</h5>
-                                                                <button class="close text-white" data-dismiss="modal"><span>&times;</span></button>
-                                                            </div>
-                                                            <form action="{{route('memdata.ea.own', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" method="post">
-                                                                {{csrf_field()}}
-                                                                <div class="modal-body bg-success">
-                                                                    <div class="form-group">
-                                                                        <label class="lead"><b>Date</b></label>
-                                                                        <h3 class="bg-light text-dark p-1">{{$d->day}} - {{$mn}}</h3>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label class="lead">Name</label>
-                                                                        <h3 class="bg-light text-dark p-1">{{$d->user->name}}</h3>
-                                                                    </div>
-                                                                    <div class="form-group {{$errors->has('meal') ? 'has-error' : ''}}">
-                                                                        <label class="lead"><b>Meal</b></label>
-                                                                        <input type="number" class="form-control" name="meal" value="{{$d->meal}}">
-                                                                        @if($errors->has('meal'))
-                                                                            <span class="help-block">{{$errors->first('meal')}}</span>
-                                                                        @endif
-                                                                    </div>
-                                                                    <div class="form-group {{$errors->has('bazar') ? 'has-error' : ''}}">
-                                                                        <label class="lead"><b>Bazar</b></label>
-                                                                        <input type="number" class="form-control" name="bazar" value="{{$d->bazar}}">
-                                                                        @if($errors->has('bazar'))
-                                                                            <span class="help-block">{{$errors->first('bazar')}}</span>
-                                                                        @endif
-                                                                    </div>
-                                                                    <div class="form-group {{$errors->has('deposit') ? 'has-error' : ''}}">
-                                                                        <label class="lead"><b>Deposit</b></label>
-                                                                        <input type="number" class="form-control" name="deposit" value="{{$d->deposit}}">
-                                                                        @if($errors->has('deposit'))
-                                                                            <span class="help-block">{{$errors->first('deposit')}}</span>
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="modal-footer bg-success text-center">
-                                                                    <div class="form-group ">
-                                                                        <button class="btn btn-primary" type="submit">Save</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                 @endforeach
                                 </tbody>
                             </table>
@@ -143,13 +92,14 @@
                                     <td>{{$d->deposit}}</td>
                                     <td>
                                         @role(['admin','mealManager'])
-
                                             <a href="{{route('datam.t.edit', ['slug' => $d->user->slug, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm mr-1 mb-1">Edit</a>
-
-                                            <a href="" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">&#10006;</a>
+                                            <a href="{{route('datam.t.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this entry?')">&#10006;</a>
                                         @else
+
                                             <a href="" class="btn btn-outline-success btn-sm mr-1 mb-1">Edit</a>
-                                            <a href="" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">&#10006;</a>
+
+                                            <a href="{{route('mem.t.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return alert('It will be deleted after meal-manager accept this Delete !')">&#10006;</a>
+
                                         @endrole
                                     </td>
                                 </tr>

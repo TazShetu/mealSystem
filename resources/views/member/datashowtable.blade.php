@@ -25,7 +25,7 @@
                                 $mn = $co->format('F');
                             @endphp
                             <h1 class="text-center pull-right">{{$ds[0]->day}} - {{$ds[0]->month}}</h1>
-                            <table class="table table-hover">
+                            <table class="table table-hover bg-light text-dark">
                                 <thead>
                                 <tr>
                                     <th>Name</th>
@@ -92,7 +92,6 @@
                                                                     @endif
                                                                 </div>
                                                             </div>
-
                                                             <div class="modal-footer bg-success text-center">
                                                                 <div class="form-group ">
                                                                     <button class="btn btn-primary" type="submit">Save</button>
@@ -102,6 +101,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                 @endforeach
                                     <!--loop end for member-->
                                 </tbody>

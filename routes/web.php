@@ -77,6 +77,10 @@ Route::post('/DatamUpdate/{did}', [
     'uses' => 'DatamController@update',
     'as' => 'datam.t.update'
 ])->middleware('auth', 'mM');
+Route::get('/Datamdelete/{did}', [
+    'uses' => 'DatamController@destroy',
+    'as' => 'datam.t.delete'
+])->middleware('auth', 'mM');
 
 
 Route::get('/old-member-attach/{id}', [
@@ -176,7 +180,17 @@ Route::get('Member/Data/Delete/{id}', [
     'uses' => 'MemdataController@deleteown',
     'as' => 'member.DownD'
 ])->middleware('auth');
-Route::post('/Edit/{uid}/{msid}/{m}/{d}', [
+Route::get('/Edit/{uid}/{msid}/{m}/{d}', [
     'uses' => 'MemdataController@esOwn',
     'as' => 'memdata.ea.own'
+])->middleware('auth');
+Route::post('/update/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@upOwn',
+    'as' => 'memdata.up.own'
+])->middleware('auth');
+
+
+Route::get('/memDatamdelete/{did}', [
+    'uses' => 'MemdataController@memTDelete',
+    'as' => 'mem.t.delete'
 ])->middleware('auth');
