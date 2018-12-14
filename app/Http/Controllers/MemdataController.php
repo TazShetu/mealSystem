@@ -388,5 +388,30 @@ class MemdataController extends Controller
 
     }
 
+    public function deleteown($id){
+        $d = Memdata::find($id);
+        $d->delete();
+        return redirect()->back();
+    }
+
+
+    public function esOwn(Request $request, $uid, $msid, $m, $d){
+        $data = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        $data->user_id = $uid;
+        $data->mealsystem_id = $msid;
+        $data->month = $m;
+        $data->day = $d;
+        if ($request->has('meal')){
+            $data->meal = $request->meal;
+        }
+        if ($request->has('bazar')){
+            $data->bazar = $request->bazar;
+        }
+        if ($request->has('deposit')){
+            $data->deposit = $request->deposit;
+        }
+        $data->update();
+        return redirect()->back();
+    }
 
 }

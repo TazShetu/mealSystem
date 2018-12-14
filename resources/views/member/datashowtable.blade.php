@@ -47,7 +47,6 @@
                                         <td>{{$d->deposit}}</td>
                                         <td>
                                             <a href="{{route('memdata.accept', ['id' => $d->id])}}" class="btn btn-outline-primary btn-sm mr-1 mb-1">&#10004;</a>
-                                            {{--<a href="" class="btn btn-outline-success btn-sm mr-1 mb-1">Edit</a>--}}
                                             <button class="btn btn-outline-success btn-sm mr-1 mb-1" data-toggle="modal" data-target="#editModal">Edit</button>
                                             <a href="{{route('memdata.delete', ['id' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">&#10006;</a>
                                         </td>

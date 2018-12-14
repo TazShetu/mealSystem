@@ -171,3 +171,12 @@ Route::post('meal-manager/change/store', [
     'uses' => 'UserController@mmstore',
     'as' => 'mm.store'
 ])->middleware('auth', 'mM');
+
+Route::get('Member/Data/Delete/{id}', [
+    'uses' => 'MemdataController@deleteown',
+    'as' => 'member.DownD'
+])->middleware('auth');
+Route::post('/Edit/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@esOwn',
+    'as' => 'memdata.ea.own'
+])->middleware('auth');
