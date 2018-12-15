@@ -123,7 +123,11 @@ $mnn = $co->format('F');
                                             <td>&#10006;</td>
                                             <td>&#10006;</td>
                                             <td>
-                                                <a href="{{route('accept.delete', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-info btn-sm mb-1" onclick="return confirm('Are you sure?')">Accept Delete</a>
+                                                <a href="{{route('accept.delete', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-primary btn-sm mb-1" onclick="return confirm('Are you sure?')">Accept Delete</a>
+
+                                                <a href="{{route('reject.delete', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">Reject</a>
+
+
                                             </td>
                                         @endif
                                     </tr>

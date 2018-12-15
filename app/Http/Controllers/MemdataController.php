@@ -187,7 +187,7 @@ class MemdataController extends Controller
         $mm = Auth::user();
         $ms = $mm->mealsystems()->where('month', $month)->first();
         if ($ms){
-            $memdata = Memdata::where('mealsystem_id', $ms->id)->get();
+            $memdata = Memdata::where('mealsystem_id', $ms->id)->orderBy('day')->get();
         } else {
             $ms = new Mealsystem;
             $ms->month = Carbon::now()->month;

@@ -573,4 +573,20 @@ class DatamController extends Controller
 
 
 
+    public function rd($uid, $msid, $m, $d){
+        // change dbm on datam
+        $datam = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        $datam->dbm = null;
+        $datam->update();
+
+        // delete memD
+        $memData = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        if ($memData){
+            $memData->delete();
+        }
+
+        return redirect()->route('show.memd', ['month' => $m]);
+    }
+
+
 }

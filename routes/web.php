@@ -212,3 +212,8 @@ Route::get('/accept-delete/{uid}/{msid}/{m}/{d}', [
     'uses' => 'DatamController@ad',
     'as' => 'accept.delete'
 ])->middleware('auth', 'mM');
+
+Route::get('/reject-delete/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'DatamController@rd',
+    'as' => 'reject.delete'
+])->middleware('auth', 'mM');
