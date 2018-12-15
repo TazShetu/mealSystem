@@ -77,6 +77,10 @@ Route::post('/DatamUpdate/{did}', [
     'uses' => 'DatamController@update',
     'as' => 'datam.t.update'
 ])->middleware('auth', 'mM');
+Route::get('/Datamdelete/{did}', [
+    'uses' => 'DatamController@destroy',
+    'as' => 'datam.t.delete'
+])->middleware('auth', 'mM');
 
 
 Route::get('/old-member-attach/{id}', [
@@ -171,3 +175,26 @@ Route::post('meal-manager/change/store', [
     'uses' => 'UserController@mmstore',
     'as' => 'mm.store'
 ])->middleware('auth', 'mM');
+
+Route::get('Member/Data/Delete/{id}', [
+    'uses' => 'MemdataController@deleteown',
+    'as' => 'member.DownD'
+])->middleware('auth');
+Route::get('/Edit/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@esOwn',
+    'as' => 'memdata.ea.own'
+])->middleware('auth');
+Route::post('/update/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@upOwn',
+    'as' => 'memdata.up.own'
+])->middleware('auth');
+
+
+Route::get('/Edit-Data-as-Member/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@dataMemEdit',
+    'as' => 'data.mem.edit'
+])->middleware('auth');
+Route::post('/Update-Data-as-Member/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@dataMemUpdate',
+    'as' => 'memdata.up.data'
+])->middleware('auth');

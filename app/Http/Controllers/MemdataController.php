@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Memdata;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -193,10 +194,23 @@ class MemdataController extends Controller
             $ms->save();
             $ms->users()->attach($mm);
             $memdata = Memdata::where('mealsystem_id', 0)->get();
-            // tecnique to create empty collection of array
+            // tecnique to create empty collection of array   (msid 0 is impossible)
         }
-
-        return view('member.datashowtable', compact('memdata'));
+        $cm = Carbon::now()->month;
+        if (($month * 1) === $cm){
+            $mmm = $cm;
+            $nmm = 0;
+        }else {
+            // here we are in past month
+            if (($month * 1) === 12){
+                $nmm = 1;
+            }else{
+                $nmm = $month + 1;
+            }
+            $mmm = 0;
+        }
+//        dd($nmm);
+        return view('member.datashowtable', compact('memdata', 'mmm', 'nmm', 'cm'));
     }
 
 
@@ -388,5 +402,92 @@ class MemdataController extends Controller
 
     }
 
+    public function deleteown($id){
+        $d = Memdata::find($id);
+        $d->delete();
+        return redirect()->back();
+    }
+
+
+    public function esOwn($uid, $msid, $m, $d){
+        $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        return view('member.editown', compact('memD'));
+    }
+
+
+    public function upOwn(Request $request, $uid, $msid, $m, $d){
+        $data = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+//        $data->user_id = $uid;
+//        $data->mealsystem_id = $msid;
+//        $data->month = $m;
+//        $data->day = $d;
+        if ($request->has('meal')){
+            $data->meal = $request->meal;
+        }
+        if ($request->has('bazar')){
+            $data->bazar = $request->bazar;
+        }
+        if ($request->has('deposit')){
+            $data->deposit = $request->deposit;
+        }
+        $data->update();
+        return redirect()->route('p.table', ['slug' => $data->user->slug, 'id' => $msid]);
+    }
+
+
+    public function dataMemEdit($uid, $msid, $m, $d){
+        $data = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        return view('member.editdata', compact('data'));
+    }
+
+    public function dataMemUpdate(Request $request, $uid, $msid, $m, $d){
+        $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        if ($memD){
+            $memD->delete();
+        }
+        $dd = new Memdata;
+        $dd->user_id = $uid;
+        $dd->mealsystem_id = $msid;
+        $dd->month = $m;
+        $dd->day = $d;
+        if ($request->has('meal')){
+            $dd->meal = $request->meal;
+        }
+        if ($request->has('bazar')){
+            $dd->bazar = $request->bazar;
+        }
+        if ($request->has('deposit')){
+            $dd->deposit = $request->deposit;
+        }
+        $dd->save();
+
+        $u = User::find($uid);
+        return redirect()->route('p.table', ['slug' => $u->slug, 'id' => $msid]);
+
+    }
+
+
+//    public function memTDelete($did){
+////        $data = Datam::find($did);
+////        $uid = $data->user_id;
+////        $msid = $data->mealsystem_id;
+////        $month = $data->month;
+////        $day = $data->day;
+////
+////        $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('month', $month)->where('day', $day)->first();
+////        if ($memD){
+////            $memD->delete();
+////        }
+////        $d = new Memdata;
+////        $d->user_id = $uid;
+////        $d->mealsystem_id = $msid;
+////        $d->month = $month;
+////        $d->day = $day;
+////        $d->meal = 0;
+////        $d->bazar = 0;
+////        $d->deposit = 0;
+////        $d->save();
+////        return redirect()->back();
+////    }
 
 }
