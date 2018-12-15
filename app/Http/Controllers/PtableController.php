@@ -20,11 +20,11 @@ class PtableController extends Controller
 //        dd($id);
         $u = User::where('slug', $slug)->first();
         $uid = $u->id;
-        $dA = Datam::where('user_id', $uid)->where('mealsystem_id', $id)->get();
+        $dA = Datam::where('user_id', $uid)->where('mealsystem_id', $id)->orderBy('day')->get();
         $ms = Mealsystem::find($id);
         $cmonth = $ms->month;
 
-        $naD = Memdata::where('user_id', $uid)->where('mealsystem_id', $id)->get();
+        $naD = Memdata::where('user_id', $uid)->where('mealsystem_id', $id)->orderBy('day')->get();
 
         return view('t', compact('dA' , 'cmonth', 'naD'));
     }
@@ -98,7 +98,7 @@ class PtableController extends Controller
 
     public function tt($msid)
     {
-        $datams = Datam::where('mealsystem_id', $msid)->get();
+        $datams = Datam::where('mealsystem_id', $msid)->orderBy('day')->get();
 
         $ms = Mealsystem::find($msid);
         $cmonth = $ms->month;

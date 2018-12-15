@@ -82,7 +82,7 @@
                         </div>
                         <div class="col-md-6 text-center pb-1">
                             <a href="{{route('show.memd', ['month' => $month])}}" class="btn btn-outline-info">
-                                <b><span style="font-size: 25px;'">M</span> Data ({{$mn}})</b>
+                                <b><span style="font-size: 25px;'">Member</span> Data ({{$mn}})</b>
                             </a>
                         </div>
                     </div>
@@ -137,18 +137,12 @@
                         @if($ms)
                             <br>
                             <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-lg btn-success btn-block"><i class="fa fa-bars" style="font-size: 20px;"></i>&nbsp; Personal Table</a>
-                        @elseif($pms)
-                            <br>
-                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $pms->id])}}" class="btn btn-lg btn-success btn-block"><i class="fa fa-bars" style="font-size: 20px;"></i>&nbsp; Last month</a>
                         @endif
                     </div>
                     <div class="col-md-6 p-1">
                         @if($ms)
                             <br>
                             <a href="{{route('f.table', ['msid' => $ms->id])}}" class="btn btn-lg btn-outline-success btn-block"><i class="fa fa-table" style="font-size: 20px;"></i>&nbsp; Full Table</a>
-                        @elseif($pms)
-                            <br>
-                            <a href="{{route('f.table', ['msid' => $pms->id])}}" class="btn btn-lg btn-outline-success btn-block"><i class="fa fa-table" style="font-size: 20px;"></i>&nbsp; Last month</a>
                         @endif
                     </div>
                 </div>

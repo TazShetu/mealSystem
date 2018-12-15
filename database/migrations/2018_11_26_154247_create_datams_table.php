@@ -23,6 +23,7 @@ class CreateDatamsTable extends Migration
             $table->integer('meal')->nullable();
             $table->integer('bazar')->nullable();
             $table->integer('deposit')->nullable();
+            $table->boolean('dbm')->nullable();
             $table->timestamps();
         });
     }

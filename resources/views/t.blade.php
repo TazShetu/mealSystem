@@ -53,15 +53,29 @@
                                     <th>Meal</th>
                                     <th>Bazar</th>
                                     <th>Deposit</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($naD as $d)
                                     <tr>
                                         <td>{{$d->day}} / {{$d->month}}</td>
-                                        <td>{{$d->meal}}</td>
-                                        <td>{{$d->bazar}}</td>
-                                        <td>{{$d->deposit}}</td>
+                                        @if($d->dbm === null)
+                                            <td>{{$d->meal}}</td>
+                                            <td>{{$d->bazar}}</td>
+                                            <td>{{$d->deposit}}</td>
+                                            <td>
+                                                <a href="{{route('memdata.ea.own', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm mr-1 mb-1">Edit</a>
+                                                <a href="{{route('member.DownD', ['id' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">&#10006;</a>
+                                            </td>
+                                        @else
+                                            <td>&#10006;</td>
+                                            <td>&#10006;</td>
+                                            <td>&#10006;</td>
+                                            <td>
+                                                <a href="{{route('delete.undo', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-info btn-sm mb-1" onclick="return confirm('Are you sure?')">undo delete</a>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -75,6 +89,7 @@
                             <th>Meal</th>
                             <th>Bazar</th>
                             <th>Deposit</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -84,6 +99,19 @@
                                     <td>{{$d->meal}}</td>
                                     <td>{{$d->bazar}}</td>
                                     <td>{{$d->deposit}}</td>
+                                    <td>
+                                        @role(['admin','mealManager'])
+                                            <a href="{{route('datam.t.edit', ['slug' => $d->user->slug, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm mr-1 mb-1">Edit</a>
+                                            <a href="{{route('datam.t.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this entry?')">&#10006;</a>
+                                        @else
+                                            @if($d->dbm === null)
+                                                <a href="{{route('data.mem.edit', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-success btn-sm mr-1 mb-1">Edit</a>
+                                                <a href="{{route('data.mem.delete', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return alert('It will be deleted if Meal-Manager accept this !')">&#10006;</a>
+                                            @else
+                                                <a href="{{route('delete.undo', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-info btn-sm mb-1" onclick="return confirm('Are you sure?')">undo delete</a>
+                                            @endif
+                                        @endrole
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

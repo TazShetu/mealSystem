@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Amountu;
 use App\Datam;
+use App\Memdata;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -291,9 +292,80 @@ class DatamController extends Controller
      * @param  \App\Datam  $datam
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Datam $datam)
+    public function destroy($did)
     {
-        //
+//        dd($did);
+        $d = Datam::find($did);
+        $msid = $d->mealsystem_id;
+        $month = $d->month;
+        $d->delete();
+
+        $dCA = Datam::where('mealsystem_id', $msid)->where('month', $month)->get();
+        $tb = 0;
+        $tm = 0;
+        foreach ($dCA as $dA){
+            $tb = $tb + $dA->bazar;
+            $tm = $tm + $dA->meal;
+        }
+        if ($tm){
+            $mr = $tb / $tm;
+        }else{
+            $mr = 0;
+        }
+        $mealS = Mealsystem::where('id', $msid)->where('month', $month)->first();
+        $mealS->meal_rate = $mr;
+        $mealS->update();
+
+        $users = $mealS->users()->get();
+
+        $tdo = 0;
+        foreach ($users as $user){
+            $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
+            foreach ($dataA as $data){
+                $tdo = $tdo + $data->deposit;
+            }
+        }
+        foreach ($users as $user){
+            $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
+            $tb = 0;
+            $tm = 0;
+            $td = 0;
+            foreach ($dataA as $data){
+                $tb = $tb + $data->bazar;
+                $tm = $tm + $data->meal;
+                $td = $td + $data->deposit;
+            }
+
+            if ($user->hasRole('mealManager')){
+                if ($mr){
+                    $mrr = round($mr);
+                    $amount = $td - $tdo + $tb - ($mrr * $tm);
+                }else{
+                    $amount = $td - $tdo + $tb;
+                }
+            }else{
+                if ($mr){
+                    $mrr = round($mr);
+                    $amount = $td + $tb - ($mrr * $tm);
+                }else{
+                    $amount = $td + $tb;
+                }
+            }
+            $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $msid)->first();
+            if ($ar){
+                $ar->amount = $amount;
+                $ar->update();
+            }else {
+                $ar = new Amountu;
+                $ar->user_id = $user->id;
+                $ar->mealsystem_id = $msid;
+                $ar->amount = $amount;
+                $ar->save();
+            }
+        }
+
+        return redirect()->back();
+
     }
 
 
@@ -337,8 +409,6 @@ class DatamController extends Controller
         if ($check){
             $check->delete();
         }
-
-
 
         $d = new Datam;
         $d->user_id = $request->name;
@@ -422,6 +492,101 @@ class DatamController extends Controller
         return redirect()->route('lhome', ['msid' => $msid]);
     }
 
+
+
+    public function ad($uid, $msid, $m, $d){
+        // find delete datam
+        $datam = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        $datam->delete();
+
+        // calculate all
+        $dCA = Datam::where('mealsystem_id', $msid)->where('month', $m)->get();
+        $tb = 0;
+        $tm = 0;
+        foreach ($dCA as $dA){
+            $tb = $tb + $dA->bazar;
+            $tm = $tm + $dA->meal;
+        }
+        if ($tm){
+            $mr = $tb / $tm;
+        }else{
+            $mr = 0;
+        }
+        $mealS = Mealsystem::where('id', $msid)->where('month', $m)->first();
+        $mealS->meal_rate = $mr;
+        $mealS->update();
+
+        $users = $mealS->users()->get();
+
+        $tdo = 0;
+        foreach ($users as $user){
+            $dataA = Datam::where('user_id', $user->id)->where('month' , $m)->get();
+            foreach ($dataA as $data){
+                $tdo = $tdo + $data->deposit;
+            }
+        }
+        foreach ($users as $user) {
+            $dataA = Datam::where('user_id', $user->id)->where('month', $m)->get();
+            $tb = 0;
+            $tm = 0;
+            $td = 0;
+            foreach ($dataA as $data) {
+                $tb = $tb + $data->bazar;
+                $tm = $tm + $data->meal;
+                $td = $td + $data->deposit;
+            }
+
+            if ($user->hasRole('mealManager')) {
+                if ($mr) {
+                    $mrr = round($mr);
+                    $amount = $td - $tdo + $tb - ($mrr * $tm);
+                } else {
+                    $amount = $td - $tdo + $tb;
+                }
+            } else {
+                if ($mr) {
+                    $mrr = round($mr);
+                    $amount = $td + $tb - ($mrr * $tm);
+                } else {
+                    $amount = $td + $tb;
+                }
+            }
+            $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $msid)->first();
+            if ($ar) {
+                $ar->amount = $amount;
+                $ar->update();
+            } else {
+                $ar = new Amountu;
+                $ar->user_id = $user->id;
+                $ar->mealsystem_id = $msid;
+                $ar->amount = $amount;
+                $ar->save();
+            }
+        }
+
+        // delete memData
+        $memData = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        $memData->delete();
+
+        return redirect()->route('show.memd', ['month' => $m]);
+    }
+
+
+
+    public function rd($uid, $msid, $m, $d){
+        // change dbm on datam
+        $datam = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        $datam->dbm = null;
+        $datam->update();
+
+        // delete memD
+        $memData = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        if ($memData){
+            $memData->delete();
+        }
+
+        return redirect()->route('show.memd', ['month' => $m]);
+    }
 
 
 }
