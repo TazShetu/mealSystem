@@ -198,3 +198,22 @@ Route::post('/Update-Data-as-Member/{uid}/{msid}/{m}/{d}', [
     'uses' => 'MemdataController@dataMemUpdate',
     'as' => 'memdata.up.data'
 ])->middleware('auth');
+
+Route::get('/Delete-Data-as-Member/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@dataMemDelete',
+    'as' => 'data.mem.delete'
+])->middleware('auth');
+Route::get('/Delete-Undo-as-Member/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@deleteUndo',
+    'as' => 'delete.undo'
+])->middleware('auth');
+
+Route::get('/accept-delete/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'DatamController@ad',
+    'as' => 'accept.delete'
+])->middleware('auth', 'mM');
+
+Route::get('/reject-delete/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'DatamController@rd',
+    'as' => 'reject.delete'
+])->middleware('auth', 'mM');

@@ -51,7 +51,7 @@
 
                                     <div class="form-group">
                                         <div class="text-center">
-                                            <button class="btn btn-primary btn-block" type="submit" onclick="return alert('It will be edited if meal-manager accepts this.')">Submit</button>
+                                            <button class="btn btn-primary btn-block" type="submit" onclick="return alert('It will be edited if Meal-Manager accepts this.')">Submit</button>
                                         </div>
                                     </div>
                                 </form>
