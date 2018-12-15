@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Memdata;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -431,6 +432,38 @@ class MemdataController extends Controller
         }
         $data->update();
         return redirect()->route('p.table', ['slug' => $data->user->slug, 'id' => $msid]);
+    }
+
+
+    public function dataMemEdit($uid, $msid, $m, $d){
+        $data = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        return view('member.editdata', compact('data'));
+    }
+
+    public function dataMemUpdate(Request $request, $uid, $msid, $m, $d){
+        $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        if ($memD){
+            $memD->delete();
+        }
+        $dd = new Memdata;
+        $dd->user_id = $uid;
+        $dd->mealsystem_id = $msid;
+        $dd->month = $m;
+        $dd->day = $d;
+        if ($request->has('meal')){
+            $dd->meal = $request->meal;
+        }
+        if ($request->has('bazar')){
+            $dd->bazar = $request->bazar;
+        }
+        if ($request->has('deposit')){
+            $dd->deposit = $request->deposit;
+        }
+        $dd->save();
+
+        $u = User::find($uid);
+        return redirect()->route('p.table', ['slug' => $u->slug, 'id' => $msid]);
+
     }
 
 

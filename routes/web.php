@@ -190,7 +190,11 @@ Route::post('/update/{uid}/{msid}/{m}/{d}', [
 ])->middleware('auth');
 
 
-//Route::get('/memDatamdelete/{did}', [
-//    'uses' => 'MemdataController@memTDelete',
-//    'as' => 'mem.t.delete'
-//])->middleware('auth');
+Route::get('/Edit-Data-as-Member/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@dataMemEdit',
+    'as' => 'data.mem.edit'
+])->middleware('auth');
+Route::post('/Update-Data-as-Member/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@dataMemUpdate',
+    'as' => 'memdata.up.data'
+])->middleware('auth');

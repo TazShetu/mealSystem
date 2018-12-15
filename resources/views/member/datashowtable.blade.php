@@ -51,9 +51,7 @@ $mnn = $co->format('F');
                                     <th>Meal</th>
                                     <th>Bazar</th>
                                     <th>Deposit</th>
-                                    @role(['admin', 'mealManager'])
                                     <th></th>
-                                    @endrole
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -65,7 +63,7 @@ $mnn = $co->format('F');
                                         <td>{{$d->bazar}}</td>
                                         <td>{{$d->deposit}}</td>
                                         <td>
-                                            <a href="{{route('memdata.accept', ['id' => $d->id])}}" class="btn btn-outline-primary btn-sm mr-1 mb-1">&#10004;</a>
+                                            <a href="{{route('memdata.accept', ['id' => $d->id])}}" class="btn btn-outline-primary btn-sm mr-1 mb-1">Accept</a>
                                             <button class="btn btn-outline-success btn-sm mr-1 mb-1" data-toggle="modal" data-target="#editModal-<?php echo $d->id;?>">Edit</button>
                                                         {{--EDIT MODAL--}}
                                                         <div class="modal fade " id="editModal-<?php echo $d->id;?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
@@ -117,7 +115,7 @@ $mnn = $co->format('F');
                                                                 </div>
                                                             </div>
                                                         </div>
-                                            <a href="{{route('memdata.delete', ['id' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">&#10006;</a>
+                                            <a href="{{route('memdata.delete', ['id' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">Reject</a>
                                         </td>
                                     </tr>
 
@@ -163,12 +161,12 @@ $mnn = $co->format('F');
 <!--.......main Footer....  -->
 {{--@include('includes.footer')--}}
 
+@endrole
 
 
 @include('includes.euModal')
 
 
-@endrole
 
 
 
