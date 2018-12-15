@@ -98,7 +98,8 @@
 
                                             <a href="" class="btn btn-outline-success btn-sm mr-1 mb-1">Edit</a>
 
-                                            <a href="{{route('mem.t.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return alert('It will be deleted after meal-manager accept this Delete !')">&#10006;</a>
+{{--                                            <a href="{{route('mem.t.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return alert('It will be deleted after meal-manager accept this Delete !')">&#10006;</a>--}}
+                                            <a href="" class="btn btn-outline-danger btn-sm mb-1" onclick="return alert('It will be deleted after meal-manager accept this Delete !')">&#10006;</a>
 
                                         @endrole
                                     </td>

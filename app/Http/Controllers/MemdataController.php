@@ -421,27 +421,27 @@ class MemdataController extends Controller
     }
 
 
-    public function memTDelete($did){
-        $data = Datam::find($did);
-        $uid = $data->user_id;
-        $msid = $data->mealsystem_id;
-        $month = $data->month;
-        $day = $data->day;
-
-        $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('month', $month)->where('day', $day)->first();
-        if ($memD){
-            $memD->delete();
-        }
-        $d = new Memdata;
-        $d->user_id = $uid;
-        $d->mealsystem_id = $msid;
-        $d->month = $month;
-        $d->day = $day;
-        $d->meal = 0;
-        $d->bazar = 0;
-        $d->deposit = 0;
-        $d->save();
-        return redirect()->back();
-    }
+//    public function memTDelete($did){
+////        $data = Datam::find($did);
+////        $uid = $data->user_id;
+////        $msid = $data->mealsystem_id;
+////        $month = $data->month;
+////        $day = $data->day;
+////
+////        $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('month', $month)->where('day', $day)->first();
+////        if ($memD){
+////            $memD->delete();
+////        }
+////        $d = new Memdata;
+////        $d->user_id = $uid;
+////        $d->mealsystem_id = $msid;
+////        $d->month = $month;
+////        $d->day = $day;
+////        $d->meal = 0;
+////        $d->bazar = 0;
+////        $d->deposit = 0;
+////        $d->save();
+////        return redirect()->back();
+////    }
 
 }

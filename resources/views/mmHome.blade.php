@@ -82,7 +82,7 @@
                         </div>
                         <div class="col-md-6 text-center pb-1">
                             <a href="{{route('show.memd', ['month' => $month])}}" class="btn btn-outline-info">
-                                <b><span style="font-size: 25px;'">M</span> Data ({{$mn}})</b>
+                                <b><span style="font-size: 25px;'">Member</span> Data ({{$mn}})</b>
                             </a>
                         </div>
                     </div>
