@@ -36,7 +36,7 @@
 
 <!--.......main Footer....  -->
 <footer>
-    <div class="text-center fixed-bottom">
+    <div class="text-center fixed-bottom bg-dark">
         <h5 class="h3">Taz Inc. <span style="font-size: 17px;">Copyright &copy; 2018</span></h5>
     </div>
 </footer>
@@ -55,3 +55,12 @@
 
 </body>
 </html>
+
+<style>
+    body{
+        background: url("{{asset('img/cM.jpg')}}") no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        min-height: 900px;
+    }
+</style>

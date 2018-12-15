@@ -467,27 +467,48 @@ class MemdataController extends Controller
     }
 
 
-//    public function memTDelete($did){
-////        $data = Datam::find($did);
-////        $uid = $data->user_id;
-////        $msid = $data->mealsystem_id;
-////        $month = $data->month;
-////        $day = $data->day;
-////
-////        $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('month', $month)->where('day', $day)->first();
-////        if ($memD){
-////            $memD->delete();
-////        }
-////        $d = new Memdata;
-////        $d->user_id = $uid;
-////        $d->mealsystem_id = $msid;
-////        $d->month = $month;
-////        $d->day = $day;
-////        $d->meal = 0;
-////        $d->bazar = 0;
-////        $d->deposit = 0;
-////        $d->save();
-////        return redirect()->back();
-////    }
+
+    public function dataMemDelete($uid, $msid, $m, $d){
+        // make dbm of datam 1
+        $datam = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        $datam->dbm = 1;
+        $datam->update();
+        // check if memData exist for same ........ if, then delete
+        $memData = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        if ($memData){
+            $memData->delete();
+        }
+        // make dbm of memData 1 and every thing null (by default)
+        $dd = new Memdata;
+        $dd->user_id = $uid;
+        $dd->mealsystem_id = $msid;
+        $dd->month = $m;
+        $dd->day = $d;
+        $dd->dbm = 1;
+        $dd->save();
+
+        $u = User::find($uid);
+        return redirect()->route('p.table', ['slug' => $u->slug, 'id' => $msid]);
+    }
+
+
+
+    public function deleteUndo($uid, $msid, $m, $d){
+        // check if that exist in datam if then change dbm to null
+        $datam = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        if ($datam){
+            $datam->dbm = null;
+            $datam->update();
+        }
+        // delete the row from memData
+        $memData = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        if ($memData){
+            $memData->delete();
+        }
+
+        $u = User::find($uid);
+        return redirect()->route('p.table', ['slug' => $u->slug, 'id' => $msid]);
+    }
+
 
 }
