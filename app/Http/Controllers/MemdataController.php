@@ -193,10 +193,23 @@ class MemdataController extends Controller
             $ms->save();
             $ms->users()->attach($mm);
             $memdata = Memdata::where('mealsystem_id', 0)->get();
-            // tecnique to create empty collection of array
+            // tecnique to create empty collection of array   (msid 0 is impossible)
         }
-
-        return view('member.datashowtable', compact('memdata'));
+        $cm = Carbon::now()->month;
+        if (($month * 1) === $cm){
+            $mmm = $cm;
+            $nmm = 0;
+        }else {
+            // here we are in past month
+            if (($month * 1) === 12){
+                $nmm = 1;
+            }else{
+                $nmm = $month + 1;
+            }
+            $mmm = 0;
+        }
+//        dd($nmm);
+        return view('member.datashowtable', compact('memdata', 'mmm', 'nmm', 'cm'));
     }
 
 

@@ -3,11 +3,30 @@
 <!--....NAV BAR....  -->
 @include('includes.navbar')
 
-{{--@php--}}
+@php
+// mmm=cm  nmm=0 we r in current month
+if (($nmm * 1) === 0){
+    if(($mmm * 1) === 1){
+        $pm = 12;
+    }else {
+        $pm = $mmm - 1;
+    }
+    $po = DateTime::createFromFormat('!m', $pm);
+    $pmn = $po->format('F');
+}
+
+
+// nmm=nm  mmm=0 we r in past month
+$co = DateTime::createFromFormat('!m', $cm);
+$mnn = $co->format('F');
 
 
 
-{{--@endphp--}}
+
+
+
+
+@endphp
 
 @role(['admin', 'mealManager'])
 <header id="home-section" class="TablE">
@@ -122,21 +141,20 @@
             </div>
 
 
-            {{--<div class="container">--}}
-                {{--<div class="row">--}}
-                    {{--<div class="col-sm-6">--}}
-                        {{--@if((($cmonth * 1) === (\Carbon\Carbon::now()->month)) && $pms)--}}
-                            {{--<a href="{{route('p.table', ['slug' => $a->slug, 'id' => $pms->id])}}" class="btn btn-success pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>--}}
-                        {{--@endif--}}
-                    {{--</div>--}}
-                    {{--<div class="col-sm-6">--}}
-                        {{--@if((($cmonth * 1) !== (\Carbon\Carbon::now()->month)) && $ms)--}}
-                            {{--<a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-success pull-right">{{$mn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>--}}
-                        {{--@endif--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-
+            <div class="container mt-2">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @if(($nmm * 1) === 0)
+                            <a href="{{route('show.memd', ['month' => $pm])}}" class="btn btn-light pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        @if(($mmm * 1) === 0)
+                            <a href="{{route('show.memd', ['month' => $cm])}}" class="btn btn-light pull-right">{{$mnn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </header>
