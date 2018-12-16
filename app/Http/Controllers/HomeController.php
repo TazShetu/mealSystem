@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Amountu;
 use App\Datam;
 use App\Mealsystem;
 use App\Memdata;
@@ -53,11 +54,13 @@ class HomeController extends Controller
             $om = $cm - 2 ;
         }
 
+        // datams table
         $ds = Datam::where('month', $om)->get();
         foreach ($ds as $d){
             $d->delete();
         }
 
+        // memdatas table
         $mds = Memdata::where('month', $om)->get();
         foreach ($mds as $md){
             $md->delete();
@@ -65,11 +68,19 @@ class HomeController extends Controller
 
         $mss = Mealsystem::where('month', $om)->get();
         foreach ($mss as $ms){
+            // amountus table
+            $amounts = Amountu::where('mealsystem_id', $ms->id)->get();
+            foreach ($amounts as $a){
+                $a->delete();
+            }
+
+            // mealsystem_user table
             $msid = $ms->id;
             DB::delete('DELETE FROM mealsystem_user WHERE mealsystem_id = :msid', ['msid' => $msid]);
+
+            // mealsystems table
             $ms->delete();
         }
-
 
         return redirect()->back();
 

@@ -76,7 +76,13 @@ class DatamController extends Controller
             $mData = Memdata::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
             if ($mData){
                 $user = User::find($request->name);
-                return view('datam.memDataExist', compact('user', 'day', 'month'));
+                if ($mData->dbm === null){
+                    $x = 0;
+                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+                }else {
+                    $x = 1;
+                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+                }
             }
 
             $check = Datam::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
@@ -417,7 +423,13 @@ class DatamController extends Controller
             $user = User::find($request->name);
             $day = $request->day;
             $month = $m;
-            return view('datam.memDataExist', compact('user', 'day', 'month'));
+            if ($mData->dbm === null){
+                $x = 0;
+                return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+            }else {
+                $x = 1;
+                return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+            }
         }
 
         $check = Datam::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $request->day)->where('month', $m)->first();

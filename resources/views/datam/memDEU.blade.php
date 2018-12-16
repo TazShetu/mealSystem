@@ -4,6 +4,7 @@
 @include('includes.navbar')
 
 @php
+    $u = \Illuminate\Support\Facades\Auth::user();
     $o = DateTime::createFromFormat('!m', $month);
     $mn = $o->format('F');
 @endphp
@@ -13,29 +14,30 @@
             @if($x === 0)
                 <div class="card bg-success">
                     <div class="card-header text-center">
-                        <h3><span style="color: #fef4d1">{{$user->name}}</span> has already given data for "<span style="color: #fef4d1">{{$day}}</span > - <span style="color: #fef4d1">{{$mn}}</span>"</h3>
+                        <h3>You have already given data for "<span style="color: #fef4d1">{{$day}}</span > - <span style="color: #fef4d1">{{$mn}}</span>"</h3>
                     </div>
                     <div class="card-body text-center">
-                        <p>You can accept / edit / delete that in given data table.</p>
+                        <p>You can edit / delete that in Personal Table.</p>
                     </div>
                     <div class="card-footer text-center">
-                        <a href="{{route('show.memd', ['month' => $month])}}" class="btn btn-outline-warning">Given Data Table</a>
+                        <a href="{{route('p.table', ['slug' => $u->slug, 'id' => $msid])}}" class="btn btn-outline-warning">Personal Table</a>
                     </div>
                 </div>
             @else
                 <div class="card bg-success">
                     <div class="card-header text-center">
-                        <h3><span style="color: #fef4d1">{{$user->name}}</span> has already deleted data for "<span style="color: #fef4d1">{{$day}}</span > - <span style="color: #fef4d1">{{$mn}}</span>"</h3>
+                        <h3>You have already deleted data for "<span style="color: #fef4d1">{{$day}}</span > - <span style="color: #fef4d1">{{$mn}}</span>"</h3>
                     </div>
                     <div class="card-body text-center">
-                        <p>Please accept / reject that delete in given data table first.</p>
-                        <p>Only then you can enter data of <span style="color: #fef4d1">{{$user->name}}</span> for "<span style="color: #fef4d1">{{$day}}</span > - <span style="color: #fef4d1">{{$mn}}</span>"</p>
+                        <p>Please undo that delete in Personal Table first.</p>
+                        <p>Only then you can enter data for "<span style="color: #fef4d1">{{$day}}</span > - <span style="color: #fef4d1">{{$mn}}</span>"</p>
                     </div>
                     <div class="card-footer text-center">
-                        <a href="{{route('show.memd', ['month' => $month])}}" class="btn btn-outline-warning">Given Data Table</a>
+                        <a href="{{route('p.table', ['slug' => $u->slug, 'id' => $msid])}}" class="btn btn-outline-warning">Personal Table</a>
                     </div>
                 </div>
             @endif
+
         </div>
     </div>
 </div>

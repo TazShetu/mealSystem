@@ -130,7 +130,7 @@ Route::get('/Enter-Data/Member', [
     'uses' => 'MemdataController@create',
     'as' => 'memdata.create'
 ])->middleware('auth');
-Route::post('/Member-DataStore/{msid}', [
+Route::post('/Member-Data-Store/{msid}', [
     'uses' => 'MemdataController@store',
     'as' => 'memdata.store'
 ])->middleware('auth');
