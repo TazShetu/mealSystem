@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Datam;
 use App\Mealsystem;
+use App\Memdata;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -56,6 +57,12 @@ class HomeController extends Controller
         foreach ($ds as $d){
             $d->delete();
         }
+
+        $mds = Memdata::where('month', $om)->get();
+        foreach ($mds as $md){
+            $md->delete();
+        }
+
         $mss = Mealsystem::where('month', $om)->get();
         foreach ($mss as $ms){
             $msid = $ms->id;
