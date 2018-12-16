@@ -74,15 +74,19 @@
             <hr>
             <div class="container">
                 @role(['admin', 'mealManager'])
+                    @php
+                        $memD = \App\Memdata::where('mealsystem_id', $ms->id)->get();
+                        $c = count($memD);
+                    @endphp
                     <div class="row">
                         <div class="col-md-6 text-center pb-1">
-                            <a href="{{route('datam.create')}}" class="btn btn-info ">
+                            <a href="{{route('datam.create')}}" class="btn btn-outline-info ">
                                 <b><span style="font-size: 25px;'">New</span> Data ({{$mn}})</b>
                             </a>
                         </div>
                         <div class="col-md-6 text-center pb-1">
-                            <a href="{{route('show.memd', ['month' => $month])}}" class="btn btn-outline-info">
-                                <b><span style="font-size: 25px;'">Member</span> Data ({{$mn}})</b>
+                            <a href="{{route('show.memd', ['month' => $month])}}" class="btn btn-info">
+                                <b>given Data ({{$mn}})<span class="badge" style="color: yellow; font-size: 25px;">{{$c}}</span></b>
                             </a>
                         </div>
                     </div>
