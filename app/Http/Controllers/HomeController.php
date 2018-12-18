@@ -7,6 +7,7 @@ use App\Datam;
 use App\Mealsystem;
 use App\Memdata;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,41 @@ class HomeController extends Controller
     }
 
     public function me(){
-        return view('mmHome');
+        $c = null;
+        $ms = null;
+        $pms = null;
+        $u = Auth::user();
+        $month = \Carbon\Carbon::now()->month;
+        $ms = $u->mealsystems()->where('month', $month)->first();
+        if ($ms){
+            $am = $u->amountus()->where('mealsystem_id', $ms->id)->first();
+            if ($u->hasRole('mealManager')){
+                $memD = \App\Memdata::where('mealsystem_id', $ms->id)->get();
+                $c = count($memD);
+            }
+        } else {
+            $am = 0;
+            if ($u->hasRole('mealManager')){
+                $c = 0;
+            }
+        }
+        if ($month == 1){
+            $pmonth = 12;
+        }else {
+            $pmonth = $month - 1 ;
+        }
+        $co = \DateTime::createFromFormat('!m', $month);
+        $mn = $co->format('F');
+        $pms = $u->mealsystems()->where('month', $pmonth)->first();
+        if ($pms){
+            $po = \DateTime::createFromFormat('!m', $pmonth);
+            $pmn = $po->format('F');
+            $pastM = 1;
+        }else {
+            $pastM = 0;
+            $pmn = 'No past month meal-system';
+        }
+        return view('mmHome', compact('pms','pastM', 'pmn', 'month', 'mn', 'c', 'ms', 'am', 'u'));
     }
 
 
