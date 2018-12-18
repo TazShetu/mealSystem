@@ -64,7 +64,7 @@ Route::get('/Enter-Edit-Data', [
     'uses' => 'DatamController@create',
     'as' => 'datam.create'
 ])->middleware('auth', 'mM');
-Route::post('/DatamStore/{id}', [
+Route::post('/Enter-Edit-Data-Save/{id}', [
     'uses' => 'DatamController@store',
     'as' => 'store.datam'
 ])->middleware('auth', 'mM');
@@ -130,7 +130,7 @@ Route::get('/Enter-Data/Member', [
     'uses' => 'MemdataController@create',
     'as' => 'memdata.create'
 ])->middleware('auth');
-Route::post('/Member-DataStore/{msid}', [
+Route::post('/Member-Data-Store/{msid}', [
     'uses' => 'MemdataController@store',
     'as' => 'memdata.store'
 ])->middleware('auth');

@@ -12,9 +12,16 @@
                     <div class="col-lg-6">
                         <div class="card bg-success text-center card-form">
                             <div class="card-body">
-                                <h2><strong>Create new Member</strong></h2>
+                                <h2><strong>Create new Member</strong></h2><br>
+                                <h2>for {{$mn}}</h2>
+                                <hr>
                                 <form method="POST" action="{{route('store.user')}}">
                                     @csrf
+                                    <div class="form-group text-center">
+                                        <p><strong>Default password is <span style="color: #fef4d1">123456</span> but member can change that later.</strong></p>
+                                        <p><strong>Do not forget to give member his user-name personally.</strong></p>
+                                    </div>
+                                    <hr>
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" placeholder="Name" required>
@@ -28,12 +35,6 @@
                                                 <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('username') }}</strong></span>
                                             @endif
                                         </div>
-                                        <div class="form-group text-center">
-                                            <p><strong>Default password is 123456 but member can change that later.</strong></p>
-                                            <p><strong>Do not forget to give member his user-name personally.</strong></p>
-                                        </div>
-                                        <input type="hidden" name="slug" value="">
-                                        {{--<button type="submit" class="btn btn-outline-light btn-block">Register</button>--}}
                                     </div>
 
                                     <div class="modal-footer">

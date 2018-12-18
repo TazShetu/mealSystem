@@ -49,7 +49,6 @@ class MemdataController extends Controller
 
     public function Pcreate()
     {
-//        dd('dgdsg');
         $a = Auth::user();
         $cm = Carbon::now()->month;
         if ($cm == 1){
@@ -80,7 +79,13 @@ class MemdataController extends Controller
 
             $check = Memdata::where('user_id', Auth::id())->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
             if ($check){
-                $check->delete();
+                if ($check->dbm === null){
+                    $x = 0;
+                    return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
+                }else {
+                    $x = 1;
+                    return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
+                }
             }
             $d = new Memdata;
             $d->user_id = Auth::id();
@@ -113,7 +118,15 @@ class MemdataController extends Controller
         $ms = Mealsystem::find($msid);
         $check = Memdata::where('user_id', Auth::id())->where('mealsystem_id', $msid)->where('day', $request->day)->where('month', $ms->month)->first();
         if ($check){
-            $check->delete();
+            $day = $request->day;
+            $month = $ms->month;
+            if ($check->dbm === null){
+                $x = 0;
+                return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
+            }else {
+                $x = 1;
+                return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
+            }
         }
         $d = new Memdata;
         $d->user_id = Auth::id();

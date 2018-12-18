@@ -43,7 +43,12 @@ class UserController extends Controller
             $ms->save();
             $ms->users()->attach($a);
         }
-        return view('createMember');
+
+        $month = Carbon::now()->month;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $mn = $co->format('F');
+
+        return view('createMember', compact('mn'));
     }
 
     /**
@@ -62,7 +67,7 @@ class UserController extends Controller
         $u = new User;
         $u->name = $request->name;
         $u->username = $request->username;
-        $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
+        $u->slug = str_slug($request->name)."-".str_slug($request->username);
         $u->save();
         // attach member to mealSystem same as mM
         $a = Auth::user();
