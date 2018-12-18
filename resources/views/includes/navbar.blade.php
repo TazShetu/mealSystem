@@ -11,7 +11,7 @@
                 </li>
                 @role(['admin','mealManager'])
                     <li class="nav-item">
-                        <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add new Meal Member</a>
+                        <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i></a>
                     </li>
                 @endrole
                 <li class="nav-item dropdown">
