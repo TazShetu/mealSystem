@@ -26,6 +26,7 @@
                     <li>Database only store 2 months data. So user can only see last month's data as past data.</li>
                     <li>Name and date in table can not be edited. So if you want to change those better delete and enter again.</li>
                     <li>Use <i class="fa fa-user"></i> <i class="fa fa-arrows-h"></i> <i class="fa fa-user-o"></i> this icon to make someone else meal-manager.</li>
+                    <li>New member can not be added to old(last month's) meal-system.</li>
                 </ul>
             </div>
             <div class="modal-footer">
