@@ -33,7 +33,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 d-none d-lg-block">
-                        <h1 class="display-4">Calculating <em>MEAL</em> has never been <em>EASIER</em></h1>
+                        <h1 class="display-4">Calculating <em>MEAL-RATE</em> has never been <em>EASIER</em></h1>
+                        <h2>This Meal System is free to use</h2>
                         {{--<h3>This is a meal-manager controlled meal-system</h3>--}}
                         <div class="d-flex flex-row">
                             <div class="p-4 align-self-start">
