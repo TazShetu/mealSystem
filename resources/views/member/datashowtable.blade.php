@@ -155,7 +155,7 @@ $mnn = $co->format('F');
             <div class="container mt-2">
                 <div class="row">
                     <div class="col-sm-6">
-                        @if(($nmm * 1) === 0)
+                        @if(($nmm * 1) === 0 && $pms)
                             <a href="{{route('show.memd', ['month' => $pm])}}" class="btn btn-light pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>
                         @endif
                     </div>

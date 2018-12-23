@@ -44,21 +44,21 @@
                                     </div>
                                     <div class="form-group {{$errors->has('meal') ? 'has-error' : ''}}">
                                         <label class="lead"><b>Meal</b></label>
-                                        <input type="number" class="form-control" name="meal">
+                                        <input type="number" min="0" class="form-control" name="meal" value="{{old('meal')}}">
                                         @if($errors->has('meal'))
                                             <span class="help-block">{{$errors->first('meal')}}</span>
                                         @endif
                                     </div>
                                     <div class="form-group {{$errors->has('bazar') ? 'has-error' : ''}}">
                                         <label class="lead"><b>Bazar</b></label>
-                                        <input type="number" class="form-control" name="bazar">
+                                        <input type="number" min="0" class="form-control" name="bazar" value="{{old('bazar')}}">
                                         @if($errors->has('bazar'))
                                             <span class="help-block">{{$errors->first('bazar')}}</span>
                                         @endif
                                     </div>
                                     <div class="form-group {{$errors->has('deposit') ? 'has-error' : ''}}">
                                         <label class="lead"><b>Deposit</b></label>
-                                        <input type="number" class="form-control" name="deposit">
+                                        <input type="number" min="0" class="form-control" name="deposit" value="{{old('deposit')}}">
                                         @if($errors->has('deposit'))
                                             <span class="help-block">{{$errors->first('deposit')}}</span>
                                         @endif
