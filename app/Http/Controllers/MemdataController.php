@@ -197,6 +197,7 @@ class MemdataController extends Controller
 
 
     public function showmemd($month){
+        $pms = null;
         $mm = Auth::user();
         $ms = $mm->mealsystems()->where('month', $month)->first();
         if ($ms){
@@ -222,8 +223,17 @@ class MemdataController extends Controller
             }
             $mmm = 0;
         }
+
+        if ($cm === 1){
+            $pmonth = 12;
+        }else {
+            $pmonth = $cm - 1;
+        }
+
+        $pms = $mm->mealsystems()->where('month', $pmonth)->first();
+
 //        dd($nmm);
-        return view('member.datashowtable', compact('memdata', 'mmm', 'nmm', 'cm'));
+        return view('member.datashowtable', compact('memdata', 'mmm', 'nmm', 'cm', 'pms'));
     }
 
 

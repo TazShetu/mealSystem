@@ -217,3 +217,8 @@ Route::get('/reject-delete/{uid}/{msid}/{m}/{d}', [
     'uses' => 'DatamController@rd',
     'as' => 'reject.delete'
 ])->middleware('auth', 'mM');
+
+Route::get('all-balance/{msid}', [
+    'uses' => 'HomeController@allbalance',
+    'as' => 'allbalance'
+])->middleware('auth', 'mM');

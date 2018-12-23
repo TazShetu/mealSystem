@@ -123,6 +123,9 @@
                             <div class="card bg-info text-center card-form">
                                 <div class="card-body">
                                     <h3 class="display-6">Your balance <span id="amountt"><em>{{$am->amount}}</em></span> &nbsp;Tk</h3>
+                                    @role(['admin', 'mealManager'])
+                                        <a href="{{route('allbalance', ['msid' => $ms->id])}}" class="btn btn-outline-light">All Balance</a>
+                                    @endrole
                                 </div>
                             </div>
                             <br>

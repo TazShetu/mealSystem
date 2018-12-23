@@ -121,6 +121,43 @@ class HomeController extends Controller
 
     }
 
+    public function allbalance($msid){
+//        dd($msid);
+        $amounts = Amountu::where('mealsystem_id', $msid)->get();
+        // also pass month name
+        $ms = Mealsystem::find($msid);
+        $month = $ms->month;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $mn = $co->format('F');
+
+        $m = \Carbon\Carbon::now()->month;
+        $u = \Illuminate\Support\Facades\Auth::user();
+        if (($month * 1) === $m){
+            $cms = null;
+            $cmn = null;
+            // we r in current month
+            // pastmonth msid
+            if ($m === 1){
+                $pm = 12;
+            }else {
+                $pm = $m - 1;
+            }
+            $pms = $u->mealsystems->where('month', $pm)->first();
+            $o = \DateTime::createFromFormat('!m', $pm);
+            $pmn = $o->format('F');
+        }else {
+            $pms = null;
+            $pmn = null;
+            // we r in past month
+            // present month msid
+            $cms = $u->mealsystems->where('month', $m)->first();
+            $oo = \DateTime::createFromFormat('!m', $m);
+            $cmn = $oo->format('F');
+        }
+
+        return view('allbalance', compact('amounts', 'mn', 'month', 'pms', 'cms', 'pmn', 'cmn'));
+    }
+
 
 
 }
