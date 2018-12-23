@@ -49,7 +49,6 @@ class MemdataController extends Controller
 
     public function Pcreate()
     {
-//        dd('dgdsg');
         $a = Auth::user();
         $cm = Carbon::now()->month;
         if ($cm == 1){
@@ -80,7 +79,13 @@ class MemdataController extends Controller
 
             $check = Memdata::where('user_id', Auth::id())->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
             if ($check){
-                $check->delete();
+                if ($check->dbm === null){
+                    $x = 0;
+                    return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
+                }else {
+                    $x = 1;
+                    return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
+                }
             }
             $d = new Memdata;
             $d->user_id = Auth::id();
@@ -113,7 +118,15 @@ class MemdataController extends Controller
         $ms = Mealsystem::find($msid);
         $check = Memdata::where('user_id', Auth::id())->where('mealsystem_id', $msid)->where('day', $request->day)->where('month', $ms->month)->first();
         if ($check){
-            $check->delete();
+            $day = $request->day;
+            $month = $ms->month;
+            if ($check->dbm === null){
+                $x = 0;
+                return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
+            }else {
+                $x = 1;
+                return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
+            }
         }
         $d = new Memdata;
         $d->user_id = Auth::id();
@@ -184,6 +197,7 @@ class MemdataController extends Controller
 
 
     public function showmemd($month){
+        $pms = null;
         $mm = Auth::user();
         $ms = $mm->mealsystems()->where('month', $month)->first();
         if ($ms){
@@ -209,8 +223,17 @@ class MemdataController extends Controller
             }
             $mmm = 0;
         }
+
+        if ($cm === 1){
+            $pmonth = 12;
+        }else {
+            $pmonth = $cm - 1;
+        }
+
+        $pms = $mm->mealsystems()->where('month', $pmonth)->first();
+
 //        dd($nmm);
-        return view('member.datashowtable', compact('memdata', 'mmm', 'nmm', 'cm'));
+        return view('member.datashowtable', compact('memdata', 'mmm', 'nmm', 'cm', 'pms'));
     }
 
 

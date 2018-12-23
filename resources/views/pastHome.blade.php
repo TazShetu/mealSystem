@@ -1,36 +1,6 @@
 @include('includes.header')
 <!--....NAV BAR....  -->
-<nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
-    <div class="container">
-        <a href="{{route('home')}}" class="navbar-brand">Meal System</a>
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="{{route('home')}}" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-outline-success" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }} <span class="caret"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                           onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                            <i class="fa fa-power-off"></i>&nbsp; {{ __('Logout') }}
-                        </a><span>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form></span>
-                        <button class="dropdown-item" data-toggle="modal" data-target="#euModal"><i class="fa fa-edit"></i>&nbsp; Edit Profile</button>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+@include('includes.navbar')
 
 @php
     $a = Auth::user();
@@ -64,15 +34,19 @@
             <hr>
             <div class="container">
                 @role(['admin', 'mealManager'])
+                    @php
+                        $memD = \App\Memdata::where('mealsystem_id', $ms->id)->get();
+                        $c = count($memD);
+                    @endphp
                     <div class="row">
                         <div class="col-md-6 text-center pb-1">
-                            <a href="{{route('datam.pcreate', ['msid' => $ms->id])}}" class="btn btn-info">
+                            <a href="{{route('datam.pcreate', ['msid' => $ms->id])}}" class="btn btn-outline-info">
                                 <b><span style="font-size: 25px;'">New</span> Data ({{$mn}})</b>
                             </a>
                         </div>
                         <div class="col-md-6 text-center pb-1">
-                            <a href="{{route('show.memd', ['month' => $pm])}}" class="btn btn-outline-info">
-                                <b><span style="font-size: 25px;'">Member</span> Data ({{$mn}})</b>
+                            <a href="{{route('show.memd', ['month' => $pm])}}" class="btn btn-info">
+                                <b>given Data ({{$mn}})<span class="badge" style="color: yellow; font-size: 25px;">{{$c}}</span></b>
                             </a>
                         </div>
                     </div>
@@ -99,6 +73,9 @@
                             <div class="card bg-info text-center card-form">
                                 <div class="card-body">
                                     <h3 class="display-6">Your balance <span id="amountt"><em>{{$am->amount}}</em></span> &nbsp;Tk</h3>
+                                    @role(['admin', 'mealManager'])
+                                        <a href="{{route('allbalance', ['msid' => $ms->id])}}" class="btn btn-outline-light">All Balance</a>
+                                    @endrole
                                 </div>
                             </div>
                             <br>

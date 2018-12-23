@@ -73,6 +73,18 @@ class DatamController extends Controller
             $month = Carbon::now()->month;
             $day = date("d", strtotime($request->date));
 
+            $mData = Memdata::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
+            if ($mData){
+                $user = User::find($request->name);
+                if ($mData->dbm === null){
+                    $x = 0;
+                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+                }else {
+                    $x = 1;
+                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+                }
+            }
+
             $check = Datam::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
             if ($check){
                 $check->delete();
@@ -405,6 +417,21 @@ class DatamController extends Controller
                 'day' => 'required|integer|between:1,28'
             ]);
         }
+
+        $mData = Memdata::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $request->day)->where('month', $m)->first();
+        if ($mData){
+            $user = User::find($request->name);
+            $day = $request->day;
+            $month = $m;
+            if ($mData->dbm === null){
+                $x = 0;
+                return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+            }else {
+                $x = 1;
+                return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+            }
+        }
+
         $check = Datam::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $request->day)->where('month', $m)->first();
         if ($check){
             $check->delete();

@@ -12,7 +12,7 @@
                 </li>
                 @role(['admin','mealManager'])
                     <li class="nav-item">
-                        <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i> Add new Meal Member</a>
+                        <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i></a>
                     </li>
                 @endrole
                 <li class="nav-item dropdown">
@@ -38,33 +38,14 @@
         </div>
     </div>
 </nav>
-@php
-    $month = \Carbon\Carbon::now()->month;
-    $a = Auth::user();
-    $ms = $a->mealsystems()->where('month', $month)->first();
-    if ($ms){
-        $am = $a->amountus()->where('mealsystem_id', $ms->id)->first();
-    } else {
-        $am = 0;
-    }
-    if ($month == 1){
-            $pmonth = 12;
-    }else {
-            $pmonth = $month - 1 ;
-    }
-    $pms = $a->mealsystems()->where('month', $pmonth)->first();
-    $co = DateTime::createFromFormat('!m', $month);
-    $mn = $co->format('F');
-    $po = DateTime::createFromFormat('!m', $pmonth);
-    $pmn = $po->format('F');
-@endphp
+
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
         <div class="home-inner">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        @if($pms)
+                        @if(($pastM * 1) === 1)
                             <a href="{{route('lhome', ['msid' => $pms->id])}}" class="btn btn-success pull-left btn-sm"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>
                         @endif
                     </div>
@@ -76,13 +57,13 @@
                 @role(['admin', 'mealManager'])
                     <div class="row">
                         <div class="col-md-6 text-center pb-1">
-                            <a href="{{route('datam.create')}}" class="btn btn-info ">
+                            <a href="{{route('datam.create')}}" class="btn btn-outline-info ">
                                 <b><span style="font-size: 25px;'">New</span> Data ({{$mn}})</b>
                             </a>
                         </div>
                         <div class="col-md-6 text-center pb-1">
-                            <a href="{{route('show.memd', ['month' => $month])}}" class="btn btn-outline-info">
-                                <b><span style="font-size: 25px;'">Member</span> Data ({{$mn}})</b>
+                            <a href="{{route('show.memd', ['month' => $month])}}" class="btn btn-info">
+                                <b>given Data ({{$mn}})<span class="badge" style="color: yellow; font-size: 25px;">{{$c}}</span></b>
                             </a>
                         </div>
                     </div>
@@ -119,14 +100,17 @@
                             <div class="card bg-info text-center card-form">
                                 <div class="card-body">
                                     <h3 class="display-6">Your balance <span id="amountt"><em>{{$am->amount}}</em></span> &nbsp;Tk</h3>
+                                    @role(['admin', 'mealManager'])
+                                        <a href="{{route('allbalance', ['msid' => $ms->id])}}" class="btn btn-outline-light">All Balance</a>
+                                    @endrole
                                 </div>
                             </div>
                             <br>
                         @endif
                         @role(['admin', 'mealManager'])
-                            @if($pms)
+                            @if(($pastM * 1) === 1)
                                 <h4>Add old Meal Member to new meal-system</h4>
-                                <a href="{{route('oldm.attach', ['id' => $a->id])}}" class="btn btn-info "><i class="fa fa-user-plus"></i>&nbsp; </a>
+                                <a href="{{route('oldm.attach', ['id' => $u->id])}}" class="btn btn-info "><i class="fa fa-user-plus"></i>&nbsp; </a>
                             @endif
                         @endrole
                         <br>
@@ -136,7 +120,7 @@
                     <div class="col-md-6 p-1">
                         @if($ms)
                             <br>
-                            <a href="{{route('p.table', ['slug' => $a->slug, 'id' => $ms->id])}}" class="btn btn-lg btn-success btn-block"><i class="fa fa-bars" style="font-size: 20px;"></i>&nbsp; Personal Table</a>
+                            <a href="{{route('p.table', ['slug' => $u->slug, 'id' => $ms->id])}}" class="btn btn-lg btn-success btn-block"><i class="fa fa-bars" style="font-size: 20px;"></i>&nbsp; Personal Table</a>
                         @endif
                     </div>
                     <div class="col-md-6 p-1">

@@ -17,11 +17,6 @@
                     <div class="col-lg-6">
                         <div class="card bg-success">
                             <div class="card-body">
-                                {{--@if(session('alert'))--}}
-                                    {{--<div class="alert alert-danger">--}}
-                                        {{--{{session('alert')}}--}}
-                                    {{--</div>--}}
-                                {{--@endif--}}
                                 <form action="{{route('datam.t.update', ['did' => $data->id])}}" method="post">
                                     {{csrf_field()}}
                                     <div class="form-group">
@@ -34,21 +29,21 @@
                                     </div>
                                     <div class="form-group {{$errors->has('meal') ? 'has-error' : ''}}">
                                         <label class="lead"><b>Meal</b></label>
-                                        <input type="number" class="form-control" name="meal" value="{{$data->meal}}">
+                                        <input type="number" min="0" class="form-control" name="meal" value="{{$data->meal}}">
                                         @if($errors->has('meal'))
                                             <span class="help-block">{{$errors->first('meal')}}</span>
                                         @endif
                                     </div>
                                     <div class="form-group {{$errors->has('bazar') ? 'has-error' : ''}}">
                                         <label class="lead"><b>Bazar</b></label>
-                                        <input type="number" class="form-control" name="bazar" value="{{$data->bazar}}">
+                                        <input type="number" min="0" class="form-control" name="bazar" value="{{$data->bazar}}">
                                         @if($errors->has('bazar'))
                                             <span class="help-block">{{$errors->first('bazar')}}</span>
                                         @endif
                                     </div>
                                     <div class="form-group {{$errors->has('deposit') ? 'has-error' : ''}}">
                                         <label class="lead"><b>Deposit</b></label>
-                                        <input type="number" class="form-control" name="deposit" value="{{$data->deposit}}">
+                                        <input type="number" min="0" class="form-control" name="deposit" value="{{$data->deposit}}">
                                         @if($errors->has('deposit'))
                                             <span class="help-block">{{$errors->first('deposit')}}</span>
                                         @endif
