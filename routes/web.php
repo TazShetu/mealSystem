@@ -222,3 +222,8 @@ Route::get('all-balance/{msid}', [
     'uses' => 'HomeController@allbalance',
     'as' => 'allbalance'
 ])->middleware('auth', 'mM');
+
+Route::get('utility', [
+    'uses' => 'ExpenseController@index',
+    'as' => 'utility'
+])->middleware('auth');

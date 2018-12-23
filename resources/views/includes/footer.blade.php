@@ -29,6 +29,7 @@
                     <li>Use <i class="fa fa-user-plus"></i> this icon to add new meal member.</li>
                     <li>New member can not be added to old(last month's) meal-system.</li>
                     <li>Meal-system can have only one meal-manager.</li>
+                    <li>Calculation result may vary from user to user by (+/-)1 Tk</li>
                 </ul>
             </div>
             <div class="modal-footer">

@@ -10,6 +10,9 @@
                 <li class="nav-item">
                     <a href="{{route('home')}}" class="nav-link active">Home</a>
                 </li>
+                <li>
+                    <a href="{{route('utility')}}" class="nav-link">Utility</a>
+                </li>
                 @role(['admin','mealManager'])
                     <li class="nav-item">
                         <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i></a>
@@ -96,17 +99,22 @@
                             </div>
                         </div>
                         <br>
-                        @if($am)
+                        {{--@if($am)--}}
                             <div class="card bg-info text-center card-form">
                                 <div class="card-body">
-                                    <h3 class="display-6">Your balance <span id="amountt"><em>{{$am->amount}}</em></span> &nbsp;Tk</h3>
+                                    <h3 class="display-6">Your balance is <span id="amountt"><b>{{$amount}}</b></span> &nbsp;Tk and utility expense <span><b>{{$exp}}</b></span> Tk</h3>
                                     @role(['admin', 'mealManager'])
                                         <a href="{{route('allbalance', ['msid' => $ms->id])}}" class="btn btn-outline-light">All Balance</a>
                                     @endrole
                                 </div>
                             </div>
                             <br>
-                        @endif
+                        {{--@endif--}}
+
+
+
+
+
                         @role(['admin', 'mealManager'])
                             @if(($pastM * 1) === 1)
                                 <h4>Add old Meal Member to new meal-system</h4>

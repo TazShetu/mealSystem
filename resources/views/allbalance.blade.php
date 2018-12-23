@@ -43,7 +43,7 @@
                         </tbody>
                     </table>
                     @else
-                        <p>Still no amount to show.</p>
+                        <h3 class="text-center">Still no amount to show.</h3>
                     @endif
 
                 {{--</div>--}}
