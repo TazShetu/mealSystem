@@ -38,26 +38,7 @@
         </div>
     </div>
 </nav>
-{{--@php--}}
-    {{--$month = \Carbon\Carbon::now()->month;--}}
-    {{--$a = Auth::user();--}}
-    {{--$ms = $a->mealsystems()->where('month', $month)->first();--}}
-    {{--if ($ms){--}}
-        {{--$am = $a->amountus()->where('mealsystem_id', $ms->id)->first();--}}
-    {{--} else {--}}
-        {{--$am = 0;--}}
-    {{--}--}}
-    {{--if ($month == 1){--}}
-            {{--$pmonth = 12;--}}
-    {{--}else {--}}
-            {{--$pmonth = $month - 1 ;--}}
-    {{--}--}}
-    {{--$pms = $a->mealsystems()->where('month', $pmonth)->first();--}}
-    {{--$co = DateTime::createFromFormat('!m', $month);--}}
-    {{--$mn = $co->format('F');--}}
-    {{--$po = DateTime::createFromFormat('!m', $pmonth);--}}
-    {{--$pmn = $po->format('F');--}}
-{{--@endphp--}}
+
 <header id="home-section" class="HomE">
     <div class="dark-overlay">
         <div class="home-inner">
@@ -74,10 +55,6 @@
             <hr>
             <div class="container">
                 @role(['admin', 'mealManager'])
-                    {{--@php--}}
-                        {{--$memD = \App\Memdata::where('mealsystem_id', $ms->id)->get();--}}
-                        {{--$c = count($memD);--}}
-                    {{--@endphp--}}
                     <div class="row">
                         <div class="col-md-6 text-center pb-1">
                             <a href="{{route('datam.create')}}" class="btn btn-outline-info ">

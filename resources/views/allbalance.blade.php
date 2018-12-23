@@ -2,10 +2,7 @@
 
 @include('includes.navbar')
 
-@php
 
-
-@endphp
 @role(['admin', 'mealManager'])
 
 <section id="home-section" class="ProfilE">
