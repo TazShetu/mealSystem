@@ -8,8 +8,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12 text-center">
-                        <a href="" class="btn btn-info">New Expense</a>
-                        <hr>
+                        @role(['admin', 'mealManager'])
+                            <a href="{{route('create.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense</a>
+                            <hr>
+                        @else
+                            <a href="" class="btn btn-info">New Expense member</a>
+                            <hr>
+                        @endrole
                     </div>
                     <div class="col-sm-12">
                         <div class="card">
@@ -24,11 +29,19 @@
                                            <th>Amount</th>
                                        </tr>
                                    </thead>
-                                   <tbody>
+                                   <tbody class="text-dark">
                                        @foreach($expA as $e)
                                            <tr class="text-center">
                                                <td>{{$e->user->name}}</td>
-                                               <td>{{$e->expA}}</td>
+                                               <td><span
+                                                   @php
+                                                        if ($e->expA < 0){
+                                                            echo 'style="color: red";';
+                                                        }
+                                                   @endphp >
+                                                       {{$e->expA}}
+                                                   </span>
+                                               </td>
                                            </tr>
                                        @endforeach
                                    </tbody>

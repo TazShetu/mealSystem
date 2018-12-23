@@ -16,6 +16,7 @@ class CreateExpensesTable extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->integer('mealsystem_id');
             $table->boolean('a')->default(null);
             $table->integer('month');
             $table->integer('day');

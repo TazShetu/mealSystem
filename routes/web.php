@@ -227,3 +227,13 @@ Route::get('utility', [
     'uses' => 'ExpenseController@index',
     'as' => 'utility'
 ])->middleware('auth');
+
+Route::get('create/utility-expense/{msid}', [
+    'uses' => 'ExpenseController@create',
+    'as' => 'create.exp'
+])->middleware('auth', 'mM');
+
+Route::post('store/utility-expense/{msid}', [
+    'uses' => 'ExpenseController@store',
+    'as' => 'exp.store'
+])->middleware('auth', 'mM');
