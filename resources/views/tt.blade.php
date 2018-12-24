@@ -41,12 +41,13 @@
             <div class="container">
                 <div class="row">
                     <!--loop start of DATE-->
+                    @if(count($datams) > 0)
                     @foreach($datams->groupBy('day') as $ds)
                     {{--$ds is a collection of array--}}
-                    <h1 class="text-center pull-right">{{$ds[0]->day}} - {{$ds[0]->month}}</h1>
+                    <h1>{{$ds[0]->day}} - {{$ds[0]->month}}</h1>
                     <table class="table table-hover">
                         <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th>Name</th>
                                 <th>Meal</th>
                                 <th>Bazar</th>
@@ -59,7 +60,7 @@
                         <tbody>
                         <!--loop start for member-->
                         @foreach($ds as $d)
-                            <tr>
+                            <tr class="text-center">
                                 <td>{{$d->user->name}}</td>
                                 <td>{{$d->meal}}</td>
                                 <td>{{$d->bazar}}</td>
@@ -77,6 +78,13 @@
                     </table>
                     @endforeach
                     <!--loop end of DATE-->
+                    @else
+                        <div class="col">
+                            <div class="card bg-success">
+                                <div class="card-header text-warning text-center"><h1>Nothing to show yet !</h1></div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="container">
