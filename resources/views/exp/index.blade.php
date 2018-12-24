@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-sm-12 text-center">
                         @role(['admin', 'mealManager'])
-                            <a href="{{route('create.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense</a>
+                            <a href="{{route('create.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
                             <hr>
                         @else
                             <a href="" class="btn btn-info">New Expense member</a>
@@ -19,7 +19,7 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header text-center">
-                                <a href="" class="btn btn-outline-info">Details</a>
+                                <a href="{{route('details.exps', ['msid' => $ms->id])}}" class="btn btn-outline-info">Details ({{$mn}})</a>
                             </div>
                             <div class="card-body">
                                <table class="table table-striped">
@@ -33,15 +33,7 @@
                                        @foreach($expA as $e)
                                            <tr class="text-center">
                                                <td>{{$e->user->name}}</td>
-                                               <td><span
-                                                   @php
-                                                        if ($e->expA < 0){
-                                                            echo 'style="color: red";';
-                                                        }
-                                                   @endphp >
-                                                       {{$e->expA}}
-                                                   </span>
-                                               </td>
+                                               <td><span @php if ($e->expA < 0){echo 'style="color: red";';}@endphp >{{$e->expA}}</span></td>
                                            </tr>
                                        @endforeach
                                    </tbody>

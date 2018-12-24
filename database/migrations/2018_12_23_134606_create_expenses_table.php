@@ -17,10 +17,11 @@ class CreateExpensesTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('mealsystem_id');
-            $table->boolean('a')->default(null);
+            $table->boolean('a')->nullable();
             $table->integer('month');
             $table->integer('day');
             $table->integer('exp');
+            $table->boolean('dbm')->nullable();
             $table->timestamps();
         });
     }

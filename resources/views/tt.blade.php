@@ -43,10 +43,10 @@
                     <!--loop start of DATE-->
                     @foreach($datams->groupBy('day') as $ds)
                     {{--$ds is a collection of array--}}
-                    <h1 class="text-center pull-right">{{$ds[0]->day}} - {{$ds[0]->month}}</h1>
+                    <h1>{{$ds[0]->day}} - {{$ds[0]->month}}</h1>
                     <table class="table table-hover">
                         <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th>Name</th>
                                 <th>Meal</th>
                                 <th>Bazar</th>
@@ -59,7 +59,7 @@
                         <tbody>
                         <!--loop start for member-->
                         @foreach($ds as $d)
-                            <tr>
+                            <tr class="text-center">
                                 <td>{{$d->user->name}}</td>
                                 <td>{{$d->meal}}</td>
                                 <td>{{$d->bazar}}</td>

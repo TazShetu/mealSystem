@@ -35,13 +35,14 @@ class ExpenseController extends Controller
             }
 
         }
-
         $expA = Expa::where('mealsystem_id', $ms->id)->get();
 //        dd($expA);
+        $co = \DateTime::createFromFormat('!m', $month);
+        $mn = $co->format('F');
 
 
 
-        return view('exp.index', compact('expA', 'ms'));
+        return view('exp.index', compact('expA', 'ms', 'mn'));
     }
 
     /**
@@ -52,6 +53,8 @@ class ExpenseController extends Controller
     public function create($msid)
     {
         $ms = Mealsystem::find($msid);
+//        $c = $this->test(2);
+//        dd($c);
         return view('exp.create', compact('ms'));
     }
 
@@ -89,7 +92,6 @@ class ExpenseController extends Controller
             if ($check){
                 $check->delete();
             }
-
             $e = new Expense;
             $e->user_id = $request->name;
             $e->mealsystem_id = $msid;
@@ -98,46 +100,9 @@ class ExpenseController extends Controller
             $e->exp = $request->exp;
             $e->a = 1;
             $e->save();
-
-        // calculate expA
-            $es = Expense::where('mealsystem_id', $msid)->where('a', 1)->get();
-            // total exp
-            $te = 0;
-            foreach ($es as $exp){
-                $te = $te + $exp->exp;
-            }
-
-            // all member get
-            $ms = Mealsystem::find($msid);
-            $users = $ms->users;
-            $uc = count($users);
-            $epu = $te / $uc;
-//            dd($users);
-
-            foreach ($users as $uu){
-//                dd($uu);
-                $eus = Expense::where('mealsystem_id', $msid)->where('a', 1)->where('user_id', $uu->id)->get();
-                $tue = 0;
-                foreach ($eus as $eu){
-                    $tue = $tue + $eu->exp;
-                }
-                $ea = ($tue - $epu);
-
-                $cexpA = Expa::where('mealsystem_id', $msid)->where('user_id', $uu->id)->first();
-                if ($cexpA){
-                    $cexpA->expA = $ea;
-                    $cexpA->update();
-                }else {
-                    $exa = new Expa;
-                    $exa->user_id = $uu->id;
-                    $exa->mealsystem_id = $msid;
-                    $exa->expA = $ea;
-                    $exa->save();
-                }
-            }
-
+        // calculate expA and save on Expas table
+            $this->clculateExpA($msid);
             return redirect()->route('utility');
-
         }
         else {
             return redirect()->back()->with('alert', 'Please Select a date from current month.');
@@ -188,4 +153,57 @@ class ExpenseController extends Controller
     {
         //
     }
+
+
+    public function de($msid){
+        $es = Expense::where('mealsystem_id', $msid)->orderBy('day')->get();
+
+
+        return view('exp.details', compact('es'));
+    }
+
+
+
+//    public function test($a){
+//        return $a+1;
+//    }
+
+    public function clculateExpA($msid){
+        $es = Expense::where('mealsystem_id', $msid)->where('a', 1)->get();
+        // total exp
+        $te = 0;
+        foreach ($es as $exp){
+            $te = $te + $exp->exp;
+        }
+
+        // all member get
+        $ms = Mealsystem::find($msid);
+        $users = $ms->users;
+        $uc = count($users);
+        $epu = $te / $uc;
+//            dd($users);
+
+        foreach ($users as $uu){
+//                dd($uu);
+            $eus = Expense::where('mealsystem_id', $msid)->where('a', 1)->where('user_id', $uu->id)->get();
+            $tue = 0;
+            foreach ($eus as $eu){
+                $tue = $tue + $eu->exp;
+            }
+            $ea = ($tue - $epu);
+
+            $cexpA = Expa::where('mealsystem_id', $msid)->where('user_id', $uu->id)->first();
+            if ($cexpA){
+                $cexpA->expA = $ea;
+                $cexpA->update();
+            }else {
+                $exa = new Expa;
+                $exa->user_id = $uu->id;
+                $exa->mealsystem_id = $msid;
+                $exa->expA = $ea;
+                $exa->save();
+            }
+        }
+    }
+
 }

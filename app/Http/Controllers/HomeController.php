@@ -77,10 +77,13 @@ class HomeController extends Controller
 
         $exp = Expa::where('mealsystem_id', $ms->id)->first();
         if (is_null($exp)){
-            $exp = 0;
+            $expA = 0;
+        } else{
+            $expA = $exp->expA;
         }
 
-        return view('mmHome', compact('pms','pastM', 'pmn', 'month', 'mn', 'c', 'ms', 'amount', 'u', 'exp'));
+
+        return view('mmHome', compact('pms','pastM', 'pmn', 'month', 'mn', 'c', 'ms', 'amount', 'u', 'expA'));
     }
 
 
