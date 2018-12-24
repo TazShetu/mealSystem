@@ -16,6 +16,7 @@
             </div>
             <div class="modal-body">
                 <ul>
+                    <li><b>Calculation result may vary from user to user by (+/-)1 Tk</b></li>
                     <li>Member has to personally collect username from meal-manager.</li>
                     <li>Member created by meal-manager has a default password 123456</li>
                     <li>Change the default password from edit profile menu.</li>
@@ -23,13 +24,12 @@
                     <li>Member can enter/edit/delete data but it will not be added into calculation until meal-manager accepts that.</li>
                     <li>Name and date in table can not be edited. If you want to change those, better delete and enter again.</li>
                     <li>If meal-manager enters or accepts new data for the same date and same member, it will auto overwrite the old data.</li>
-                    <li>Every new month will auto create a new meal-system under the meal-manager. Meal-manager can add old member to the new meal-system. Once added, member can not be removed but new month will auto erase all old member from last month.</li>
+                    <li>Every new month will auto create a new meal-system under the meal-manager. <b>Meal-manager can attach old member to the new meal-system.</b> Once added, member can not be removed but new month will auto erase all old member from last month.</li>
                     <li>Database only stores data worth of 2 months. So user can only see the data of the previous month and the following month.</li>
                     <li>Use <i class="fa fa-user"></i> <i class="fa fa-arrows-h"></i> <i class="fa fa-user-o"></i> this icon to make someone else meal-manager.</li>
                     <li>Use <i class="fa fa-user-plus"></i> this icon to add new meal member.</li>
                     <li>New member can not be added to old(last month's) meal-system.</li>
                     <li>Meal-system can have only one meal-manager.</li>
-                    <li><b>Calculation result may vary from user to user by (+/-)1 Tk</b></li>
                 </ul>
             </div>
             <div class="modal-footer">

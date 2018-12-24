@@ -8,19 +8,31 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12 text-center">
-                        @role(['admin', 'mealManager'])
-                            <a href="{{route('create.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
-                            <hr>
-                        @else
-                            <a href="" class="btn btn-info">New Expense member</a>
-                            <hr>
-                        @endrole
+                        @if(($nd * 1) === 1)
+                            @role(['admin', 'mealManager'])
+                                <a href="{{route('create.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
+                                <hr>
+                            @else
+                                <a href="" class="btn btn-info">New Expense member</a>
+                                <hr>
+                            @endrole
+                        @endif
+                        @if(($nd * 1) === 2)
+                            @role(['admin', 'mealManager'])
+                                <a href="{{route('pcreate.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
+                                <hr>
+                            @else
+                                <a href="" class="btn btn-info">New Expense member</a>
+                                <hr>
+                            @endrole
+                        @endif
                     </div>
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header text-center">
                                 <a href="{{route('details.exps', ['msid' => $ms->id])}}" class="btn btn-outline-info">Details ({{$mn}})</a>
                             </div>
+                            @if(count($amounts) > 0 )
                             <div class="card-body">
                                <table class="table table-striped">
                                    <thead class="text-dark">
@@ -39,9 +51,24 @@
                                    </tbody>
                                </table>
                             </div>
+                            @endif
                         </div>
                     </div>
-
+                </div>
+            </div>
+            <hr>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @if((($x * 1) === 1) && $pms)
+                            <a href="{{route('p.utility', ['pmsid' => $pms->id])}}" class="btn btn-light pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        @if($x === null && $pmn === null && $pms === null)
+                            <a href="{{route('utility')}}" class="btn btn-light pull-right">{{$nmn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

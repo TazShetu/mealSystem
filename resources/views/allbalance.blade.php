@@ -32,8 +32,8 @@
                             <tr class="text-center">
                                 <td>{{$a->user->name}}</td>
                                 <td><span @php if ($a->amount < 0){echo 'style="color: orange;"';}@endphp>{{$a->amount}}</span></td>
-                                <td><span @php if ($a->amount < 0){echo 'style="color: orange;"';}@endphp>{{$a->amount}}</span></td>
-                                <td><span @php if ($a->amount < 0){echo 'style="color: red;"';}@endphp>{{$a->amount}}</span></td>
+                                <td><span @php if ($a->expA < 0){echo 'style="color: orange;"';}@endphp>{{$a->expA}}</span></td>
+                                <td><span @php if (($a->amount + $a->expA) < 0){echo 'style="color: red;"';}@endphp>{{$a->amount + $a->expA}}</span></td>
                             </tr>
                         @endforeach
                         </tbody>

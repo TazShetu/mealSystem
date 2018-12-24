@@ -7,6 +7,7 @@ use App\Expense;
 use App\Mealsystem;
 use App\User;
 use Carbon\Carbon;
+use function Composer\Autoload\includeFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,7 @@ class ExpenseController extends Controller
         $ms = $u->mealsystems->where('month', $month)->first();
         // for new month
         if (is_null($ms)){
+
             if ($u->hasRole('mealManager')){
                 $ms = new Mealsystem;
                 $ms->month = Carbon::now()->month;
@@ -34,15 +36,53 @@ class ExpenseController extends Controller
             } else {
                 return view('member.no_ms');
             }
-
         }
         $amounts = Amountu::where('mealsystem_id', $ms->id)->get();
         $co = \DateTime::createFromFormat('!m', $month);
         $mn = $co->format('F');
 
+        if ($month === 1){
+            $pm = 12;
+        }else {
+            $pm = $month - 1;
+        }
+        $pms = $u->mealsystems->where('month', $pm)->first();
+        if (is_null($pms)){
+            // pms does not exist
+            $x = 0;
+            $pmn = null;
+        }else{
+            $x = 1;
+            $po = \DateTime::createFromFormat('!m', $pm);
+            $pmn = $po->format('F');
+        }
+        $nmn = null;
+
+        $nd = 1;
+
+        return view('exp.index', compact('amounts', 'ms', 'mn', 'pmn', 'x', 'pms', 'nmn', 'nd'));
+    }
 
 
-        return view('exp.index', compact('amounts', 'ms', 'mn'));
+    public function pindex($pmsid){
+        $amounts = Amountu::where('mealsystem_id', $pmsid)->get();
+        $ms = Mealsystem::find($pmsid);
+        $pm = $ms->month;
+        $o = \DateTime::createFromFormat('!m', $pm);
+        $mn = $o->format('F');
+        $pms = null;
+        $pmn = null;
+        $x = null;
+        if ($pm === 12){
+            $nm = 1;
+        }else {
+            $nm = $pm + 1;
+        }
+        $no = \DateTime::createFromFormat('!m', $nm);
+        $nmn = $no->format('F');
+        $nd = 2;
+        return view('exp.index', compact('amounts', 'ms', 'mn', 'pmn', 'x', 'pms', 'nmn', 'nd'));
+
     }
 
     /**
@@ -56,6 +96,16 @@ class ExpenseController extends Controller
 //        $c = $this->test(2);
 //        dd($c);
         return view('exp.create', compact('ms'));
+    }
+
+    public function pcreate($msid)
+    {
+        $pms = Mealsystem::find($msid);
+        $pm = $pms->month;
+        $po = \DateTime::createFromFormat('!m', $pm);
+        $pmn = $po->format('F');
+//
+        return view('exp.pcreate', compact('pms', 'pmn', 'pm'));
     }
 
     /**
@@ -109,6 +159,58 @@ class ExpenseController extends Controller
         }
     }
 
+
+    public function pstore(Request $request, $month, $msid)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'exp' => 'required'
+        ]);
+        if ($month==1 || $month==3 || $month==5 || $month==7 || $month==8 || $month==10 || $month==12){
+            $this->validate($request, [
+                'day' => 'required|integer|between:1,31'
+            ]);
+        }elseif ($month==4 || $month==6 || $month==9 || $month==11){
+            $this->validate($request, [
+                'day' => 'required|integer|between:1,30'
+            ]);
+        }else{
+            $this->validate($request, [
+                'day' => 'required|integer|between:1,28'
+            ]);
+        }
+
+
+//            $mData = Memdata::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
+//            if ($mData){
+//                $user = User::find($request->name);
+//                if ($mData->dbm === null){
+//                    $x = 0;
+//                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+//                }else {
+//                    $x = 1;
+//                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+//                }
+//            }
+
+        $check = Expense::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $request->day)->where('month', $month)->first();
+        if ($check){
+            $check->delete();
+        }
+        $e = new Expense;
+        $e->user_id = $request->name;
+        $e->mealsystem_id = $msid;
+        $e->month = $month;
+        $e->day = $request->day;
+        $e->exp = $request->exp;
+        $e->a = 1;
+        $e->save();
+
+        $this->clculateExpA($msid);
+        return redirect()->route('p.utility', ['pmsid' => $msid]);
+
+    }
+
     /**
      * Display the specified resource.
      *
@@ -126,8 +228,9 @@ class ExpenseController extends Controller
      * @param  \App\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function edit($eid, $uid, $month, $day, $msid)
+    public function edit($eid, $msid, $uid, $month, $day)
     {
+//        dd($msid);
         $exp = Expense::find($eid);
         $u = User::find($uid);
         $un = $u->name;
@@ -172,7 +275,39 @@ class ExpenseController extends Controller
 
     public function de($msid){
         $es = Expense::where('mealsystem_id', $msid)->orderBy('day')->get();
-        return view('exp.details', compact('es'));
+        $u = Auth::user();
+        $ms = Mealsystem::find($msid);
+        $month = $ms->month;
+        $x = null;
+        $pmsid = null;
+        $cmsid = null;
+        $cmn = null;
+        $pmn = null;
+        $mmm= Carbon::now()->month;
+        if ($month === $mmm){
+            // in current month
+            if ($month === 1){
+                $pm = 12;
+            }else{
+                $pm = $month - 1;
+            }
+            $pms = $u->mealsystems->where('month', $pm)->first();
+            if ($pms){
+                $x = 1;
+                $pmsid = $pms->id;
+            }
+            $po = \DateTime::createFromFormat('!m', $pm);
+            $pmn = $po->format('F');
+        }else {
+            // in past month
+            $x = 2;
+            $ms = $u->mealsystems->where('month', $mmm)->first();
+            $cmsid = $ms->id;
+            $co = \DateTime::createFromFormat('!m', $mmm);
+            $cmn = $co->format('F');
+        }
+
+        return view('exp.details', compact('es', 'x', 'pmn', 'cmn', 'pmsid', 'cmsid'));
     }
 
 

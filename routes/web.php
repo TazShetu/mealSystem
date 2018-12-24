@@ -228,14 +228,29 @@ Route::get('utility', [
     'as' => 'utility'
 ])->middleware('auth');
 
+Route::get('past-utility/{pmsid}', [
+    'uses' => 'ExpenseController@pindex',
+    'as' => 'p.utility'
+])->middleware('auth');
+
 Route::get('create/utility-expense/{msid}', [
     'uses' => 'ExpenseController@create',
     'as' => 'create.exp'
 ])->middleware('auth', 'mM');
 
+Route::get('past-create/utility-expense/{msid}', [
+    'uses' => 'ExpenseController@pcreate',
+    'as' => 'pcreate.exp'
+])->middleware('auth', 'mM');
+
 Route::post('store/utility-expense/{msid}', [
     'uses' => 'ExpenseController@store',
     'as' => 'exp.store'
+])->middleware('auth', 'mM');
+
+Route::post('past-store/utility-expense/{month}/{msid}', [
+    'uses' => 'ExpenseController@pstore',
+    'as' => 'pstore.exp'
 ])->middleware('auth', 'mM');
 
 Route::get('utility/details/{msid}', [
@@ -248,7 +263,7 @@ Route::get('exp/delete/{eid}/{msid}', [
     'as' => 'exp.delete'
 ])->middleware('auth', 'mM');
 
-Route::get('expense/edit/{eid}/{uid}/{msid}/{month}/{day}', [
+Route::get('expense/edit/{eid}/{msid}/{uid}/{month}/{day}', [
     'uses' => 'ExpenseController@edit',
     'as' => 'exp.edit'
 ])->middleware('auth', 'mM');

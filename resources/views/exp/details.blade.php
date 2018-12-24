@@ -90,21 +90,21 @@
                 <!--loop end of DATE-->
                 </div>
             </div>
-            {{--<div class="container">--}}
-                {{--<div class="row">--}}
-                    {{--<div class="col-sm-6">--}}
-                        {{--@if((($cmonth * 1) === (\Carbon\Carbon::now()->month)) && $pms)--}}
-                            {{--<a href="{{route('f.table', ['msid' => $pms->id])}}" class="btn btn-success pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>--}}
-                        {{--@endif--}}
-                    {{--</div>--}}
-                    {{--<div class="col-sm-6">--}}
-                        {{--@if((($cmonth * 1) !== (\Carbon\Carbon::now()->month)) && $ms)--}}
-                            {{--<a href="{{route('f.table', ['msid' => $ms->id])}}" class="btn btn-success pull-right">{{$mn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>--}}
-                        {{--@endif--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<hr>--}}
-            {{--</div>--}}
+            <hr>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @if(($x * 1) === 1)
+                            <a href="{{route('details.exps', ['msid' => $pmsid])}}" class="btn btn-light pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        @if(($x * 1) === 2)
+                            <a href="{{route('details.exps', ['msid' => $cmsid])}}" class="btn btn-light pull-right">{{$cmn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </header>
