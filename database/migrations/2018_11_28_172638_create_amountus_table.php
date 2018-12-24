@@ -18,6 +18,7 @@ class CreateAmountusTable extends Migration
             $table->integer('user_id');
             $table->integer('mealsystem_id');
             $table->integer('amount')->default(0);
+            $table->integer('expA')->default(0);
             $table->timestamps();
         });
     }

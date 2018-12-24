@@ -30,7 +30,7 @@
                                        </tr>
                                    </thead>
                                    <tbody class="text-dark">
-                                       @foreach($expA as $e)
+                                       @foreach($amounts as $e)
                                            <tr class="text-center">
                                                <td>{{$e->user->name}}</td>
                                                <td><span @php if ($e->expA < 0){echo 'style="color: red";';}@endphp >{{$e->expA}}</span></td>

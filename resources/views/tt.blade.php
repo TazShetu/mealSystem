@@ -41,6 +41,7 @@
             <div class="container">
                 <div class="row">
                     <!--loop start of DATE-->
+                    @if(count($datams) > 0)
                     @foreach($datams->groupBy('day') as $ds)
                     {{--$ds is a collection of array--}}
                     <h1>{{$ds[0]->day}} - {{$ds[0]->month}}</h1>
@@ -77,6 +78,13 @@
                     </table>
                     @endforeach
                     <!--loop end of DATE-->
+                    @else
+                        <div class="col">
+                            <div class="card bg-success">
+                                <div class="card-header text-warning text-center"><h1>Nothing to show yet !</h1></div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="container">

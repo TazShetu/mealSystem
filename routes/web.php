@@ -242,3 +242,18 @@ Route::get('utility/details/{msid}', [
     'uses' => 'ExpenseController@de',
     'as' => 'details.exps'
 ])->middleware('auth');
+
+Route::get('exp/delete/{eid}/{msid}', [
+    'uses' => 'ExpenseController@destroy',
+    'as' => 'exp.delete'
+])->middleware('auth', 'mM');
+
+Route::get('expense/edit/{eid}/{uid}/{msid}/{month}/{day}', [
+    'uses' => 'ExpenseController@edit',
+    'as' => 'exp.edit'
+])->middleware('auth', 'mM');
+
+Route::post('expense/update/{eid}/{msid}', [
+    'uses' => 'ExpenseController@update',
+    'as' => 'exp.update'
+])->middleware('auth', 'mM');

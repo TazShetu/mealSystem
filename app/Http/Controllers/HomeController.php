@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Amountu;
 use App\Datam;
-use App\Expa;
 use App\Mealsystem;
 use App\Memdata;
 use Carbon\Carbon;
@@ -55,8 +54,10 @@ class HomeController extends Controller
         }
         if ($am){
             $amount = $am->amount;
+            $expA = $am->expA;
         }else {
             $amount = 0;
+            $expA = 0;
         }
         if ($month == 1){
             $pmonth = 12;
@@ -74,15 +75,6 @@ class HomeController extends Controller
             $pastM = 0;
             $pmn = 'No past month meal-system';
         }
-
-        $exp = Expa::where('mealsystem_id', $ms->id)->first();
-        if (is_null($exp)){
-            $expA = 0;
-        } else{
-            $expA = $exp->expA;
-        }
-
-
         return view('mmHome', compact('pms','pastM', 'pmn', 'month', 'mn', 'c', 'ms', 'amount', 'u', 'expA'));
     }
 

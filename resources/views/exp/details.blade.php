@@ -41,10 +41,11 @@
             <div class="container">
                 <div class="row">
                     <!--loop start of DATE-->
+                    @if(count($es) > 0)
                     @foreach($es->groupBy('day') as $ds)
                         {{--$ds is a collection of array--}}
                         <h1>{{$ds[0]->day}} - {{$ds[0]->month}}</h1>
-                        <table class="table table-hover">
+                        <table class="table table-hover bg-light text-dark">
                             <thead>
                             <tr class="text-center">
                                 <th>Name</th>
@@ -64,8 +65,8 @@
                                     <td>{{$d->exp}}</td>
                                     @role(['admin', 'mealManager'])
                                         <td>
-                                            <a href="" class="btn btn-outline-info btn-sm mb-1">Edit</a>
-                                            <a href="" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
+                                            <a href="{{route('exp.edit', ['eid' => $d->id, 'msid' => $d->mealsystem_id, 'uid' => $d->user_id, 'month' => $d->month, 'day' => $d->day])}}" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+                                            <a href="{{route('exp.delete', ['eid' => $d->id, 'msid' => $d->mealsystem_id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
                                         </td>
                                     @else
                                         <td>
@@ -78,7 +79,14 @@
                             <!--loop end for member-->
                             </tbody>
                         </table>
-                @endforeach
+                    @endforeach
+                    @else
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header text-dark text-center"><h1>Nothing to show yet !</h1></div>
+                        </div>
+                    </div>
+                    @endif
                 <!--loop end of DATE-->
                 </div>
             </div>

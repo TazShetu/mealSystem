@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Expa;
+use App\Amountu;
 use App\Expense;
 use App\Mealsystem;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -35,14 +36,13 @@ class ExpenseController extends Controller
             }
 
         }
-        $expA = Expa::where('mealsystem_id', $ms->id)->get();
-//        dd($expA);
+        $amounts = Amountu::where('mealsystem_id', $ms->id)->get();
         $co = \DateTime::createFromFormat('!m', $month);
         $mn = $co->format('F');
 
 
 
-        return view('exp.index', compact('expA', 'ms', 'mn'));
+        return view('exp.index', compact('amounts', 'ms', 'mn'));
     }
 
     /**
@@ -100,7 +100,7 @@ class ExpenseController extends Controller
             $e->exp = $request->exp;
             $e->a = 1;
             $e->save();
-        // calculate expA and save on Expas table
+
             $this->clculateExpA($msid);
             return redirect()->route('utility');
         }
@@ -126,9 +126,14 @@ class ExpenseController extends Controller
      * @param  \App\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function edit(Expense $expense)
+    public function edit($eid, $uid, $month, $day, $msid)
     {
-        //
+        $exp = Expense::find($eid);
+        $u = User::find($uid);
+        $un = $u->name;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $mn = $co->format('F');
+        return view('exp.edit', compact('exp', 'un', 'day', 'mn', 'msid'));
     }
 
     /**
@@ -138,9 +143,16 @@ class ExpenseController extends Controller
      * @param  \App\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Expense $expense)
+    public function update(Request $request, $eid, $msid)
     {
-        //
+        $this->validate($request, [
+            'exp' => 'required'
+        ]);
+        $e = Expense::find($eid);
+        $e->exp = $request->exp;
+        $e->update();
+        $this->clculateExpA($msid);
+        return redirect()->route('details.exps', ['msid' => $msid]);
     }
 
     /**
@@ -149,16 +161,17 @@ class ExpenseController extends Controller
      * @param  \App\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Expense $expense)
+    public function destroy($eid, $msid)
     {
-        //
+        $exp = Expense::find($eid);
+        $exp->delete();
+        $this->clculateExpA($msid);
+        return redirect()->back();
     }
 
 
     public function de($msid){
         $es = Expense::where('mealsystem_id', $msid)->orderBy('day')->get();
-
-
         return view('exp.details', compact('es'));
     }
 
@@ -192,12 +205,12 @@ class ExpenseController extends Controller
             }
             $ea = ($tue - $epu);
 
-            $cexpA = Expa::where('mealsystem_id', $msid)->where('user_id', $uu->id)->first();
+            $cexpA = Amountu::where('mealsystem_id', $msid)->where('user_id', $uu->id)->first();
             if ($cexpA){
                 $cexpA->expA = $ea;
                 $cexpA->update();
             }else {
-                $exa = new Expa;
+                $exa = new Amountu;
                 $exa->user_id = $uu->id;
                 $exa->mealsystem_id = $msid;
                 $exa->expA = $ea;

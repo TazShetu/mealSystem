@@ -102,7 +102,7 @@
                         {{--@if($am)--}}
                             <div class="card bg-info text-center card-form">
                                 <div class="card-body">
-                                    <h3 class="display-6">Your balance is <span id="amountt"><b>{{$amount}}</b></span> &nbsp;Tk and utility expense <span  @php if ($expA<0){echo 'style="color: red;"';} @endphp><b>{{$expA}}</b></span> Tk</h3>
+                                    <h3 class="display-6">Your balance is <span id="amountt"><b>{{$amount}}</b></span> &nbsp;Tk and utility <span  @php if ($expA<0){echo 'style="color: red;"';} @endphp><b>{{$expA}}</b></span> Tk</h3>
                                     @role(['admin', 'mealManager'])
                                         <a href="{{route('allbalance', ['msid' => $ms->id])}}" class="btn btn-outline-light">All Balance</a>
                                     @endrole
