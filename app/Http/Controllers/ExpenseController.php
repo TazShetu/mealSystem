@@ -60,7 +60,9 @@ class ExpenseController extends Controller
 
         $nd = 1;
 
-        return view('exp.index', compact('amounts', 'ms', 'mn', 'pmn', 'x', 'pms', 'nmn', 'nd'));
+        $u = Auth::user();
+
+        return view('exp.index', compact('amounts', 'ms', 'mn', 'pmn', 'x', 'pms', 'nmn', 'nd', 'u'));
     }
 
 
@@ -97,6 +99,15 @@ class ExpenseController extends Controller
 //        dd($c);
         return view('exp.create', compact('ms'));
     }
+
+
+    public function Mcreate($slug, $msid)
+    {
+        $ms = Mealsystem::find($msid);
+        $u = User::where('slug', $slug)->first();
+        return view('exp.member.create', compact('ms', 'u'));
+    }
+
 
     public function pcreate($msid)
     {
@@ -150,8 +161,49 @@ class ExpenseController extends Controller
             $e->exp = $request->exp;
             $e->a = 1;
             $e->save();
-
             $this->clculateExpA($msid);
+            return redirect()->route('utility');
+        }
+        else {
+            return redirect()->back()->with('alert', 'Please Select a date from current month.');
+        }
+    }
+
+
+    public function Mstore(Request $request, $uid, $msid)
+    {
+        $this->validate($request, [
+            'date' => 'required',
+            'exp' => 'required'
+        ]);
+        $date = $request->date;
+        if(date("m", strtotime($date)) == date("m")){
+            $month = Carbon::now()->month;
+            $day = date("d", strtotime($request->date));
+
+//            $mData = Memdata::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
+//            if ($mData){
+//                $user = User::find($request->name);
+//                if ($mData->dbm === null){
+//                    $x = 0;
+//                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+//                }else {
+//                    $x = 1;
+//                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
+//                }
+//            }
+
+            $check = Expense::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->where('a', 0)->first();
+            if ($check){
+                $check->delete();
+            }
+            $e = new Expense;
+            $e->user_id = $uid;
+            $e->mealsystem_id = $msid;
+            $e->month = $month;
+            $e->day = $day;
+            $e->exp = $request->exp;
+            $e->save();
             return redirect()->route('utility');
         }
         else {
@@ -230,13 +282,23 @@ class ExpenseController extends Controller
      */
     public function edit($eid, $msid, $uid, $month, $day)
     {
-//        dd($msid);
         $exp = Expense::find($eid);
         $u = User::find($uid);
         $un = $u->name;
         $co = \DateTime::createFromFormat('!m', $month);
         $mn = $co->format('F');
         return view('exp.edit', compact('exp', 'un', 'day', 'mn', 'msid'));
+    }
+
+
+    public function Medit($eid, $msid, $month, $day)
+    {
+        $exp = Expense::find($eid);
+//        $u = User::find($uid);
+//        $un = $u->name;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $mn = $co->format('F');
+        return view('exp.member.edit', compact('exp', 'day', 'mn', 'msid'));
     }
 
     /**
@@ -258,6 +320,17 @@ class ExpenseController extends Controller
         return redirect()->route('details.exps', ['msid' => $msid]);
     }
 
+    public function Mupdate(Request $request, $eid, $msid)
+    {
+        $this->validate($request, [
+            'exp' => 'required'
+        ]);
+        $e = Expense::find($eid);
+        $e->exp = $request->exp;
+        $e->update();
+        return redirect()->route('details.exps', ['msid' => $msid]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -272,10 +345,19 @@ class ExpenseController extends Controller
         return redirect()->back();
     }
 
+    public function Mdestroy($eid)
+    {
+        $exp = Expense::find($eid);
+        $exp->delete();
+        return redirect()->back();
+    }
+
 
     public function de($msid){
-        $es = Expense::where('mealsystem_id', $msid)->orderBy('day')->get();
+        $es = Expense::where('mealsystem_id', $msid)->where('a', 1)->orderBy('day')->get();
         $u = Auth::user();
+        $uaexp = Expense::where('mealsystem_id', $msid)->where('user_id', $u->id)->where('a', 0)->orderBy('day')->get();
+//        dd($uaexp);
         $ms = Mealsystem::find($msid);
         $month = $ms->month;
         $x = null;
@@ -306,8 +388,13 @@ class ExpenseController extends Controller
             $co = \DateTime::createFromFormat('!m', $mmm);
             $cmn = $co->format('F');
         }
+        $staexp = null;
+        if ($u->hasRole('mealManager')){
+            $staexp = Expense::where('mealsystem_id', $msid)->where('a', 0)->orderBy('day')->get();
+        }
+//        dd($staexp);
 
-        return view('exp.details', compact('es', 'x', 'pmn', 'cmn', 'pmsid', 'cmsid'));
+        return view('exp.details', compact('es', 'x', 'pmn', 'cmn', 'pmsid', 'cmsid', 'uaexp', 'staexp'));
     }
 
 

@@ -9,15 +9,17 @@
                 <div class="row">
                     <div class="col-sm-12 text-center">
                         @if(($nd * 1) === 1)
+                            {{--current month--}}
                             @role(['admin', 'mealManager'])
                                 <a href="{{route('create.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
                                 <hr>
                             @else
-                                <a href="" class="btn btn-info">New Expense member</a>
+                                <a href="{{route('mcreate.exp', ['slug' => $u->slug, 'msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
                                 <hr>
                             @endrole
                         @endif
                         @if(($nd * 1) === 2)
+                            {{--past month--}}
                             @role(['admin', 'mealManager'])
                                 <a href="{{route('pcreate.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
                                 <hr>
@@ -30,7 +32,7 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header text-center">
-                                <a href="{{route('details.exps', ['msid' => $ms->id])}}" class="btn btn-outline-info">Details ({{$mn}})</a>
+                                <a href="{{route('details.exps', ['msid' => $ms->id])}}" class="btn btn-secondary">Details ({{$mn}})</a>
                             </div>
                             @if(count($amounts) > 0 )
                             <div class="card-body">

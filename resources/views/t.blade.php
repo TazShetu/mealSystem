@@ -82,8 +82,10 @@
                             </table>
                        </div>
                    @endif
-                   @if(count($dA) > 0)
-                   <table class="table table-hover">
+                </div>
+                <div class="row">
+                     @if(count($dA) > 0)
+                        <table class="table table-hover">
                         <thead>
                         <tr>
                             <th>Date</th>
@@ -118,7 +120,7 @@
 
                         </tbody>
                    </table>
-                   @else
+                    @else
                        <div class="col">
                            <div class="card bg-success">
                                <div class="card-header text-warning text-center"><h1>Nothing to show yet !</h1></div>
