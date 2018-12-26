@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Amountu;
 use App\Datam;
+use App\Expense;
 use App\Mealsystem;
 use App\Memdata;
 use Carbon\Carbon;
@@ -108,6 +109,12 @@ class HomeController extends Controller
             $md->delete();
         }
 
+        // expenses table
+        $exps = Expense::where('month', $om)->get();
+        foreach ($exps as $exp){
+            $exp->delete();
+        }
+
         $mss = Mealsystem::where('month', $om)->get();
         foreach ($mss as $ms){
             // amountus table
@@ -161,7 +168,6 @@ class HomeController extends Controller
             $oo = \DateTime::createFromFormat('!m', $m);
             $cmn = $oo->format('F');
         }
-
 
         return view('allbalance', compact('amounts', 'mn', 'month', 'pms', 'cms', 'pmn', 'cmn'));
     }

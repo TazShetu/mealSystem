@@ -24,7 +24,7 @@
                                 <a href="{{route('pcreate.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
                                 <hr>
                             @else
-                                <a href="" class="btn btn-info">New Expense member</a>
+                                <a href="{{route('mpcreate.exp', ['slug' => $u->slug, 'msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
                                 <hr>
                             @endrole
                         @endif

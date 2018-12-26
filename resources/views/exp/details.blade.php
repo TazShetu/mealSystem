@@ -48,9 +48,9 @@
                                         <td>{{$d->exp}}</td>
                                         <td>{{$d->remark}}</td>
                                         <td class="text-center">
-                                            <a href="" class="btn btn-primary btn-sm mr-1 mb-1">Accept</a>
-                                            <a href="" class="btn btn-success btn-sm mr-1 mb-1">Edit</a>
-                                            <a href="" class="btn btn-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">Reject</a>
+                                            <a href="{{route('mM.accept.exp', ['eid' => $d->id, 'msid' => $d->mealsystem_id])}}" class="btn btn-primary btn-sm mr-1 mb-1">Accept</a>
+                                            <a href="{{route('exp.edit', ['eid' => $d->id, 'msid' => $d->mealsystem_id, 'uid' => $d->user_id, 'month' => $d->month, 'day' => $d->day])}}" class="btn btn-success btn-sm mr-1 mb-1">Edit</a>
+                                            <a href="{{route('exp.delete', ['eid' => $d->id, 'msid' => $d->mealsystem_id])}}" class="btn btn-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">Reject</a>
                                         </td>
                                     @else
                                         <td>&#10006;</td>

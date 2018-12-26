@@ -1,7 +1,7 @@
 @include('includes.header')
 <!--....NAV BAR....  -->
 @include('includes.navbar')
-@role(['admin', 'mealManager'])
+
 <header id="home-section" class="utility">
     <div class="dark-overlay">
         <div class="home-inner">
@@ -13,7 +13,7 @@
                     <div class="col-lg-6">
                         <div class="card bg-success">
                             <div class="card-body">
-                                <form action="{{route('pstore.exp', ['month' => $pm, 'msid' => $pms->id])}}" method="post">
+                                <form action="{{route('exp.MPstore', ['uid' => $u->id, 'msid' => $pms->id, 'month' => $pm])}}" method="post">
                                     {{csrf_field()}}
                                     <div class="form-group">
                                         <div class="row">
@@ -29,18 +29,6 @@
                                                 @endif
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group {{$errors->has('name') ? 'has-error' : ''}}">
-                                        <label for="category">Name</label>
-                                        <select name="name" id="name" class="form-control" required>
-                                            <option value="" hidden disabled selected>Choose One</option>
-                                            @foreach($pms->users as $u)
-                                                <option value="{{$u->id}}">{{$u->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        @if($errors->has('name'))
-                                            <span class="help-block text-danger">{{$errors->first('name')}}</span>
-                                        @endif
                                     </div>
                                     <div class="form-group {{$errors->has('exp') ? 'has-error' : ''}}">
                                         <label class="lead"><b>Expense</b></label>
@@ -71,7 +59,7 @@
         </div>
     </div>
 </header>
-@endrole
+
 
 @include('includes.euModal')
 

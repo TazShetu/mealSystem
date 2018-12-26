@@ -307,3 +307,18 @@ Route::post('expense/m/update/{eid}/{msid}', [
     'uses' => 'ExpenseController@Mupdate',
     'as' => 'exp.Mupdate'
 ])->middleware('auth');
+
+Route::get('mM/accept/expense/{eid}/{msid}', [
+    'uses' => 'ExpenseController@mMAcceptExp',
+    'as' => 'mM.accept.exp'
+])->middleware('auth', 'mM');
+
+Route::get('create/m/past/utility-expense/{slug}/{msid}', [
+    'uses' => 'ExpenseController@MPcreate',
+    'as' => 'mpcreate.exp'
+])->middleware('auth');
+
+Route::post('store/m/past/utility-expense/{uid}/{msid}/{month}', [
+    'uses' => 'ExpenseController@MPstore',
+    'as' => 'exp.MPstore'
+])->middleware('auth');

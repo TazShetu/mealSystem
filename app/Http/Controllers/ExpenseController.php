@@ -83,7 +83,8 @@ class ExpenseController extends Controller
         $no = \DateTime::createFromFormat('!m', $nm);
         $nmn = $no->format('F');
         $nd = 2;
-        return view('exp.index', compact('amounts', 'ms', 'mn', 'pmn', 'x', 'pms', 'nmn', 'nd'));
+        $u = Auth::user();
+        return view('exp.index', compact('amounts', 'ms', 'mn', 'pmn', 'x', 'pms', 'nmn', 'nd', 'u'));
 
     }
 
@@ -115,8 +116,17 @@ class ExpenseController extends Controller
         $pm = $pms->month;
         $po = \DateTime::createFromFormat('!m', $pm);
         $pmn = $po->format('F');
-//
         return view('exp.pcreate', compact('pms', 'pmn', 'pm'));
+    }
+
+    public function MPcreate($slug, $msid)
+    {
+        $pms = Mealsystem::find($msid);
+        $u = User::where('slug', $slug)->first();
+        $pm = $pms->month;
+        $po = \DateTime::createFromFormat('!m', $pm);
+        $pmn = $po->format('F');
+        return view('exp.member.pcreate', compact('pms', 'pmn', 'pm', 'u'));
     }
 
     /**
@@ -138,18 +148,6 @@ class ExpenseController extends Controller
             ]);
             $month = Carbon::now()->month;
             $day = date("d", strtotime($request->date));
-
-//            $mData = Memdata::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
-//            if ($mData){
-//                $user = User::find($request->name);
-//                if ($mData->dbm === null){
-//                    $x = 0;
-//                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
-//                }else {
-//                    $x = 1;
-//                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
-//                }
-//            }
 
             $check = Expense::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
             if ($check){
@@ -185,18 +183,6 @@ class ExpenseController extends Controller
         if(date("m", strtotime($date)) == date("m")){
             $month = Carbon::now()->month;
             $day = date("d", strtotime($request->date));
-
-//            $mData = Memdata::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
-//            if ($mData){
-//                $user = User::find($request->name);
-//                if ($mData->dbm === null){
-//                    $x = 0;
-//                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
-//                }else {
-//                    $x = 1;
-//                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
-//                }
-//            }
 
             $check = Expense::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->where('a', 0)->first();
             if ($check){
@@ -240,19 +226,6 @@ class ExpenseController extends Controller
             ]);
         }
 
-
-//            $mData = Memdata::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
-//            if ($mData){
-//                $user = User::find($request->name);
-//                if ($mData->dbm === null){
-//                    $x = 0;
-//                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
-//                }else {
-//                    $x = 1;
-//                    return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
-//                }
-//            }
-
         $check = Expense::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $request->day)->where('month', $month)->first();
         if ($check){
             $check->delete();
@@ -264,11 +237,51 @@ class ExpenseController extends Controller
         $e->day = $request->day;
         $e->exp = $request->exp;
         $e->a = 1;
+        if ($request->has('remark')){
+            $e->remark = $request->remark;
+        }
         $e->save();
 
         $this->clculateExpA($msid);
         return redirect()->route('p.utility', ['pmsid' => $msid]);
 
+    }
+
+    public function MPstore(Request $request, $uid, $msid, $month)
+    {
+        $this->validate($request, [
+            'exp' => 'required'
+        ]);
+        if ($month==1 || $month==3 || $month==5 || $month==7 || $month==8 || $month==10 || $month==12){
+            $this->validate($request, [
+                'day' => 'required|integer|between:1,31'
+            ]);
+        }elseif ($month==4 || $month==6 || $month==9 || $month==11){
+            $this->validate($request, [
+                'day' => 'required|integer|between:1,30'
+            ]);
+        }else{
+            $this->validate($request, [
+                'day' => 'required|integer|between:1,28'
+            ]);
+        }
+
+        $check = Expense::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $request->day)->where('month', $month)->first();
+        if ($check){
+            $check->delete();
+        }
+        $e = new Expense;
+        $e->user_id = $uid;
+        $e->mealsystem_id = $msid;
+        $e->month = $month;
+        $e->day = $request->day;
+        $e->exp = $request->exp;
+        if ($request->has('remark')){
+            $e->remark = $request->remark;
+        }
+        $e->save();
+
+        return redirect()->route('p.utility', ['pmsid' => $msid]);
     }
 
     /**
@@ -326,6 +339,7 @@ class ExpenseController extends Controller
         if ($request->has('remark')){
             $e->remark = $request->remark;
         }
+        $e->a = 1;
         $e->update();
         $this->clculateExpA($msid);
         return redirect()->route('details.exps', ['msid' => $msid]);
@@ -364,6 +378,14 @@ class ExpenseController extends Controller
         $exp = Expense::find($eid);
         $exp->delete();
         return redirect()->back();
+    }
+
+    public function mMAcceptExp($eid, $msid){
+        $e = Expense::find($eid);
+        $e->a = 1;
+        $e->update();
+        $this->clculateExpA($msid);
+        return redirect()->route('details.exps', ['msid' => $msid]);
     }
 
 

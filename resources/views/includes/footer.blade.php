@@ -30,7 +30,9 @@
                     <li>Use <i class="fa fa-user-plus"></i> this icon to add new meal member.</li>
                     <li>New member can not be added to old(last month's) meal-system.</li>
                     <li>Meal-system can have only one meal-manager.</li>
-                    <li>Utility expense hae nothing to do with meal-rate and divided equally among all the members.</li>
+                    <li>Utility expense and deposit have nothing to do with meal-rate.</li>
+                    <li>Utility expenses are divided equally among all the members.</li>
+                    <li>Members cannot edit or delete accepted expense but they can enter new expense for the same date.</li>
                 </ul>
             </div>
             <div class="modal-footer">
