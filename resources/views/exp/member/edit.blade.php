@@ -30,6 +30,13 @@
                                             <span class="help-block">{{$errors->first('exp')}}</span>
                                         @endif
                                     </div>
+                                    <div class="form-group {{$errors->has('remark') ? 'has-error' : ''}}">
+                                        <label class="lead"><b>Remark</b></label>
+                                        <input type="text" maxlength="50" class="form-control" name="remark" value="{{$exp->remark}}">
+                                        @if($errors->has('remark'))
+                                            <span class="help-block">{{$errors->first('remark')}}</span>
+                                        @endif
+                                    </div>
                                     <div class="form-group">
                                         <div class="text-center">
                                             <button class="btn btn-primary btn-block" type="submit">Submit</button>

@@ -128,12 +128,14 @@ class ExpenseController extends Controller
     public function store(Request $request, $msid)
     {
         $this->validate($request, [
-            'date' => 'required',
-            'name' => 'required',
-            'exp' => 'required'
+            'date' => 'required'
         ]);
         $date = $request->date;
         if(date("m", strtotime($date)) == date("m")){
+            $this->validate($request, [
+                'name' => 'required',
+                'exp' => 'required'
+            ]);
             $month = Carbon::now()->month;
             $day = date("d", strtotime($request->date));
 
@@ -160,6 +162,9 @@ class ExpenseController extends Controller
             $e->day = $day;
             $e->exp = $request->exp;
             $e->a = 1;
+            if ($request->has('remark')){
+                $e->remark = $request->remark;
+            }
             $e->save();
             $this->clculateExpA($msid);
             return redirect()->route('utility');
@@ -203,6 +208,9 @@ class ExpenseController extends Controller
             $e->month = $month;
             $e->day = $day;
             $e->exp = $request->exp;
+            if ($request->has('remark')){
+                $e->remark = $request->remark;
+            }
             $e->save();
             return redirect()->route('utility');
         }
@@ -315,6 +323,9 @@ class ExpenseController extends Controller
         ]);
         $e = Expense::find($eid);
         $e->exp = $request->exp;
+        if ($request->has('remark')){
+            $e->remark = $request->remark;
+        }
         $e->update();
         $this->clculateExpA($msid);
         return redirect()->route('details.exps', ['msid' => $msid]);
@@ -327,6 +338,9 @@ class ExpenseController extends Controller
         ]);
         $e = Expense::find($eid);
         $e->exp = $request->exp;
+        if ($request->has('remark')){
+            $e->remark = $request->remark;
+        }
         $e->update();
         return redirect()->route('details.exps', ['msid' => $msid]);
     }

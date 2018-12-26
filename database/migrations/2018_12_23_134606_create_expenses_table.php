@@ -21,6 +21,7 @@ class CreateExpensesTable extends Migration
             $table->integer('month');
             $table->integer('day');
             $table->integer('exp');
+            $table->string('remark', 50)->nullable();
             $table->boolean('dbm')->default(0);
             $table->timestamps();
         });

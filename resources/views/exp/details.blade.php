@@ -33,18 +33,20 @@
                         <h3 class="text-center bg-secondary text-light">Unaccepted Expense.</h3>
                         <table class="table table-hover bg-secondary text-light">
                             <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th>Date</th>
                                 <th>Expense</th>
+                                <th>Remark</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($staexp as $d)
-                                <tr>
+                                <tr class="text-center">
                                     @if($d->dbm !== 1)
                                         <td>{{$d->day}} / {{$d->month}}</td>
                                         <td>{{$d->exp}}</td>
+                                        <td>{{$d->remark}}</td>
                                         <td class="text-center">
                                             <a href="" class="btn btn-primary btn-sm mr-1 mb-1">Accept</a>
                                             <a href="" class="btn btn-success btn-sm mr-1 mb-1">Edit</a>
@@ -75,18 +77,20 @@
                         <h3 class="text-center bg-secondary text-light">Still Not Accepted Expense.</h3>
                         <table class="table table-hover bg-secondary text-light">
                             <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th>Date</th>
                                 <th>Expense</th>
+                                <th>Remark</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($uaexp as $d)
-                                <tr>
+                                <tr class="text-center">
                                     @if($d->dbm !== 1)
                                         <td>{{$d->day}} / {{$d->month}}</td>
                                         <td>{{$d->exp}}</td>
+                                        <td>{{$d->remark}}</td>
                                         <td>
                                             <a href="{{route('expMedit', ['eid' => $d->id, 'msid' => $d->mealsystem_id, 'month' => $d->month, 'day' => $d->day])}}" class="btn btn-success btn-sm mr-1 mb-1">Edit</a>
                                             <a href="{{route('exp.Mdelete', ['eid' => $d->id])}}" class="btn btn-danger btn-sm mb-1" onclick="return confirm('Are you sure?')">&#10006;</a>
@@ -119,6 +123,7 @@
                             <tr class="text-center">
                                 <th>Name</th>
                                 <th>Expenses</th>
+                                <th>Remark</th>
                                 @role(['admin', 'mealManager'])
                                     <th></th>
                                 {{--@else--}}
@@ -132,6 +137,7 @@
                                 <tr class="text-center">
                                     <td>{{$d->user->name}}</td>
                                     <td>{{$d->exp}}</td>
+                                    <td>{{$d->remark}}</td>
                                     @role(['admin', 'mealManager'])
                                         <td>
                                             <a href="{{route('exp.edit', ['eid' => $d->id, 'msid' => $d->mealsystem_id, 'uid' => $d->user_id, 'month' => $d->month, 'day' => $d->day])}}" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
