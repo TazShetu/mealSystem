@@ -1,7 +1,6 @@
 @include('includes.header')
 <!--....NAV BAR....  -->
 @include('includes.navbar')
-@role(['admin', 'mealManager'])
 <header id="home-section" class="utility">
     <div class="dark-overlay">
         <div class="home-inner">
@@ -14,19 +13,15 @@
                         <div class="card bg-success">
                             <div class="card-body">
                                 {{--@if(session('alert'))--}}
-                                    {{--<div class="alert alert-danger">--}}
-                                        {{--{{session('alert')}}--}}
-                                    {{--</div>--}}
+                                {{--<div class="alert alert-danger">--}}
+                                {{--{{session('alert')}}--}}
+                                {{--</div>--}}
                                 {{--@endif--}}
-                                <form action="{{route('exp.update', ['eid' => $exp->id, 'msid' => $msid])}}" method="post">
+                                <form action="{{route('exp.Mupdate', ['eid' => $exp->id, 'msid' => $msid])}}" method="post">
                                     {{csrf_field()}}
                                     <div class="form-group">
                                         <label class="lead"><b>Date</b></label>
                                         <h3 class="bg-light text-dark p-1">{{$day}} - {{$mn}}</h3>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="lead">Name</label>
-                                        <h3 class="bg-light text-dark p-1">{{$un}}</h3>
                                     </div>
                                     <div class="form-group {{$errors->has('exp') ? 'has-error' : ''}}">
                                         <label class="lead"><b>Expense</b></label>
@@ -57,7 +52,7 @@
         </div>
     </div>
 </header>
-@endrole
+
 
 @include('includes.euModal')
 

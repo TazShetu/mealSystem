@@ -41,7 +41,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                This is a meal-manager controlled meal-system.
+                                This is a meal-manager controlled meal-system. Calculation result may vary from user to user by (+/-)1 Tk.
                             </div>
                         </div>
                         <div class="d-flex flex-row">
