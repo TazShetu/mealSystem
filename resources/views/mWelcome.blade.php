@@ -6,22 +6,36 @@
     @else
         <!--....NAV BAR before login....  -->
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top justify-content-between">
-            <div class="container">
-                <a href="{{url('/')}}" class="navbar-brand">Meal System</a>
-                <form method="POST" action="{{ route('login') }}" class="form-inline">
-                    @csrf
-                    <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} mr-2 mb-1" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>
-                    @if ($errors->has('email'))
-                        <span class="invalid-feedback pb-1" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
-                    @endif
-                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} mr-2 mb-1" name="password" placeholder="Password" required>
-                    @if ($errors->has('password'))
-                        <span class="invalid-feedback pb-1" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
-                    @endif
-                    <button type="submit" class="btn btn-outline-success">Login</button>
-                </form>
+            <a href="{{url('/')}}" class="navbar-brand ml-5">Mess System</a>
+
+            <div class="flex-column mr-5">
+            {{--<div class="container">--}}
+                <div class="flex-row">
+                    <form method="POST" action="{{ route('login') }}" class="form-inline">
+                        @csrf
+                        <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} mr-2 mb-1" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>
+                        {{--@if ($errors->has('email'))--}}
+                            {{--<span class="invalid-feedback pb-1" role="alert"><strong>{{ $errors->first('email') }}</strong></span>--}}
+                        {{--@endif--}}
+                        <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} mr-2 mb-1" name="password" placeholder="Password" required>
+                        {{--@if ($errors->has('password'))--}}
+                            {{--<span class="invalid-feedback pb-1" role="alert"><strong>{{ $errors->first('password') }}</strong></span>--}}
+                        {{--@endif--}}
+                        <button type="submit" class="btn btn-outline-success">Login</button>
+                    </form>
+                </div>
+                @if ($errors->has('email'))
+                    <div class="flex-row">
+                        {{--<span class="invalid-feedback pb-1" role="alert"><strong>{{ $errors->first('email') }}</strong></span>--}}
+                        <p style="color: #f44; font-size: small;">{{ $errors->first('email') }}</p>
+                    </div>
+                @endif
+
+
+                {{--</div>--}}
             </div>
         </nav>
+
     @endauth
 @endif
 

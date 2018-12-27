@@ -50,7 +50,7 @@
                                         <label class="lead"><b>Remark</b></label>
                                         <input type="text" maxlength="50" class="form-control" name="remark" value="{{old('remark')}}">
                                         @if($errors->has('remark'))
-                                            <span class="help-block">{{$errors->first('remark')}}</span>
+                                            <span class="help-block" style="color: red;">{{$errors->first('remark')}}</span>
                                         @endif
                                     </div>
                                     <div class="form-group">

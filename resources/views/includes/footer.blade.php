@@ -33,6 +33,8 @@
                     <li>Utility expense and deposit have nothing to do with meal-rate.</li>
                     <li>Utility expenses are divided equally among all the members.</li>
                     <li>Members cannot edit or delete accepted expense but they can enter new expense for the same date.</li>
+                    <li>While changing meal-manager, it is highly advised not to choose someone who was not a member of Last month’s meal-system.</li>
+                    <li>As newly added member cannot access old month’s meal-system.</li>
                 </ul>
             </div>
             <div class="modal-footer">

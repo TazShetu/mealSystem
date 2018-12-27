@@ -75,7 +75,7 @@ class UserController extends Controller
         $a = Auth::user();
         $mss = $a->mealsystems()->get();
         foreach ($mss as $ms){
-            if (($ms->month) === (Carbon::now()->month)){
+            if (($ms->month) == (Carbon::now()->month)){
                 $ms->users()->attach($u);
                 $this->clculateExpA($ms->id);
             }
