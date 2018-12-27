@@ -41,7 +41,7 @@ class ExpenseController extends Controller
         $co = \DateTime::createFromFormat('!m', $month);
         $mn = $co->format('F');
 
-        if ($month === 1){
+        if (($month * 1) === 1){
             $pm = 12;
         }else {
             $pm = $month - 1;
@@ -75,7 +75,7 @@ class ExpenseController extends Controller
         $pms = null;
         $pmn = null;
         $x = null;
-        if ($pm === 12){
+        if (($pm * 1) === 12){
             $nm = 1;
         }else {
             $nm = $pm + 1;
@@ -161,6 +161,9 @@ class ExpenseController extends Controller
             $e->exp = $request->exp;
             $e->a = 1;
             if ($request->has('remark')){
+                $this->validate($request, [
+                    'remark' => 'max:50'
+                ]);
                 $e->remark = $request->remark;
             }
             $e->save();
@@ -195,6 +198,9 @@ class ExpenseController extends Controller
             $e->day = $day;
             $e->exp = $request->exp;
             if ($request->has('remark')){
+                $this->validate($request, [
+                    'remark' => 'max:50'
+                ]);
                 $e->remark = $request->remark;
             }
             $e->save();
@@ -238,6 +244,9 @@ class ExpenseController extends Controller
         $e->exp = $request->exp;
         $e->a = 1;
         if ($request->has('remark')){
+            $this->validate($request, [
+                'remark' => 'max:50'
+            ]);
             $e->remark = $request->remark;
         }
         $e->save();
@@ -277,6 +286,9 @@ class ExpenseController extends Controller
         $e->day = $request->day;
         $e->exp = $request->exp;
         if ($request->has('remark')){
+            $this->validate($request, [
+                'remark' => 'max:50'
+            ]);
             $e->remark = $request->remark;
         }
         $e->save();
@@ -337,6 +349,9 @@ class ExpenseController extends Controller
         $e = Expense::find($eid);
         $e->exp = $request->exp;
         if ($request->has('remark')){
+            $this->validate($request, [
+                'remark' => 'max:50'
+            ]);
             $e->remark = $request->remark;
         }
         $e->a = 1;
@@ -353,6 +368,9 @@ class ExpenseController extends Controller
         $e = Expense::find($eid);
         $e->exp = $request->exp;
         if ($request->has('remark')){
+            $this->validate($request, [
+                'remark' => 'max:50'
+            ]);
             $e->remark = $request->remark;
         }
         $e->update();
@@ -402,9 +420,9 @@ class ExpenseController extends Controller
         $cmn = null;
         $pmn = null;
         $mmm= Carbon::now()->month;
-        if ($month === $mmm){
+        if (($month * 1) === $mmm){
             // in current month
-            if ($month === 1){
+            if (($month * 1) === 1){
                 $pm = 12;
             }else{
                 $pm = $month - 1;

@@ -2,8 +2,17 @@
     <div class="text-center pt-1">
         <h5>
             Taz Inc. <span style="font-size: 17px;">Copyright &copy; 2018</span>
-            <small><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#usesModal">Usage</button></small>
+            <small><button class="btn btn-success btn-sm ml-2" data-toggle="modal" data-target="#usesModal">Usage</button></small>
         </h5>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <a href="https://www.facebook.com/lessmessMessSystem/" class="btn btn-sm btn-secondary" target="_blank"><i class="fa fa-facebook"></i></a>
+            </div>
+            <div class="col-sm-6">
+                <a href="http://ttazs.com/" class="btn btn-default text-secondary" target="_blank">About</a>
+                <a href="{{route('contact')}}" class="btn btn-default text-secondary">Contact</a>
+            </div>
+        </div>
     </div>
 </footer>
 <!-- .....Contact Modal....  -->
@@ -33,10 +42,12 @@
                     <li>Utility expense and deposit have nothing to do with meal-rate.</li>
                     <li>Utility expenses are divided equally among all the members.</li>
                     <li>Members cannot edit or delete accepted expense but they can enter new expense for the same date.</li>
+                    <li>While changing meal-manager, it is highly advised not to choose someone who was not a member of Last month’s meal-system.</li>
+                    <li>As newly added member cannot access old month’s meal-system.</li>
                 </ul>
             </div>
             <div class="modal-footer">
-                <p>Fell free to send your feedback to <br>mealsystemtaz@gmail.com</p>
+                <p>Fell free to send your feedback <br><a href="{{route('contact')}}" class="btn btn-light pull-right">Contact</a></p>
             </div>
         </div>
     </div>

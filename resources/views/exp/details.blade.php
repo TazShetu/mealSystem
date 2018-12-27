@@ -174,6 +174,7 @@
                         @endif
                     </div>
                     <div class="col-sm-6">
+{{--                        {{dd($x)}}--}}
                         @if(($x * 1) === 2)
                             <a href="{{route('details.exps', ['msid' => $cmsid])}}" class="btn btn-light pull-right">{{$cmn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
                         @endif
