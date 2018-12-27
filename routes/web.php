@@ -46,6 +46,17 @@ Route::post('/MealManagerCreateWithMealSystem', [
     'as' => 'store.mM.mS'
 ]);
 
+// contact
+Route::get('/contact', [
+    'uses' => 'MealsystemController@contact',
+    'as' => 'contact'
+]);
+
+Route::post('/contact/sent', [
+    'uses' => 'MealsystemController@contactSent',
+    'as' => 'contact.sent'
+]);
+
 Route::get('/MealMemberCreate', [
     'uses' => 'UserController@create',
     'as' => 'create.user'
