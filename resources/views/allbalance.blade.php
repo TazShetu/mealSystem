@@ -18,32 +18,28 @@
             <div class="container">
                 {{--<div class="row">--}}
                     @if(!$amounts->isEmpty())
-                    <table class="table table-hover">
+                    <table class="table table-hover bg-light text-dark">
                         <thead>
                         <tr class="text-center">
                             <th>Name</th>
-                            <th>Amount</th>
+                            <th>M</th>
+                            <th>U</th>
+                            <th>Total</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($amounts as $a)
                             <tr class="text-center">
                                 <td>{{$a->user->name}}</td>
-                                <td><span
-                                    @php
-                                        if ($a->amount < 0){
-                                            echo 'style="color: red"';
-                                        }
-                                    @endphp >
-                                        {{$a->amount}}
-                                    </span>
-                                </td>
+                                <td><span @php if ($a->amount < 0){echo 'style="color: orange;"';}@endphp>{{$a->amount}}</span></td>
+                                <td><span @php if ($a->expA < 0){echo 'style="color: orange;"';}@endphp>{{$a->expA}}</span></td>
+                                <td><span @php if (($a->amount + $a->expA) < 0){echo 'style="color: red;"';}@endphp>{{$a->amount + $a->expA}}</span></td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                     @else
-                        <p>Still no amount to show.</p>
+                        <h3 class="text-center">Still no amount to show.</h3>
                     @endif
 
                 {{--</div>--}}

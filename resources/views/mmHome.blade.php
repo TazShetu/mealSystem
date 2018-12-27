@@ -1,7 +1,7 @@
 @include('includes.header')
 <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
     <div class="container">
-        <a href="{{route('home')}}" class="navbar-brand">Meal System</a>
+        <a href="{{route('home')}}" class="navbar-brand">Mess System</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -9,6 +9,9 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a href="{{route('home')}}" class="nav-link active">Home</a>
+                </li>
+                <li>
+                    <a href="{{route('utility')}}" class="nav-link">Utility</a>
                 </li>
                 @role(['admin','mealManager'])
                     <li class="nav-item">
@@ -96,17 +99,17 @@
                             </div>
                         </div>
                         <br>
-                        @if($am)
-                            <div class="card bg-info text-center card-form">
-                                <div class="card-body">
-                                    <h3 class="display-6">Your balance <span id="amountt"><em>{{$am->amount}}</em></span> &nbsp;Tk</h3>
-                                    @role(['admin', 'mealManager'])
-                                        <a href="{{route('allbalance', ['msid' => $ms->id])}}" class="btn btn-outline-light">All Balance</a>
-                                    @endrole
-                                </div>
+                        <div class="card bg-info text-center card-form">
+                            <div class="card-body">
+                                <h3 class="display-6">Your balance is <span id="amountt"><b>{{$amount}}</b></span> &nbsp;Tk and utility <span  @php if ($expA<0){echo 'style="color: red;"';} @endphp><b>{{$expA}}</b></span> Tk</h3>
+                                @role(['admin', 'mealManager'])
+                                @if($ms)
+                                    <a href="{{route('allbalance', ['msid' => $ms->id])}}" class="btn btn-outline-light">All Balances</a>
+                                @endif
+                                @endrole
                             </div>
-                            <br>
-                        @endif
+                        </div>
+                        <br>
                         @role(['admin', 'mealManager'])
                             @if(($pastM * 1) === 1)
                                 <h4>Add old Meal Member to new meal-system</h4>

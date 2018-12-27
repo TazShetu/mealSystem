@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Amountu;
+use App\Expense;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,8 +75,10 @@ class UserController extends Controller
         $a = Auth::user();
         $mss = $a->mealsystems()->get();
         foreach ($mss as $ms){
-//            dd($ms->id);
-            $ms->users()->attach($u);
+            if (($ms->month) == (Carbon::now()->month)){
+                $ms->users()->attach($u);
+                $this->clculateExpA($ms->id);
+            }
         }
         return redirect()->route('home');
     }
@@ -114,10 +118,14 @@ class UserController extends Controller
             'name' => 'required|min:3|max:50',
         ]);
         $u = User::where('slug', $slug)->first();
+        $u->name = $request->name;
+        $u->slug = str_slug($request->name)."-".str_slug($u->username);
         if ($u->username !== $request->username){
             $this->validate($request, [
                 'username' => 'required|unique:users',
             ]);
+            $u->username = $request->username;
+            $u->slug = str_slug($request->name)."-".str_slug($request->username);
         }
         if ($request->password){
             $this->validate($request, [
@@ -131,9 +139,6 @@ class UserController extends Controller
             ]);
             $u->email = $request->email;
         }
-        $u->name = $request->name;
-        $u->username = $request->username;
-        $u->slug = rand(1, 99).str_slug($request->name).rand(1,99);
 
         $u->update();
 
@@ -212,6 +217,7 @@ class UserController extends Controller
             $u = User::find($id);
             $ms->users()->attach($u);
         }
+        $this->clculateExpA($msid);
         return redirect()->route('home');
     }
 
@@ -261,6 +267,45 @@ class UserController extends Controller
         $mm->detachRole('mealManager');
 
         return redirect()->route('home');
+    }
+
+
+    public function clculateExpA($msid){
+        $es = Expense::where('mealsystem_id', $msid)->where('a', 1)->get();
+        // total exp
+        $te = 0;
+        foreach ($es as $exp){
+            $te = $te + $exp->exp;
+        }
+
+        // all member get
+        $ms = Mealsystem::find($msid);
+        $users = $ms->users;
+        $uc = count($users);
+        $epu = $te / $uc;
+//            dd($users);
+
+        foreach ($users as $uu){
+//                dd($uu);
+            $eus = Expense::where('mealsystem_id', $msid)->where('a', 1)->where('user_id', $uu->id)->get();
+            $tue = 0;
+            foreach ($eus as $eu){
+                $tue = $tue + $eu->exp;
+            }
+            $ea = ($tue - $epu);
+
+            $cexpA = Amountu::where('mealsystem_id', $msid)->where('user_id', $uu->id)->first();
+            if ($cexpA){
+                $cexpA->expA = $ea;
+                $cexpA->update();
+            }else {
+                $exa = new Amountu;
+                $exa->user_id = $uu->id;
+                $exa->mealsystem_id = $msid;
+                $exa->expA = $ea;
+                $exa->save();
+            }
+        }
     }
 
 

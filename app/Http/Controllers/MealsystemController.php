@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mealsystem;
+use App\Notifications\SendContactNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Session;
 use vendor\project\StatusTest;
 
 use App\User;
@@ -21,6 +24,23 @@ class MealsystemController extends Controller
     {
         //
     }
+
+
+    public function contact(){
+        return view('contact');
+    }
+
+    public function contactSent(Request $request){
+        $this->validate($request, [
+            'name' => 'required|min:3|max:30',
+            'email' => 'required|email|max:50',
+            'message' => 'required'
+        ]);
+        Notification::route('mail', 'test@g.com')->notify(new SendContactNotification($request));
+        Session::flash('success', 'Email was sent successfully. Thanks for your query.');
+        return redirect()->back();
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -41,7 +61,7 @@ class MealsystemController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|min:3|max:50',
+            'name' => 'required|min:3|max:30',
             'username' => 'required|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);

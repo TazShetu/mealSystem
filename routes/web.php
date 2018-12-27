@@ -46,6 +46,17 @@ Route::post('/MealManagerCreateWithMealSystem', [
     'as' => 'store.mM.mS'
 ]);
 
+// contact
+Route::get('/contact', [
+    'uses' => 'MealsystemController@contact',
+    'as' => 'contact'
+]);
+
+Route::post('/contact/sent', [
+    'uses' => 'MealsystemController@contactSent',
+    'as' => 'contact.sent'
+]);
+
 Route::get('/MealMemberCreate', [
     'uses' => 'UserController@create',
     'as' => 'create.user'
@@ -222,3 +233,103 @@ Route::get('all-balance/{msid}', [
     'uses' => 'HomeController@allbalance',
     'as' => 'allbalance'
 ])->middleware('auth', 'mM');
+
+Route::get('utility', [
+    'uses' => 'ExpenseController@index',
+    'as' => 'utility'
+])->middleware('auth');
+
+Route::get('past-utility/{pmsid}', [
+    'uses' => 'ExpenseController@pindex',
+    'as' => 'p.utility'
+])->middleware('auth');
+
+Route::get('create/utility-expense/{msid}', [
+    'uses' => 'ExpenseController@create',
+    'as' => 'create.exp'
+])->middleware('auth', 'mM');
+
+Route::get('past-create/utility-expense/{msid}', [
+    'uses' => 'ExpenseController@pcreate',
+    'as' => 'pcreate.exp'
+])->middleware('auth', 'mM');
+
+Route::post('store/utility-expense/{msid}', [
+    'uses' => 'ExpenseController@store',
+    'as' => 'exp.store'
+])->middleware('auth', 'mM');
+
+Route::post('past-store/utility-expense/{month}/{msid}', [
+    'uses' => 'ExpenseController@pstore',
+    'as' => 'pstore.exp'
+])->middleware('auth', 'mM');
+
+Route::get('utility/details/{msid}', [
+    'uses' => 'ExpenseController@de',
+    'as' => 'details.exps'
+])->middleware('auth');
+
+Route::get('exp/delete/{eid}/{msid}', [
+    'uses' => 'ExpenseController@destroy',
+    'as' => 'exp.delete'
+])->middleware('auth', 'mM');
+
+Route::get('expense/edit/{eid}/{msid}/{uid}/{month}/{day}', [
+    'uses' => 'ExpenseController@edit',
+    'as' => 'exp.edit'
+])->middleware('auth', 'mM');
+
+Route::post('expense/update/{eid}/{msid}', [
+    'uses' => 'ExpenseController@update',
+    'as' => 'exp.update'
+])->middleware('auth', 'mM');
+
+Route::get('create/m/utility-expense/{slug}/{msid}', [
+    'uses' => 'ExpenseController@Mcreate',
+    'as' => 'mcreate.exp'
+])->middleware('auth');
+
+//Route::get('past-create/utility-expense/{msid}', [
+//    'uses' => 'ExpenseController@pcreate',
+//    'as' => 'pcreate.exp'
+//])->middleware('auth', 'mM');
+
+Route::post('store/m/utility-expense/{uid}/{msid}', [
+    'uses' => 'ExpenseController@Mstore',
+    'as' => 'exp.Mstore'
+])->middleware('auth');
+
+//Route::post('past-store/utility-expense/{month}/{msid}', [
+//    'uses' => 'ExpenseController@pstore',
+//    'as' => 'pstore.exp'
+//])->middleware('auth', 'mM');
+
+Route::get('exp/m/delete/{eid}', [
+    'uses' => 'ExpenseController@Mdestroy',
+    'as' => 'exp.Mdelete'
+])->middleware('auth');
+
+Route::get('/m-expense/edit/{eid}/{msid}/{month}/{day}', [
+    'uses' => 'ExpenseController@Medit',
+    'as' => 'expMedit'
+])->middleware('auth');
+
+Route::post('expense/m/update/{eid}/{msid}', [
+    'uses' => 'ExpenseController@Mupdate',
+    'as' => 'exp.Mupdate'
+])->middleware('auth');
+
+Route::get('mM/accept/expense/{eid}/{msid}', [
+    'uses' => 'ExpenseController@mMAcceptExp',
+    'as' => 'mM.accept.exp'
+])->middleware('auth', 'mM');
+
+Route::get('create/m/past/utility-expense/{slug}/{msid}', [
+    'uses' => 'ExpenseController@MPcreate',
+    'as' => 'mpcreate.exp'
+])->middleware('auth');
+
+Route::post('store/m/past/utility-expense/{uid}/{msid}/{month}', [
+    'uses' => 'ExpenseController@MPstore',
+    'as' => 'exp.MPstore'
+])->middleware('auth');

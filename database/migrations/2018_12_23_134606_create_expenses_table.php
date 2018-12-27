@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDatamUserTable extends Migration
+class CreateExpensesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,16 @@ class CreateDatamUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('datam_user', function (Blueprint $table) {
+        Schema::create('expenses', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('datam_id');
             $table->integer('user_id');
+            $table->integer('mealsystem_id');
+            $table->boolean('a')->default(0);
+            $table->integer('month');
+            $table->integer('day');
+            $table->integer('exp');
+            $table->string('remark', 50)->nullable();
+            $table->boolean('dbm')->default(0);
             $table->timestamps();
         });
     }
@@ -28,6 +34,6 @@ class CreateDatamUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('datam_user');
+        Schema::dropIfExists('expenses');
     }
 }

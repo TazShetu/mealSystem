@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Amountu;
 use App\Datam;
+use App\Expense;
 use App\Mealsystem;
 use App\Memdata;
 use Carbon\Carbon;
@@ -52,6 +53,13 @@ class HomeController extends Controller
                 $c = 0;
             }
         }
+        if ($am){
+            $amount = $am->amount;
+            $expA = $am->expA;
+        }else {
+            $amount = 0;
+            $expA = 0;
+        }
         if ($month == 1){
             $pmonth = 12;
         }else {
@@ -68,7 +76,7 @@ class HomeController extends Controller
             $pastM = 0;
             $pmn = 'No past month meal-system';
         }
-        return view('mmHome', compact('pms','pastM', 'pmn', 'month', 'mn', 'c', 'ms', 'am', 'u'));
+        return view('mmHome', compact('pms','pastM', 'pmn', 'month', 'mn', 'c', 'ms', 'amount', 'u', 'expA'));
     }
 
 
@@ -99,6 +107,12 @@ class HomeController extends Controller
         $mds = Memdata::where('month', $om)->get();
         foreach ($mds as $md){
             $md->delete();
+        }
+
+        // expenses table
+        $exps = Expense::where('month', $om)->get();
+        foreach ($exps as $exp){
+            $exp->delete();
         }
 
         $mss = Mealsystem::where('month', $om)->get();

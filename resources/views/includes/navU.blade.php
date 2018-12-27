@@ -10,12 +10,12 @@
                     <a href="{{route('home')}}" class="nav-link">Home</a>
                 </li>
                 <li>
-                    <a href="{{route('utility')}}" class="nav-link">Utility</a>
+                    <a href="{{route('utility')}}" class="active nav-link">Utility</a>
                 </li>
                 @role(['admin','mealManager'])
-                    <li class="nav-item">
-                        <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i></a>
-                    </li>
+                <li class="nav-item">
+                    <a href="{{route('create.user')}}" class="nav-link"><i class="fa fa-user-plus"></i></a>
+                </li>
                 @endrole
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-outline-success" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -32,7 +32,7 @@
                         </form></span>
                         <button class="dropdown-item" data-toggle="modal" data-target="#euModal"><i class="fa fa-edit"></i>&nbsp; Edit Profile</button>
                         @role(['admin','mealManager'])
-                            <a href="{{route('mm.change')}}" class="dropdown-item"><i class="fa fa-user"></i> <i class="fa fa-arrows-h"></i> <i class="fa fa-user-o"></i></a>
+                        <a href="{{route('mm.change')}}" class="dropdown-item"><i class="fa fa-user"></i> <i class="fa fa-arrows-h"></i> <i class="fa fa-user-o"></i></a>
                         @endrole
                     </div>
                 </li>
