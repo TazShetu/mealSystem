@@ -1,4 +1,4 @@
-<footer>
+<footer id="footer">
     <div class="text-center pt-1">
         <h5>
             Taz Inc. <span style="font-size: 17px;">Copyright &copy; 2018</span>
@@ -10,7 +10,7 @@
             </div>
             <div class="col-sm-6">
                 <a href="http://ttazs.com/" class="btn btn-default text-secondary" target="_blank">About</a>
-                <a href="{{route('contact')}}" class="btn btn-default text-secondary">Contact</a>
+                <a href="{{route('contact')}}" class="btn btn-default text-secondary"><span class="acC">Contact</span></a>
             </div>
         </div>
     </div>
