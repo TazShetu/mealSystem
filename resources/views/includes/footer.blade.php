@@ -49,7 +49,7 @@
                 </ul>
             </div>
             <div class="modal-footer">
-                <p>Fell free to send your feedback <br><a href="{{route('contact')}}" class="btn btn-light pull-right">Contact</a></p>
+                <p>Feel free to send your feedback. <br><a href="{{route('contact')}}" class="btn btn-secondary pull-right"><i class="fa fa-envelope-o"></i></a></p>
             </div>
         </div>
     </div>
