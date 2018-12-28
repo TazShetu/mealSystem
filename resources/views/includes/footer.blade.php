@@ -1,16 +1,18 @@
-<footer id="footer">
+<footer>
     <div class="text-center pt-1">
         <h5>
             Taz Inc. <span style="font-size: 17px;">Copyright &copy; 2018</span>
             <small><button class="btn btn-success btn-sm ml-2" data-toggle="modal" data-target="#usesModal">Usage</button></small>
         </h5>
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <a href="https://www.facebook.com/lessmessMessSystem/" class="btn btn-sm btn-secondary" target="_blank"><i class="fa fa-facebook"></i></a>
-            </div>
-            <div class="col-sm-6">
-                <a href="http://ttazs.com/" class="btn btn-default text-secondary" target="_blank">About</a>
-                <a href="{{route('contact')}}" class="btn btn-default text-secondary"><span class="acC">Contact</span></a>
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <a href="https://www.facebook.com/lessmessMessSystem/" class="btn btn-sm btn-secondary" target="_blank"><i class="fa fa-facebook"></i></a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="http://ttazs.com/" class="btn btn-default text-secondary" target="_blank">About</a>
+                    <a href="{{route('contact')}}" class="btn btn-default text-secondary"><span class="acC">Contact</span></a>
+                </div>
             </div>
         </div>
     </div>
