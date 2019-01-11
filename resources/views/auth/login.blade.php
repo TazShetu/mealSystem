@@ -3,7 +3,7 @@
 <!--....NAV BAR before login....  -->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top justify-content-between">
     <div class="container">
-        <a href="{{url('/')}}" class="navbar-brand">Meal System</a>
+        <a href="{{url('/')}}" class="navbar-brand">Less Mess</a>
         <form method="POST" action="{{ route('login') }}" class="form-inline">
             @csrf
             <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} mr-2 mb-1" name="email" value="{{ old('email') }}" placeholder="User Name" required autofocus>

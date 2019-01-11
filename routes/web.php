@@ -17,21 +17,58 @@ Route::get('/test', function () {
 
 
 Route::get('/', function () {
-    return view('mWelcome');
+    return view('index');
 });
 
 
 Auth::routes();
+
+Route::post('/MealManagerCreateWithMealSystem', [
+    'uses' => 'MealsystemController@store',
+    'as' => 'store.mM.mS'
+]);
+
+Route::get('/home', [
+    'uses' => 'HomeController@home',
+    'as' => 'home'
+])->middleware('auth');
+
+Route::get('/MealMemberCreate', [
+    'uses' => 'UserController@create',
+    'as' => 'create.user'
+])->middleware('auth', 'mM');
+Route::post('/MealMemberStore', [
+    'uses' => 'UserController@store',
+    'as' => 'store.user'
+])->middleware('auth', 'mM');
+
+
+
+
+
+
+
+
+
+
+
+//  OLD Starts
+
+
+
+
+
+
+
+
+
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::get('/h', function () {
 //    return view('mHome');
 //});
-Route::get('/home', [
-    'uses' => 'HomeController@me',
-    'as' => 'home'
-])->middleware('auth');
+
 //Route::get('/t', function () {
 //    return view('t');
 //});
@@ -41,10 +78,7 @@ Route::get('/home', [
 
 
 // Index Register
-Route::post('/MealManagerCreateWithMealSystem', [
-    'uses' => 'MealsystemController@store',
-    'as' => 'store.mM.mS'
-]);
+
 
 // contact
 Route::get('/contact', [
@@ -57,14 +91,7 @@ Route::post('/contact/sent', [
     'as' => 'contact.sent'
 ]);
 
-Route::get('/MealMemberCreate', [
-    'uses' => 'UserController@create',
-    'as' => 'create.user'
-])->middleware('auth', 'mM');
-Route::post('/MealMemberStore', [
-    'uses' => 'UserController@store',
-    'as' => 'store.user'
-])->middleware('auth', 'mM');
+
 
 Route::post('/MealMemberUpdate/{slug}', [
     'uses' => 'UserController@update',

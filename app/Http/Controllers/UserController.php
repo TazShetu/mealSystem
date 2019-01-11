@@ -9,14 +9,87 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Mealsystem;
+use Illuminate\Support\Facades\View;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
+
+    public function create()
+    {
+        $va = $this->SideAndNav();
+//        dd($va);
+        return view('createMember', compact('va'));
+    }
+
+
+
+    public function SideAndNav(){
+        $ms = null;
+        $month = Carbon::now()->month;
+        $user = Auth::user();
+        $ms = $user->mealsystems()->where('month', $month)->first();
+        $co = \DateTime::createFromFormat('!m', $month);
+        $monthName = $co->format('F');
+        if ($month == 1){
+            $pmonth = 12;
+        }else {
+            $pmonth = $month - 1 ;
+        }
+        $pms = $user->mealsystems()->where('month', $pmonth)->first();
+        if ($pms){
+            $po = \DateTime::createFromFormat('!m', $pmonth);
+            $pastMonthName = $po->format('F');
+            $pastM = 1;
+        }else {
+            $pastM = 0;
+            $pastMonthName = null;
+        }
+
+        $viewAdd = null;
+        $viewAdd['ms'] = $ms;
+        $viewAdd['monthName'] = $monthName;
+        $viewAdd['pastM'] = $pastM;
+        $viewAdd['pastMonthName'] = $pastMonthName;
+        return $viewAdd;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function index()
     {
         //
@@ -27,31 +100,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        // check mS exist for current month. if not create mS for new month and attach mM to that
-        $a = Auth::user();
-        $msOmm = $a->mealsystems()->get();
-        $x = 0 ;
-        foreach ($msOmm as $m){
-            if ($m->month == Carbon::now()->month){
-                $x = 1;
-                break;
-            }
-        }
-        if ($x != 1){
-            $ms = new Mealsystem;
-            $ms->month = Carbon::now()->month;
-            $ms->save();
-            $ms->users()->attach($a);
-        }
 
-        $month = Carbon::now()->month;
-        $co = \DateTime::createFromFormat('!m', $month);
-        $mn = $co->format('F');
-
-        return view('createMember', compact('mn'));
-    }
 
     /**
      * Store a newly created resource in storage.
