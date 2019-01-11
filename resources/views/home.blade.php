@@ -14,10 +14,14 @@
 
         <div class="page-holder w-100 d-flex flex-wrap">
             <div class="container-fluid px-xl-5">
-                <section class="pt-5">
+                <section class="pt-4">
                     @if(session()->has('success'))
                         <div class="alert alert-success text-center">
                             {{ session()->get('success') }}
+                        </div>
+                    @elseif(session()->has('alert'))
+                        <div class="alert alert-danger text-center">
+                            {{ session()->get('alert') }}
                         </div>
                     @endif
                     <div class="row mt-3">
@@ -71,7 +75,7 @@
                 </section>
 
 
-                <section class="pt-5">
+                <section class="pt-4">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="card mb-5">

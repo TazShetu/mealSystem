@@ -2,7 +2,7 @@
 <div id="style-switch" class="collapse" style="">
     <h5 class="mb-4">Select theme colour</h5>
     <form class="mb-4">
-        <select name="colour" id="colour" class="form-control">
+        <select name="theme-colour-btn" id="theme-colour-btn" class="form-control">
             <option value="" hidden>select colour variant</option>
             <option value="default">blue</option>
             <option value="pink">pink</option>

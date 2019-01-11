@@ -187,7 +187,7 @@
                     type: 'value',
                     name: 'Bazar',
                     min: 0,
-                    // max bazar = max + 100 ////////////////////////////////////////////////////
+                    // max bazar = max + 100
                     // max: 1600,
                     max: {{$maxBazar + 100}},
                     position: 'left',
@@ -284,7 +284,7 @@
                 tmtbChart.resize();
 
 
-            }, 150);
+            }, 300);
         });
 
 

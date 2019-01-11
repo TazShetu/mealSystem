@@ -52,14 +52,18 @@
                 <ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
                     <li class="nav-item dropdown mr-3">
                         <a id="notifications" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle px-1 sidebar-link">
-                            <i class="fas fa-sign-in-alt mr-1"></i>Signin
+                            <i class="fas fa-sign-in-alt mr-1" style="font-size: 18px;"></i> Signin
                         </a>
                         <div aria-labelledby="notifications" class="dropdown-menu">
-                            <form method="POST" action="{{ route('login') }}" class="form-inline p-2">
+                            <form method="POST" action="{{ route('login') }}" class="form-inline m-3">
                                 @csrf
-                                <input id="email" name="email" value="{{ old('email') }}" class="form-control m-1" type="text" placeholder="username" required>
-                                <input name="password" class="form-control m-1" type="password" placeholder="password" required>
-                                <button class="btn btn-outline-secondary btn-block m-1" type="submit"><span class="text-primary">Login</span></button>
+                                <input id="email" name="email" value="{{ old('email') }}" class="form-control mb-1" type="text" placeholder="username" required>
+                                <input name="password" class="form-control" type="password" placeholder="password" required>
+                                <div class="d-flex flex-nowrap">
+                                    <input class="form-control" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <label class="ml-1" for="remember">Remember Me</label>
+                                </div>
+                                <button class="btn btn-outline-secondary btn-block" type="submit"><span class="text-primary">Login</span></button>
                                 @if ($errors->has('email'))
                                     <p class="mb-0 p-2" style="color: #f44;">{{ $errors->first('email') }}</p>
                                 @endif

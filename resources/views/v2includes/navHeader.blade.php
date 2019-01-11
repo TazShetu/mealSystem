@@ -26,12 +26,13 @@
             </li>
             <li class="nav-item dropdown ml-auto">
                 <a id="userInfo" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
-                    <img src="{{asset('v2/img/avatar.png')}}" alt="User" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow">
+                    {{--<img src="{{asset('v2/img/avatar.png')}}" alt="User" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow">--}}
+                    <i class="fa fa-user"></i> {{$va['user']->name}}
                 </a>
                 <div aria-labelledby="userInfo" class="dropdown-menu">
-                    <a href="{{route('edit.user', ['slug' => $va['userSlug']])}}" class="dropdown-item"><i class="fas fa-user-edit"></i> Edit Profile</a>
+                    <a href="{{route('edit.user', ['slug' => $va['user']->slug])}}" class="dropdown-item"><i class="fas fa-user-edit"></i> Edit Profile</a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item"><i class="fas fa-user"></i> <i class="fas fa-arrows-alt-h"></i> <i class="far fa-user"></i></a>
+                    <a href="{{route('mealmanager.change')}}" class="dropdown-item"><i class="fas fa-user"></i> <i class="fas fa-arrows-alt-h"></i> <i class="far fa-user"></i></a>
                     <div class="dropdown-divider"></div>
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

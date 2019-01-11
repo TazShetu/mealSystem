@@ -42,7 +42,6 @@ Route::post('/MealMemberStore', [
     'as' => 'store.user'
 ])->middleware('auth', 'mM');
 
-
 Route::get('/Edit-Your-Profile/{slug}', [
     'uses' => 'UserController@edit',
     'as' => 'edit.user'
@@ -52,6 +51,14 @@ Route::post('/MealMemberUpdate/{slug}', [
     'as' => 'update.user'
 ])->middleware('auth');
 
+Route::get('/change-mealmanager', [
+    'uses' => 'UserController@mmchange',
+    'as' => 'mealmanager.change'
+])->middleware('auth', 'mM');
+Route::post('/meal-manager/change/store', [
+    'uses' => 'UserController@mmchangestore',
+    'as' => 'mealmanager.change.store'
+])->middleware('auth', 'mM');
 
 
 
@@ -191,14 +198,6 @@ Route::post('/Edit&Store-MemData/{uid}/{msid}/{m}/{d}', [
     'as' => 'memdata.ea'
 ])->middleware('auth', 'mM');
 
-Route::get('meal-manager/change', [
-    'uses' => 'UserController@mmchange',
-    'as' => 'mm.change'
-])->middleware('auth', 'mM');
-Route::post('meal-manager/change/store', [
-    'uses' => 'UserController@mmstore',
-    'as' => 'mm.store'
-])->middleware('auth', 'mM');
 
 Route::get('Member/Data/Delete/{id}', [
     'uses' => 'MemdataController@deleteown',

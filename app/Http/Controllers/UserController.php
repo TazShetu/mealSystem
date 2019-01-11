@@ -84,6 +84,31 @@ class UserController extends BaseController
         return redirect()->route('home', compact('va'))->with('success', 'Your Profile Updated Successfully.');
     }
 
+    public function mmchange(){
+        $va = $this->SideAndNav();
+        $CMembers = $va['ms']->users()->get();
+        $members = [];
+        foreach ($CMembers as $p){
+            if (!$p->hasRole('mealManager')){
+                $members[] = $p;
+            }
+        }
+        return view('member.mealManagerChange', compact('va','members'));
+    }
+
+    public function mmchangestore(Request $request)
+    {
+        $this->validate($request, [
+            'member_id' => 'required'
+        ]);
+        $mm = Auth::user();
+        $Nmm = User::find($request->member_id);
+        $Nmm->attachRole('mealManager');
+        $mm->detachRole('mealManager');
+        // redirect home with session alert u r no longer a mealmanager
+        $va = $this->SideAndNav();
+        return redirect()->route('home', compact('va'))->with('alert', 'You are no longer a Mealmanager.');
+    }
 
 
 
@@ -125,25 +150,10 @@ class UserController extends BaseController
     {
         //
     }
-
-
     public function show($id)
     {
         //
     }
-
-
-
-
-
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
@@ -215,52 +225,6 @@ class UserController extends BaseController
     }
 
 
-
-    public function mmchange(){
-        $mM = Auth::user();
-        $msOmm = $mM->mealsystems()->get();
-        $x = 0 ;
-        foreach ($msOmm as $m){
-            if ($m->month == Carbon::now()->month){
-                $x = 1;
-                break;
-            }
-        }
-        if ($x != 1){
-            $ms = new Mealsystem;
-            $ms->month = Carbon::now()->month;
-            $ms->save();
-            $ms->users()->attach($mM);
-        }
-        $cmonth = Carbon::now()->month;
-        $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
-        $CMembers = $msCm->users()->get();
-
-        $members = [];
-        foreach ($CMembers as $p){
-            if (!$p->hasRole('mealManager')){
-                $members[] = $p;
-            }
-        }
-        $msid = $msCm->id;
-        return view('member.mm_change', compact('members', 'msid'));
-    }
-
-
-
-    public function mmstore(Request $request)
-    {
-        $this->validate($request, [
-            'member_id' => 'required'
-        ]);
-        $mm = Auth::user();
-        $Nmm = User::find($request->member_id);
-
-        $Nmm->attachRole('mealManager');
-        $mm->detachRole('mealManager');
-
-        return redirect()->route('home');
-    }
 
 
 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Amountu;
+use App\Expense;
+use App\Mealsystem;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +21,6 @@ class BaseController extends Controller
         $ms = null;
         $month = Carbon::now()->month;
         $user = Auth::user();
-        $userSlug = $user->slug;
         $ms = $user->mealsystems()->where('month', $month)->first();
         $co = \DateTime::createFromFormat('!m', $month);
         $monthName = $co->format('F');
@@ -42,7 +44,7 @@ class BaseController extends Controller
         $viewAdd['monthName'] = $monthName;
         $viewAdd['pastM'] = $pastM;
         $viewAdd['pastMonthName'] = $pastMonthName;
-        $viewAdd['userSlug'] = $userSlug;
+        $viewAdd['user'] = $user;
         return $viewAdd;
     }
 
@@ -69,7 +71,6 @@ class BaseController extends Controller
                 $tue = $tue + $eu->exp;
             }
             $ea = ($tue - $epu);
-
             $cexpA = Amountu::where('mealsystem_id', $msid)->where('user_id', $uu->id)->first();
             if ($cexpA){
                 $cexpA->expA = $ea;

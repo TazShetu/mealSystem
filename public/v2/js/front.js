@@ -19,17 +19,18 @@ $(function () {
     var alternateColour = $('link#new-stylesheet');
 
     if ($.cookie("theme_csspath")) {
-        alternateColour.attr("href", $.cookie("theme_csspath"));
+        var c1 = $.cookie("theme_csspath");
+        $("#theme-colour-btn").val(c1.split('.')[1]);
+        alternateColour.attr("href", c1);
     }
 
-    $("#colour").change(function () {
+
+    $("#theme-colour-btn").change(function () {
 
         if ($(this).val() !== '') {
-            //--------------------CHECK on live server -----------------------------------------------------------
-            var theme_csspath = 'v2/css/style.' + $(this).val() + '.css';
-            //------------------------------------------------------------------------------------------------
+            var theme_csspath = window.location.origin + '/v2/css/style.' + $(this).val() + '.css';
             alternateColour.attr("href", theme_csspath);
-            $.cookie("theme_csspath", theme_csspath, { expires: 365, path: document.URL.substr(0, document.URL.lastIndexOf('/')) });
+            $.cookie("theme_csspath", theme_csspath, { expires: 365, path: window.location.origin });
         }
 
         return false;

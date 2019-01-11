@@ -24,24 +24,26 @@
     <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">Data</div>
     <ul class="sidebar-menu list-unstyled">
         <li class="sidebar-list-item"><a href="newdata.html" class="sidebar-link text-muted"><i class="far fa-plus-square mr-3 text-gray"></i><span>New</span></a></li>
-        <li class="sidebar-list-item">
-            <a href="givendata.html" class="sidebar-link text-muted">
-                <div class="button">
-                    <i class="far fa-arrow-alt-circle-down mr-3 text-gray"></i>
-                    &nbsp;<span class="button__badge bg-primary">10</span>
-                </div>
-                <!--                        this space is also conditional     -->
-                <span>&nbsp; Given</span>
-            </a>
-        </li>
+        @role(['admin','mealManager'])
+            <li class="sidebar-list-item">
+                <a href="givendata.html" class="sidebar-link text-muted">
+                    <div class="button">
+                        <i class="far fa-arrow-alt-circle-down mr-3 text-gray"></i>
+                        &nbsp;<span class="button__badge bg-primary">10</span>
+                    </div>
+                    <!--                        this space is also conditional     -->
+                    <span>&nbsp; Given</span>
+                </a>
+            </li>
+        @endrole
     </ul>
-    <!--   IF mM         -->
-    <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">Member</div>
-    <ul class="sidebar-menu list-unstyled">
-        <li class="sidebar-list-item"><a href="{{route('create.user')}}" class="sidebar-link text-muted"><i class="fas fa-user-plus mr-3 text-gray"></i><span>Add New</span></a></li>
-        <li class="sidebar-list-item"><a href="attachold.html" class="sidebar-link text-muted"><i class="fas fa-user-tag mr-3 text-gray"></i><span>Attach Old</span></a></li>
-    </ul>
-    <!--   endIf         -->
+    @role(['admin','mealManager'])
+        <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">Member</div>
+        <ul class="sidebar-menu list-unstyled">
+            <li class="sidebar-list-item"><a href="{{route('create.user')}}" class="sidebar-link text-muted"><i class="fas fa-user-plus mr-3 text-gray"></i><span>Add New</span></a></li>
+            <li class="sidebar-list-item"><a href="attachold.html" class="sidebar-link text-muted"><i class="fas fa-user-tag mr-3 text-gray"></i><span>Attach Old</span></a></li>
+        </ul>
+    @endrole
 </div>
 <!--   SIDEBAR end     -->
 
