@@ -25,34 +25,42 @@
                                     <p class="text-muted mb-0">for January</p>
                                 </div>
                                 <div class="card-body">
-                                    <form method="POST" action="{{route('store.user')}}">
+                                    <form method="POST" action="{{route('update.user', ['slug' => $user->slug])}}">
                                         @csrf
-                                        @if(session()->has('success'))
-                                            <div class="alert alert-success text-center">
-                                                {{ session()->get('success') }}
-                                            </div>
-                                        @endif
-                                        <div class="form-group text-center text-primary">
-                                            <p>Default password is <b>123456</b> but member can change that later.</p>
-                                            <p>Do not forget to give members their usernames personally.</p>
-                                        </div>
-                                        <hr>
                                         <div class="form-group">
                                             <label class="form-control-label text-uppercase"><b>Name</b></label>
-                                            <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required minlength="3" maxlength="50">
+                                            <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $user->name }}" minlength="3" maxlength="50" required>
                                             @if ($errors->has('name'))
                                                 <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('name') }}</strong></span>
                                             @endif
                                         </div>
                                         <div class="form-group mb-4">
                                             <label class="form-control-label text-uppercase"><b>Username</b></label>
-                                            <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required>
+                                            <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ $user->username }}" required>
                                             @if ($errors->has('username'))
                                                 <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('username') }}</strong></span>
                                             @endif
                                         </div>
+                                        <div class="form-group mb-4">
+                                            <label class="form-control-label text-uppercase"><b>Email</b></label>
+                                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $user->email }}">
+                                            @if ($errors->has('email'))
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('email') }}</strong></span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label class="form-control-label text-uppercase"><b>Password</b></label>
+                                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
+                                            @if ($errors->has('password'))
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('password') }}</strong></span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label class="form-control-label text-uppercase"><b>Confirm Password</b></label>
+                                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+                                        </div>
                                         <div class="form-group text-center">
-                                            <button type="submit" class="btn btn-primary">Create Member</button>
+                                            <button type="submit" class="btn btn-primary">Edit Profile</button>
                                         </div>
                                     </form>
                                 </div>

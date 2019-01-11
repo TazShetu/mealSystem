@@ -33,7 +33,7 @@ Route::get('/home', [
     'as' => 'home'
 ])->middleware('auth');
 
-Route::get('/MealMemberCreate', [
+Route::get('/Create-Meal-Member', [
     'uses' => 'UserController@create',
     'as' => 'create.user'
 ])->middleware('auth', 'mM');
@@ -41,6 +41,22 @@ Route::post('/MealMemberStore', [
     'uses' => 'UserController@store',
     'as' => 'store.user'
 ])->middleware('auth', 'mM');
+
+
+Route::get('/Edit-Your-Profile/{slug}', [
+    'uses' => 'UserController@edit',
+    'as' => 'edit.user'
+])->middleware('auth');
+Route::post('/MealMemberUpdate/{slug}', [
+    'uses' => 'UserController@update',
+    'as' => 'update.user'
+])->middleware('auth');
+
+
+
+
+
+
 
 
 
@@ -57,29 +73,6 @@ Route::post('/MealMemberStore', [
 
 
 
-
-
-
-
-
-
-//Route::get('/home', 'HomeController@index')->name('home');
-
-//Route::get('/h', function () {
-//    return view('mHome');
-//});
-
-//Route::get('/t', function () {
-//    return view('t');
-//});
-//Route::get('/tt', function () {
-//    return view('tt');
-//});
-
-
-// Index Register
-
-
 // contact
 Route::get('/contact', [
     'uses' => 'MealsystemController@contact',
@@ -90,13 +83,6 @@ Route::post('/contact/sent', [
     'uses' => 'MealsystemController@contactSent',
     'as' => 'contact.sent'
 ]);
-
-
-
-Route::post('/MealMemberUpdate/{slug}', [
-    'uses' => 'UserController@update',
-    'as' => 'update.user'
-])->middleware('auth');
 
 Route::get('/Enter-Edit-Data', [
     'uses' => 'DatamController@create',

@@ -14,20 +14,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class HomeController extends BaseController
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
 //    public function __construct()
 //    {
 //        $this->middleware('auth');
 //    }
 
     public function home(){
-        $ms = null;
+//        $ms = null;
         $totalMeal = 0;
         $totalbazarDeposit = 0;
         $amounts =null;
@@ -36,39 +31,23 @@ class HomeController extends Controller
         $mealandbazars = null;
         $maxMeal = null;
         $maxBazar = null;
-        $u = Auth::user();
+
 
         // check mS exist or not, if note create for mM only and attach him ////////////////////////////
 
 
-        $month = \Carbon\Carbon::now()->month;
-        $co = \DateTime::createFromFormat('!m', $month);
-        $monthName = $co->format('F');
-        if ($month == 1){
-            $pmonth = 12;
-        }else {
-            $pmonth = $month - 1 ;
-        }
-        $pms = $u->mealsystems()->where('month', $pmonth)->first();
-        if ($pms){
-            $po = \DateTime::createFromFormat('!m', $pmonth);
-            $pastMonthName = $po->format('F');
-            $pastM = 1;
-        }else {
-            $pastM = 0;
-            $pastMonthName = null;
-        }
-        $ms = $u->mealsystems()->where('month', $month)->first();
-        if ($ms){
-            $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $ms->id)->get();
+
+        $va = $this->SideAndNav();
+        $u = Auth::user();
+        if(array_key_exists('ms', $va)){
+            $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $va['ms']->id)->get();
             foreach ($datams as $d){
                 $totalMeal = $d->meal + $totalMeal;
                 $totalbazarDeposit = $d->bazar + $d->deposit + $totalbazarDeposit;
             }
-            $mealRate = $ms->meal_rate;
-            $am = $u->amountus()->where('mealsystem_id', $ms->id)->first();
-            $amounts = Amountu::where('mealsystem_id', $ms->id)->get();
-//            dd($amounts);
+            $mealRate = $va['ms']->meal_rate;
+            $am = $u->amountus()->where('mealsystem_id', $va['ms']->id)->first();
+            $amounts = Amountu::where('mealsystem_id', $va['ms']->id)->get();
             foreach ($amounts as $a){
                 // add name to each amounts
                 $a['name'] = $a->user->name;
@@ -82,13 +61,12 @@ class HomeController extends Controller
         }else {
             $myBalance = 0;
         }
-
-
         //  GRAPH starts
-        if ($ms){
-            $usersForMBD = $ms->users()->get();
+
+        if(array_key_exists('ms', $va)){
+            $usersForMBD = $va['ms']->users()->get();
             foreach ($usersForMBD as $u){
-                $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $ms->id)->get();
+                $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $va['ms']->id)->get();
                 $tm = 0;
                 $tbd = 0;
                 foreach ($datams as $d){
@@ -105,11 +83,12 @@ class HomeController extends Controller
                 }
             }
             // MEAL & BAZAR (sort the data by day, check asc or desc which works)
-            $mealandbazars = mealandbazargraph::where('mealsystem_id', $ms->id)->get();
+            $mealandbazars = mealandbazargraph::where('mealsystem_id', $va['ms']->id)->get();
             $maxMeal = $mealandbazars->max('totalMeal');
             $maxBazar = $mealandbazars->max('totalBazar');
         }
-        return view('home', compact('monthName', 'pastM', 'pastMonthName', 'ms', 'mealRate', 'myBalance', 'totalMeal', 'totalbazarDeposit', 'amounts', 'usersForMBD', 'maxBazarDeposit', 'mealandbazars', 'maxMeal', 'maxBazar'));
+        $va = $this->SideAndNav();
+        return view('home', compact('va','mealRate', 'myBalance', 'totalMeal', 'totalbazarDeposit', 'amounts', 'usersForMBD', 'maxBazarDeposit', 'mealandbazars', 'maxMeal', 'maxBazar'));
 
 
     }
@@ -145,16 +124,12 @@ class HomeController extends Controller
 
 
 
-    public function index()
-    {
-        return view('home');
-    }
-
-
-
+//    public function index()
+//    {
+//        return view('home');
+//    }
 
     public function lmonth($msid){
-//        dd($msid);
         $ms = Mealsystem::find($msid);
         return view('pastHome', compact('ms'));
     }

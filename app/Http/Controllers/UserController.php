@@ -9,54 +9,85 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Mealsystem;
-use Illuminate\Support\Facades\View;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
-
-
-
-
-
     public function create()
     {
+//        $aaa = $this->test(2);
+//        dd($aaa);
         $va = $this->SideAndNav();
-//        dd($va);
         return view('createMember', compact('va'));
     }
 
-
-
-    public function SideAndNav(){
-        $ms = null;
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3|max:50',
+            'username' => 'required|unique:users',
+        ]);
+        $u = new User;
+        $u->name = $request->name;
+        $u->username = $request->username;
+        $u->slug = str_slug($request->name)."-".str_slug($request->username);
+        $u->save();
+        // attach member to mealSystem same as mM
+        $a = Auth::user();
+        $mss = $a->mealsystems()->get();
         $month = Carbon::now()->month;
-        $user = Auth::user();
-        $ms = $user->mealsystems()->where('month', $month)->first();
-        $co = \DateTime::createFromFormat('!m', $month);
-        $monthName = $co->format('F');
-        if ($month == 1){
-            $pmonth = 12;
-        }else {
-            $pmonth = $month - 1 ;
+        foreach ($mss as $ms){
+            if ($ms->month == $month){
+                $ms->users()->attach($u);
+                $this->clculateExpA($ms->id);
+            }
         }
-        $pms = $user->mealsystems()->where('month', $pmonth)->first();
-        if ($pms){
-            $po = \DateTime::createFromFormat('!m', $pmonth);
-            $pastMonthName = $po->format('F');
-            $pastM = 1;
-        }else {
-            $pastM = 0;
-            $pastMonthName = null;
-        }
-
-        $viewAdd = null;
-        $viewAdd['ms'] = $ms;
-        $viewAdd['monthName'] = $monthName;
-        $viewAdd['pastM'] = $pastM;
-        $viewAdd['pastMonthName'] = $pastMonthName;
-        return $viewAdd;
-
+        $va = $this->SideAndNav();
+        return redirect()->back()->with(['va' => $va])->with('success', 'Member Created Successfully.');
     }
+
+    public function edit($slug)
+    {
+        $user = User::where('slug', $slug)->first();
+        $va = $this->SideAndNav();
+        return view('editMember', compact('va', 'user'));
+    }
+
+    public function update(Request $request, $slug)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3|max:50',
+        ]);
+        $u = User::where('slug', $slug)->first();
+        $u->name = $request->name;
+        $u->slug = str_slug($request->name)."-".str_slug($u->username);
+        if ($u->username !== $request->username){
+            $this->validate($request, [
+                'username' => 'required|unique:users',
+            ]);
+            $u->username = $request->username;
+            $u->slug = str_slug($request->name)."-".str_slug($request->username);
+        }
+        if ($request->password){
+            $this->validate($request, [
+                'password' => 'required|confirmed|min:6',
+            ]);
+            $u->password = bcrypt($request->password);
+        }
+        if ($request->email){
+            $this->validate($request, [
+                'email' => 'required|unique:users',
+            ]);
+            $u->email = $request->email;
+        }
+        $u->update();
+        $va = $this->SideAndNav();
+        return redirect()->route('home', compact('va'))->with('success', 'Your Profile Updated Successfully.');
+    }
+
+
+
+
+
 
 
 
@@ -95,104 +126,17 @@ class UserController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'name' => 'required|min:3|max:50',
-            'username' => 'required|unique:users',
-        ]);
-
-        $u = new User;
-        $u->name = $request->name;
-        $u->username = $request->username;
-        $u->slug = str_slug($request->name)."-".str_slug($request->username);
-        $u->save();
-        // attach member to mealSystem same as mM
-        $a = Auth::user();
-        $mss = $a->mealsystems()->get();
-        foreach ($mss as $ms){
-            if (($ms->month) == (Carbon::now()->month)){
-                $ms->users()->attach($u);
-                $this->clculateExpA($ms->id);
-            }
-        }
-        return redirect()->route('home');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $slug)
-    {
-        $this->validate($request, [
-            'name' => 'required|min:3|max:50',
-        ]);
-        $u = User::where('slug', $slug)->first();
-        $u->name = $request->name;
-        $u->slug = str_slug($request->name)."-".str_slug($u->username);
-        if ($u->username !== $request->username){
-            $this->validate($request, [
-                'username' => 'required|unique:users',
-            ]);
-            $u->username = $request->username;
-            $u->slug = str_slug($request->name)."-".str_slug($request->username);
-        }
-        if ($request->password){
-            $this->validate($request, [
-                'password' => 'required|confirmed|min:6',
-            ]);
-            $u->password = bcrypt($request->password);
-        }
-        if ($request->email){
-            $this->validate($request, [
-                'email' => 'required|unique:users',
-            ]);
-            $u->email = $request->email;
-        }
 
-        $u->update();
 
-        return redirect()->back();
-    }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -319,43 +263,7 @@ class UserController extends Controller
     }
 
 
-    public function clculateExpA($msid){
-        $es = Expense::where('mealsystem_id', $msid)->where('a', 1)->get();
-        // total exp
-        $te = 0;
-        foreach ($es as $exp){
-            $te = $te + $exp->exp;
-        }
 
-        // all member get
-        $ms = Mealsystem::find($msid);
-        $users = $ms->users;
-        $uc = count($users);
-        $epu = $te / $uc;
-//            dd($users);
-
-        foreach ($users as $uu){
-//                dd($uu);
-            $eus = Expense::where('mealsystem_id', $msid)->where('a', 1)->where('user_id', $uu->id)->get();
-            $tue = 0;
-            foreach ($eus as $eu){
-                $tue = $tue + $eu->exp;
-            }
-            $ea = ($tue - $epu);
-
-            $cexpA = Amountu::where('mealsystem_id', $msid)->where('user_id', $uu->id)->first();
-            if ($cexpA){
-                $cexpA->expA = $ea;
-                $cexpA->update();
-            }else {
-                $exa = new Amountu;
-                $exa->user_id = $uu->id;
-                $exa->mealsystem_id = $msid;
-                $exa->expA = $ea;
-                $exa->save();
-            }
-        }
-    }
 
 
 }

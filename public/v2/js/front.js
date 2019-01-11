@@ -27,11 +27,9 @@ $(function () {
         if ($(this).val() !== '') {
             //--------------------CHECK on live server -----------------------------------------------------------
             var theme_csspath = 'v2/css/style.' + $(this).val() + '.css';
-            //-------------------------------------------------------------------------------
+            //------------------------------------------------------------------------------------------------
             alternateColour.attr("href", theme_csspath);
-
             $.cookie("theme_csspath", theme_csspath, { expires: 365, path: document.URL.substr(0, document.URL.lastIndexOf('/')) });
-
         }
 
         return false;

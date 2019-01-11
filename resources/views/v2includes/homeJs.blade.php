@@ -26,7 +26,7 @@
             series :{
 
                 // dunamic month name
-                name:'{{$monthName}}',
+                name:'{{$va['monthName']}}',
 
                 type:'pie',
                 radius : '65%',
@@ -72,7 +72,7 @@
             series : [
                 {
                     // dynamic month name
-                    name:'{{$monthName}}',
+                    name:'{{$va['monthName']}}',
 
                     type:'pie',
                     radius : '65%',
