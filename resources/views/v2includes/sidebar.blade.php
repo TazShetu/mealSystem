@@ -3,12 +3,12 @@
     <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">MAIN</div>
     <ul class="sidebar-menu list-unstyled">
         <li class="sidebar-list-item"><a href="{{route('home')}}" class="sidebar-link text-muted"><i class="fa fa-home mr-3 text-gray"></i><span>Home</span></a></li>
-        <li class="sidebar-list-item"><a href="utility.html" class="sidebar-link text-muted"><i class="far fa-money-bill-alt mr-3 text-gray"></i><span>Utility</span></a></li>
+        <li class="sidebar-list-item"><a href="{{route('utility')}}" class="sidebar-link text-muted"><i class="far fa-money-bill-alt mr-3 text-gray"></i><span>Utility</span></a></li>
         <li class="sidebar-list-item"><a href="#" data-toggle="collapse" data-target="#tables" aria-expanded="false" aria-controls="pages" class="sidebar-link text-muted"><i class="fa fa-table mr-3 text-gray"></i><span>Tables</span></a>
             <div id="tables" class="collapse">
                 <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
-                    <li class="sidebar-list-item"><a href="personaltable.html" class="sidebar-link text-muted pl-lg-5">Personal</a></li>
-                    <li class="sidebar-list-item"><a href="fulltable.html" class="sidebar-link text-muted pl-lg-5">Full</a></li>
+                    <li class="sidebar-list-item"><a href="{{route('personal.table', ['slug' => $va['user']->slug, 'msid' => $va['ms']->id])}}" class="sidebar-link text-muted pl-lg-5">Personal</a></li>
+                    <li class="sidebar-list-item"><a href="{{route('full.table', ['msid' => $va['ms']->id])}}" class="sidebar-link text-muted pl-lg-5">Full</a></li>
                 </ul>
             </div>
         </li>
@@ -23,7 +23,11 @@
     </ul>
     <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">Data</div>
     <ul class="sidebar-menu list-unstyled">
-        <li class="sidebar-list-item"><a href="newdata.html" class="sidebar-link text-muted"><i class="far fa-plus-square mr-3 text-gray"></i><span>New</span></a></li>
+        @role(['admin','mealManager'])
+            <li class="sidebar-list-item"><a href="{{route('mM.mdata.expense.create')}}" class="sidebar-link text-muted"><i class="far fa-plus-square mr-3 text-gray"></i><span>New mM</span></a></li>
+        @else
+            <li class="sidebar-list-item"><a href="newdata.html" class="sidebar-link text-muted"><i class="far fa-plus-square mr-3 text-gray"></i><span>New m</span></a></li>
+        @endrole
         @role(['admin','mealManager'])
             <li class="sidebar-list-item">
                 <a href="givendata.html" class="sidebar-link text-muted">

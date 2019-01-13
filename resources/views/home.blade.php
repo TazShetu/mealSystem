@@ -73,22 +73,8 @@
                         </div>
                     </div>
                 </section>
-
-
                 <section class="pt-4">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="card mb-5">
-                                <div class="card-header">
-                                    <h2 class="h6 text-uppercase mb-0">Meal</h2>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-holder">
-                                        <div id="meal"  style="height: 400px; margin: auto;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-lg-6">
                             <div class="card mb-5">
                                 <div class="card-header">
@@ -97,6 +83,18 @@
                                 <div class="card-body">
                                     <div class="chart-holder">
                                         <div id="b+d"  style="height: 400px; margin: auto;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-5">
+                                <div class="card-header">
+                                    <h2 class="h6 text-uppercase mb-0">Meal</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-holder">
+                                        <div id="meal"  style="height: 400px; margin: auto;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -160,7 +158,6 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-holder">
-                                        <!--                                        <canvas id="lineChartExample"></canvas>-->
                                         <div id="tMtB"  style="height: 600px; margin: auto;"></div>
                                     </div>
                                 </div>
@@ -200,13 +197,8 @@
 @include('v2includes.buttonTheme')
 
 
-
-
-
 <!-- JavaScript files-->
 @include('v2includes.scriptTag')
-
-
 {{--home.js for graph add--}}
 <script src="{{asset('v2/js/EChrts.min.js')}}"></script>
 @include('v2includes.homeJs')

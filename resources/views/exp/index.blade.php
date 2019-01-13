@@ -1,95 +1,117 @@
-@include('includes.header')
+<!DOCTYPE html>
+<html>
+@include('v2includes.head')
+<body>
 
-@include('includes.navU')
+<!-- navbar-->
+@include('v2includes.navHeader')
 
-<header id="home-section" class="utility">
-    <div class="dark-overlay">
-        <div class="home-inner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        @if(($nd * 1) === 1)
-                            {{--current month--}}
-                            @role(['admin', 'mealManager'])
-                                <a href="{{route('create.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
-                                <hr>
-                            @else
-                                <a href="{{route('mcreate.exp', ['slug' => $u->slug, 'msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
-                                <hr>
-                            @endrole
-                        @endif
-                        @if(($nd * 1) === 2)
-                            {{--past month--}}
-                            @role(['admin', 'mealManager'])
-                                <a href="{{route('pcreate.exp', ['msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
-                                <hr>
-                            @else
-                                <a href="{{route('mpcreate.exp', ['slug' => $u->slug, 'msid' => $ms->id])}}" class="btn btn-info">New Expense ({{$mn}})</a>
-                                <hr>
-                            @endrole
-                        @endif
+
+<div class="d-flex align-items-stretch" id="gradient">
+
+    @include('v2includes.sidebar')
+
+
+    <div class="page-holder w-100 d-flex flex-wrap">
+        <div class="container-fluid px-xl-5">
+
+            <section class="pt-5">
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+                        <div class="card mb-5">
+                            <div class="card-header">
+                                <h2 class="h6 text-uppercase mb-0">All Expenses</h2>
+                            </div>
+                            <div class="chart-holder">
+                                <div id="utilityPersonalTotal"  style="height: 560px; margin: auto;"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header text-center">
-                                <a href="{{route('details.exps', ['msid' => $ms->id])}}" class="btn btn-secondary">Details ({{$mn}})</a>
+                    <div class="col-lg-6">
+                        <div class="card mb-5">
+                            <div class="card-header">
+                                <h2 class="h6 text-uppercase mb-0">Utility Balance</h2>
                             </div>
-                            @if(count($amounts) > 0 )
-                            <div class="card-body">
-                               <table class="table table-striped">
-                                   <thead class="text-dark">
-                                       <tr class="text-center">
-                                           <th>Name</th>
-                                           <th>Amount</th>
-                                       </tr>
-                                   </thead>
-                                   <tbody class="text-dark">
-                                       @foreach($amounts as $e)
-                                           <tr class="text-center">
-                                               <td>{{$e->user->name}}</td>
-                                               <td><span @php if ($e->expA < 0){echo 'style="color: red";';}@endphp >{{$e->expA}}</span></td>
-                                           </tr>
-                                       @endforeach
-                                   </tbody>
-                               </table>
+                            <div class="chart-holder">
+                                <div id="utilityBalances"  style="height: 560px; margin: auto;"></div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-5">
+                <div class="container">
+                    <div class="row mb-3">
+                        <div class="col">
+                            @if(count($allsxpenses) > 0)
+                                @foreach($allsxpenses->groupBy('day') as $ExpPD)
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="text-uppercase mb-0">{{$ExpPD[0]->day}} - {{$va['monthName']}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover card-text">
+                                                <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Expense</th>
+                                                    <th>Remark</th>
+                                                    @role(['admin', 'mealManager'])
+                                                        <th></th>
+                                                    @endrole
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($ExpPD as $e)
+                                                    <tr>
+                                                        <td>{{$e->name}}</td>
+                                                        <td>{{$e->exp}}</td>
+                                                        <td>{{$e->remark}}</td>
+                                                        @role(['admin', 'mealManager'])
+                                                            <td class="text-center">
+                                                                <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+                                                                <a href="#" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
+                                                            </td>
+                                                        @endrole
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            @endforeach
+                            @else
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="text-uppercase mb-0">No Expense</h6>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        No one has added any utility coast yet.
+                                    </div>
+                                </div>
                             @endif
                         </div>
                     </div>
                 </div>
-            </div>
-            <hr>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        @if((($x * 1) === 1) && $pms)
-                            <a href="{{route('p.utility', ['pmsid' => $pms->id])}}" class="btn btn-light pull-left"><i class="fa fa-angle-double-left" style="font-size: 20px;"></i> {{$pmn}}</a>
-                        @endif
-                    </div>
-                    <div class="col-sm-6">
-                        @if($x === null && $pmn === null && $pms === null)
-                            <a href="{{route('utility')}}" class="btn btn-light pull-right">{{$nmn}} <i class="fa fa-angle-double-right" style="font-size: 20px;"></i></a>
-                        @endif
-                    </div>
-                </div>
-            </div>
+            </section>
         </div>
+        @include('v2includes.footer')
     </div>
-</header>
 
-{{--Edit user modal--}}
-@include('includes.euModal')
+</div>
 
-<!--.......main Footer....  -->
-@include('includes.footer')
+@include('v2includes.buttonTheme')
 
-
-<!--script-->
-<script src="{{asset('js/jquery.js')}}"></script>
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
-<!--<script src="js/fontawesome.min.js"></script>-->
-
-
+<!-- JavaScript files-->
+@include('v2includes.scriptTag')
+{{--home.js for graph add--}}
+<script src="{{asset('v2/js/EChrts.min.js')}}"></script>
+@include('v2includes.utilityJs')
 
 </body>
+
 </html>

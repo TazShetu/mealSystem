@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Amountu;
+use App\Datam;
 use App\Expense;
+use App\mealandbazargraph;
 use App\Mealsystem;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -12,11 +14,6 @@ use Illuminate\Support\Facades\Auth;
 
 class BaseController extends Controller
 {
-//    public function test($a){
-//        $b = $a + 1;
-//        return $b;
-//    }
-
     public function SideAndNav(){
         $ms = null;
         $month = Carbon::now()->month;
@@ -38,7 +35,6 @@ class BaseController extends Controller
             $pastM = 0;
             $pastMonthName = null;
         }
-
         $viewAdd = null;
         $viewAdd['ms'] = $ms;
         $viewAdd['monthName'] = $monthName;
@@ -52,18 +48,14 @@ class BaseController extends Controller
 
     public function clculateExpA($msid){
         $es = Expense::where('mealsystem_id', $msid)->where('a', 1)->get();
-        // total exp
         $te = 0;
         foreach ($es as $exp){
             $te = $te + $exp->exp;
         }
-
-        // all member get
         $ms = Mealsystem::find($msid);
         $users = $ms->users;
         $uc = count($users);
         $epu = $te / $uc;
-
         foreach ($users as $uu){
             $eus = Expense::where('mealsystem_id', $msid)->where('a', 1)->where('user_id', $uu->id)->get();
             $tue = 0;
@@ -83,6 +75,82 @@ class BaseController extends Controller
                 $exa->save();
             }
         }
+    }
+
+
+    public function mealRateAndAmountUpdate($msid, $month, $day){
+        $dCA = Datam::where('mealsystem_id', $msid)->where('month', $month)->get();
+        $tb = 0;
+        $tm = 0;
+        foreach ($dCA as $dA){
+            $tb = $tb + $dA->bazar;
+            $tm = $tm + $dA->meal;
+        }
+        if ($tm){
+            $mr = $tb / $tm;
+        }else{
+            $mr = 0;
+        }
+        $mealS = Mealsystem::find($msid);
+        $mealS->meal_rate = $mr;
+        $mealS->update();
+
+        $users = $mealS->users()->get();
+        $tdo = 0;
+        foreach ($users as $user){
+            $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
+            foreach ($dataA as $data){
+                $tdo = $tdo + $data->deposit;
+            }
+        }
+        foreach ($users as $user){
+            $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
+            $tb = 0;
+            $tm = 0;
+            $td = 0;
+            foreach ($dataA as $data){
+                $tb = $tb + $data->bazar;
+                $tm = $tm + $data->meal;
+                $td = $td + $data->deposit;
+            }
+            if ($user->hasRole('mealManager')){
+                if ($mr){
+                    $mrr = round($mr);
+                    $amount = $td - $tdo + $tb - ($mrr * $tm);
+                }else{
+                    $amount = $td - $tdo + $tb;
+                }
+            }else{
+                if ($mr){
+                    $mrr = round($mr);
+                    $amount = $td + $tb - ($mrr * $tm);
+                }else{
+                    $amount = $td + $tb;
+                }
+            }
+            $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $msid)->first();
+            if ($ar){
+                $ar->amount = $amount;
+                $ar->update();
+            }else {
+                $ar = new Amountu;
+                $ar->user_id = $user->id;
+                $ar->mealsystem_id = $msid;
+                $ar->amount = $amount;
+                $ar->save();
+            }
+        }
+        $allds = Datam::where('mealsystem_id', $msid)->where('month', $month)->where('day', $day)->get();
+        $totalBazar = 0;
+        $totalMeal = 0;
+        foreach ($allds as $d){
+            $totalBazar = $d->bazar + $totalBazar;
+            $totalMeal = $d->meal + $totalMeal;
+        }
+        $MandB = mealandbazargraph::where('mealsystem_id', $msid)->where('month', $month)->where('day', $day)->first();
+        $MandB->totalMeal = $totalMeal;
+        $MandB->totalBazar = $totalBazar;
+        $MandB->update();
     }
 
 

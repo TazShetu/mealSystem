@@ -60,6 +60,42 @@ Route::post('/meal-manager/change/store', [
     'as' => 'mealmanager.change.store'
 ])->middleware('auth', 'mM');
 
+Route::get('/Enter-Edit-Meal_Data-or-Expense', [
+    'uses' => 'DatamController@create',
+    'as' => 'mM.mdata.expense.create'
+])->middleware('auth', 'mM');
+Route::post('/Enter-Edit-Data-Save/{msid}', [
+    'uses' => 'DatamController@store',
+    'as' => 'mM.store.mdata'
+])->middleware('auth', 'mM');
+
+Route::get('utility', [
+    'uses' => 'ExpenseController@index',
+    'as' => 'utility'
+])->middleware('auth');
+//Route::get('create/utility-expense/{msid}', [
+//    'uses' => 'ExpenseController@create',
+//    'as' => 'create.exp'
+//])->middleware('auth', 'mM');
+Route::post('store/utility-expense/{msid}', [
+    'uses' => 'ExpenseController@store',
+    'as' => 'exp.store'
+])->middleware('auth', 'mM');
+
+Route::get('/personal-table/{slug}/{msid}', [
+    'uses' => 'PtableController@index',
+    'as' => 'personal.table'
+])->middleware('auth');
+
+Route::get('/full-table/{msid}', [
+    'uses' => 'PtableController@fulltable',
+    'as' => 'full.table'
+])->middleware('auth');
+
+
+
+
+
 
 
 
@@ -91,15 +127,6 @@ Route::post('/contact/sent', [
     'as' => 'contact.sent'
 ]);
 
-Route::get('/Enter-Edit-Data', [
-    'uses' => 'DatamController@create',
-    'as' => 'datam.create'
-])->middleware('auth', 'mM');
-Route::post('/Enter-Edit-Data-Save/{id}', [
-    'uses' => 'DatamController@store',
-    'as' => 'store.datam'
-])->middleware('auth', 'mM');
-
 Route::get('/Edit-Data/{slug}/{msid}/{m}/{d}', [
     'uses' => 'DatamController@edit',
     'as' => 'datam.t.edit'
@@ -122,16 +149,6 @@ Route::post('/old-member-store/{msid}', [
     'uses' => 'UserController@oldMadd',
     'as' => 'old.add'
 ])->middleware('auth', 'mM');
-
-Route::get('/personal-table/{slug}/{id}', [
-    'uses' => 'PtableController@index',
-    'as' => 'p.table'
-])->middleware('auth');
-
-Route::get('/full-table/{msid}', [
-    'uses' => 'PtableController@tt',
-    'as' => 'f.table'
-])->middleware('auth');
 
 Route::get('home/{msid}/Previous/month', [
     'uses' => 'HomeController@lmonth',
@@ -246,29 +263,18 @@ Route::get('all-balance/{msid}', [
     'as' => 'allbalance'
 ])->middleware('auth', 'mM');
 
-Route::get('utility', [
-    'uses' => 'ExpenseController@index',
-    'as' => 'utility'
-])->middleware('auth');
+
 
 Route::get('past-utility/{pmsid}', [
     'uses' => 'ExpenseController@pindex',
     'as' => 'p.utility'
 ])->middleware('auth');
 
-Route::get('create/utility-expense/{msid}', [
-    'uses' => 'ExpenseController@create',
-    'as' => 'create.exp'
-])->middleware('auth', 'mM');
+
 
 Route::get('past-create/utility-expense/{msid}', [
     'uses' => 'ExpenseController@pcreate',
     'as' => 'pcreate.exp'
-])->middleware('auth', 'mM');
-
-Route::post('store/utility-expense/{msid}', [
-    'uses' => 'ExpenseController@store',
-    'as' => 'exp.store'
 ])->middleware('auth', 'mM');
 
 Route::post('past-store/utility-expense/{month}/{msid}', [

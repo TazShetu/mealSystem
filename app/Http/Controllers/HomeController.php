@@ -37,6 +37,11 @@ class HomeController extends BaseController
 
 
 
+
+        // for member without ms return a alert message
+
+
+
         $va = $this->SideAndNav();
         $u = Auth::user();
         if(array_key_exists('ms', $va)){
@@ -64,7 +69,7 @@ class HomeController extends BaseController
         //  GRAPH starts
 
         if(array_key_exists('ms', $va)){
-            $usersForMBD = $va['ms']->users()->get();
+            $usersForMBD = $va['ms']->users()->orderBy('name', 'desc')->get();
             foreach ($usersForMBD as $u){
                 $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $va['ms']->id)->get();
                 $tm = 0;
@@ -89,7 +94,6 @@ class HomeController extends BaseController
         }
         $va = $this->SideAndNav();
         return view('home', compact('va','mealRate', 'myBalance', 'totalMeal', 'totalbazarDeposit', 'amounts', 'usersForMBD', 'maxBazarDeposit', 'mealandbazars', 'maxMeal', 'maxBazar'));
-
 
     }
 

@@ -12,58 +12,127 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
-class ExpenseController extends Controller
+class ExpenseController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        // user er ms for current month
-        $u = Auth::user();
-        $month = Carbon::now()->month;
-        $ms = $u->mealsystems->where('month', $month)->first();
-        // for new month
-        if (is_null($ms)){
-
-            if ($u->hasRole('mealManager')){
-                $ms = new Mealsystem;
-                $ms->month = Carbon::now()->month;
-                $ms->save();
-                $ms->users()->attach($u);
-            } else {
-                return view('member.no_ms');
-            }
-        }
-        $amounts = Amountu::where('mealsystem_id', $ms->id)->get();
-        $co = \DateTime::createFromFormat('!m', $month);
-        $mn = $co->format('F');
-
-        if (($month * 1) === 1){
-            $pm = 12;
-        }else {
-            $pm = $month - 1;
-        }
-        $pms = $u->mealsystems->where('month', $pm)->first();
-        if (is_null($pms)){
-            // pms does not exist
-            $x = 0;
-            $pmn = null;
+        $va = $this->SideAndNav();
+        if (is_null($va['ms'])) {
+            return redirect()->route('home');
         }else{
-            $x = 1;
-            $po = \DateTime::createFromFormat('!m', $pm);
-            $pmn = $po->format('F');
+            // Gaph
+            $uepm = $va['ms']->users()->orderBy('name', 'desc')->get();
+            foreach ($uepm as $user){
+                $totalexpense = 0;
+                $expenses = Expense::where('mealsystem_id', $va['ms']->id)->where('user_id', $user->id)->get();
+                if ($expenses){
+                    foreach ($expenses as $e){
+                        $totalexpense = $e->exp + $totalexpense;
+                    }
+                }
+                $user['totalexpense'] = $totalexpense;
+                $expA = Amountu::where('user_id', $user->id)->where('mealsystem_id', $va['ms']->id)->first();
+                if ($expA){
+                    $user['expA'] = $expA->expA;
+                }else {
+                    $user['expA'] = 0;
+                }
+            }
+            // table
+            $allsxpenses = Expense::where('mealsystem_id', $va['ms']->id)->orderBy('day')->get();
+            if ($allsxpenses){
+                foreach ($allsxpenses as $e){
+                    $e['name'] = $e->user->name;
+                }
+            }
+            return view('exp.index', compact('va', 'uepm', 'allsxpenses'));
         }
-        $nmn = null;
-
-        $nd = 1;
-
-        $u = Auth::user();
-
-        return view('exp.index', compact('amounts', 'ms', 'mn', 'pmn', 'x', 'pms', 'nmn', 'nd', 'u'));
     }
+//    public function create($msid)
+//    {
+//        $ms = Mealsystem::find($msid);
+//        return view('exp.create', compact('ms'));
+//    }
+    public function store(Request $request, $msid)
+    {
+        $this->validate($request, [
+            'date' => 'required'
+        ]);
+        $date = $request->date;
+        if(date("m", strtotime($date)) == date("m")){
+            $this->validate($request, [
+                'name' => 'required',
+                'exp' => 'required'
+            ]);
+            $month = Carbon::now()->month;
+            $day = date("d", strtotime($request->date));
+            $check = Expense::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
+            if ($check){
+                $check->delete();
+            }
+            $e = new Expense;
+            $e->user_id = $request->name;
+            $e->mealsystem_id = $msid;
+            $e->month = $month;
+            $e->day = $day;
+            $e->exp = $request->exp;
+            $e->a = 1;
+            if ($request->filled('remark')){
+                $this->validate($request, [
+                    'remark' => 'string|max:50'
+                ]);
+                $e->remark = $request->remark;
+            }
+            $e->save();
+            $this->clculateExpA($msid);
+            $va = $this->SideAndNav();
+            return redirect()->back()->with('va', $va)->with('utilityDataSuccess', 'Utility Expense saved successfully.');
+        }
+        else {
+            return redirect()->back()->with('alertUtility', 'Please Select a date from current month.');
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public function pindex($pmsid){
@@ -88,18 +157,6 @@ class ExpenseController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($msid)
-    {
-        $ms = Mealsystem::find($msid);
-//        $c = $this->test(2);
-//        dd($c);
-        return view('exp.create', compact('ms'));
-    }
 
 
     public function Mcreate($slug, $msid)
@@ -127,52 +184,6 @@ class ExpenseController extends Controller
         $po = \DateTime::createFromFormat('!m', $pm);
         $pmn = $po->format('F');
         return view('exp.member.pcreate', compact('pms', 'pmn', 'pm', 'u'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, $msid)
-    {
-        $this->validate($request, [
-            'date' => 'required'
-        ]);
-        $date = $request->date;
-        if(date("m", strtotime($date)) == date("m")){
-            $this->validate($request, [
-                'name' => 'required',
-                'exp' => 'required'
-            ]);
-            $month = Carbon::now()->month;
-            $day = date("d", strtotime($request->date));
-
-            $check = Expense::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
-            if ($check){
-                $check->delete();
-            }
-            $e = new Expense;
-            $e->user_id = $request->name;
-            $e->mealsystem_id = $msid;
-            $e->month = $month;
-            $e->day = $day;
-            $e->exp = $request->exp;
-            $e->a = 1;
-            if ($request->has('remark')){
-                $this->validate($request, [
-                    'remark' => 'max:50'
-                ]);
-                $e->remark = $request->remark;
-            }
-            $e->save();
-            $this->clculateExpA($msid);
-            return redirect()->route('utility');
-        }
-        else {
-            return redirect()->back()->with('alert', 'Please Select a date from current month.');
-        }
     }
 
 

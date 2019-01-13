@@ -8,103 +8,84 @@ use App\Memdata;
 use App\User;
 use Illuminate\Http\Request;
 
-class PtableController extends Controller
+class PtableController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($slug, $id)
+
+    public function index($slug, $msid)
     {
-//        dd($id);
         $u = User::where('slug', $slug)->first();
         $uid = $u->id;
-        $dA = Datam::where('user_id', $uid)->where('mealsystem_id', $id)->orderBy('day')->get();
-        $ms = Mealsystem::find($id);
-        $cmonth = $ms->month;
-
-        $naD = Memdata::where('user_id', $uid)->where('mealsystem_id', $id)->orderBy('day')->get();
-
-        return view('t', compact('dA' , 'cmonth', 'naD'));
+        $aD = Datam::where('user_id', $u->id)->where('mealsystem_id', $msid)->orderBy('day')->get();
+        $naD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->orderBy('day')->get();
+        $va = $this->SideAndNav();
+        return view('tables.personaltable', compact('va','aD' , 'naD'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function fulltable($msid)
+    {
+        $datams = Datam::where('mealsystem_id', $msid)->orderBy('day')->get();
+        $va = $this->SideAndNav();
+        $month = $va['ms']->month;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $monthName = $co->format('F');
+        return view('tables.fulltable', compact('va','datams', 'monthName'));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
     }
 
 
-    public function tt($msid)
-    {
-        $datams = Datam::where('mealsystem_id', $msid)->orderBy('day')->get();
 
-        $ms = Mealsystem::find($msid);
-        $cmonth = $ms->month;
-
-        return view('tt', compact('datams', 'cmonth'));
-    }
 
 
 }

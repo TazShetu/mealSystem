@@ -148,7 +148,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 d-none d-lg-block" style="padding-top: 70px; background-color: rgba(255, 255, 255, 0.2)">
-                            <h1 class="display-4">Calculating <em>MEAL-RATE</em> has never been <em>EASIER</em></h1>
+                            <h1 class="display-4">Calculating <em>MEALRATE</em> &nbsp;has never been <em>EASIER</em></h1>
                             <h2>This Mess System is free to use</h2>
 
                             <div class="d-flex flex-row">
@@ -156,7 +156,7 @@
                                     <i class="fa fa-check text-primary"></i>
                                 </div>
                                 <div class="p-4 align-self-end">
-                                    This is a meal-manager controlled meal-system. Calculation result may vary from user to user by (+/-) 1 Tk.
+                                    This is a mealmanager controlled mealsystem. Calculation result may vary from user to user by (+/-) 1 Tk.
                                 </div>
                             </div>
                             <div class="d-flex flex-row">
@@ -164,7 +164,7 @@
                                     <i class="fa fa-check text-primary"></i>
                                 </div>
                                 <div class="p-4 align-self-end">
-                                    Every new month will auto create a new meal-system under the meal-manager. Meal-manager can add old member to the new meal-system. Once added member can not be removed but new month will auto erase all old member from last month.
+                                    Every new month will auto create a new mealsystem under the mealmanager. Mealmanager can add old member to the new mealsystem. Once added member can not be removed but new month will auto erase all old member from last month.
                                 </div>
                             </div>
                             <div class="d-flex flex-row">
@@ -172,7 +172,7 @@
                                     <i class="fa fa-check text-primary"></i>
                                 </div>
                                 <div class="p-4 align-self-end">
-                                    Provide a valid email address at edit profile menu to recover forgotten password.
+                                    Please provide a valid email address at edit profile menu to recover forgotten password.
                                 </div>
                             </div>
                             <div class="d-flex flex-row">
@@ -270,22 +270,7 @@
 </div>
 
 
-<button type="button" data-toggle="collapse" data-target="#style-switch" id="style-switch-button" class="btn btn-primary btn-sm d-none d-md-inline-block p-3 collapsed" aria-expanded="false"><i class="fa fa-cog"></i></button>
-<div id="style-switch" class="collapse" style="">
-    <h5 class="mb-4">Select theme colour</h5>
-    <form class="mb-4">
-        <select name="colour" id="colour" class="form-control">
-            <option value="" hidden>select colour variant</option>
-            <option value="default">blue</option>
-            <option value="pink">pink</option>
-            <option value="violet">violet</option>
-            <option value="sea">sea</option>
-            <option value="red">red</option>
-            <option value="green">green</option>
-        </select>
-    </form>
-    <p class="text-muted text-small">Stylesheet switching can cause a blink while page loads.</p>
-</div>
+@include('v2includes.buttonTheme')
 
 <!-- JavaScript files-->
 <script src="{{asset('v2/vendor/jquery/jquery.min.js')}}"></script>

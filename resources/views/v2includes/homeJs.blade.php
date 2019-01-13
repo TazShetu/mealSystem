@@ -263,7 +263,6 @@
         // ------------------------------------------------------ //
 
         $(window).on('resize', function(){
-
             if(myChart != null && myChart != undefined){
                 myChart.resize();
             }
@@ -273,20 +272,13 @@
             if(tmtbChart != null && tmtbChart != undefined){
                 tmtbChart.resize();
             }
-
         });
-
         $(".sidebar-toggler").click(() => {
             setTimeout(() => {
-
                 myChart.resize();
                 mealChart.resize();
                 tmtbChart.resize();
-
-
             }, 300);
         });
-
-
     });
 </script>
