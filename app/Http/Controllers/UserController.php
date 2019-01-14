@@ -10,62 +10,22 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Mealsystem;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        // check mS exist for current month. if not create mS for new month and attach mM to that
-        $a = Auth::user();
-        $msOmm = $a->mealsystems()->get();
-        $x = 0 ;
-        foreach ($msOmm as $m){
-            if ($m->month == Carbon::now()->month){
-                $x = 1;
-                break;
-            }
-        }
-        if ($x != 1){
-            $ms = new Mealsystem;
-            $ms->month = Carbon::now()->month;
-            $ms->save();
-            $ms->users()->attach($a);
-        }
-
-        $month = Carbon::now()->month;
-        $co = \DateTime::createFromFormat('!m', $month);
-        $mn = $co->format('F');
-
-        return view('createMember', compact('mn'));
+//        $aaa = $this->test(2);
+//        dd($aaa);
+        $va = $this->SideAndNav();
+        return view('createMember', compact('va'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|min:3|max:50',
             'username' => 'required|unique:users',
         ]);
-
         $u = new User;
         $u->name = $request->name;
         $u->username = $request->username;
@@ -74,44 +34,24 @@ class UserController extends Controller
         // attach member to mealSystem same as mM
         $a = Auth::user();
         $mss = $a->mealsystems()->get();
+        $month = Carbon::now()->month;
         foreach ($mss as $ms){
-            if (($ms->month) == (Carbon::now()->month)){
+            if ($ms->month == $month){
                 $ms->users()->attach($u);
                 $this->clculateExpA($ms->id);
             }
         }
-        return redirect()->route('home');
+        $va = $this->SideAndNav();
+        return redirect()->back()->with(['va' => $va])->with('success', 'Member Created Successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit($slug)
     {
-        //
+        $user = User::where('slug', $slug)->first();
+        $va = $this->SideAndNav();
+        return view('editMember', compact('va', 'user'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $slug)
     {
         $this->validate($request, [
@@ -139,18 +79,81 @@ class UserController extends Controller
             ]);
             $u->email = $request->email;
         }
-
         $u->update();
-
-        return redirect()->back();
+        $va = $this->SideAndNav();
+        return redirect()->route('home', compact('va'))->with('success', 'Your Profile Updated Successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function mmchange(){
+        $va = $this->SideAndNav();
+        $CMembers = $va['ms']->users()->get();
+        $members = [];
+        foreach ($CMembers as $p){
+            if (!$p->hasRole('mealManager')){
+                $members[] = $p;
+            }
+        }
+        return view('member.mealManagerChange', compact('va','members'));
+    }
+
+    public function mmchangestore(Request $request)
+    {
+        $this->validate($request, [
+            'member_id' => 'required'
+        ]);
+        $mm = Auth::user();
+        $Nmm = User::find($request->member_id);
+        $Nmm->attachRole('mealManager');
+        $mm->detachRole('mealManager');
+        // redirect home with session alert u r no longer a mealmanager
+        $va = $this->SideAndNav();
+        return redirect()->route('home', compact('va'))->with('alert', 'You are no longer a Mealmanager.');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function index()
+    {
+        //
+    }
+    public function show($id)
+    {
+        //
+    }
     public function destroy($id)
     {
         //
@@ -223,90 +226,8 @@ class UserController extends Controller
 
 
 
-    public function mmchange(){
-        $mM = Auth::user();
-        $msOmm = $mM->mealsystems()->get();
-        $x = 0 ;
-        foreach ($msOmm as $m){
-            if ($m->month == Carbon::now()->month){
-                $x = 1;
-                break;
-            }
-        }
-        if ($x != 1){
-            $ms = new Mealsystem;
-            $ms->month = Carbon::now()->month;
-            $ms->save();
-            $ms->users()->attach($mM);
-        }
-        $cmonth = Carbon::now()->month;
-        $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
-        $CMembers = $msCm->users()->get();
-
-        $members = [];
-        foreach ($CMembers as $p){
-            if (!$p->hasRole('mealManager')){
-                $members[] = $p;
-            }
-        }
-        $msid = $msCm->id;
-        return view('member.mm_change', compact('members', 'msid'));
-    }
 
 
-
-    public function mmstore(Request $request)
-    {
-        $this->validate($request, [
-            'member_id' => 'required'
-        ]);
-        $mm = Auth::user();
-        $Nmm = User::find($request->member_id);
-
-        $Nmm->attachRole('mealManager');
-        $mm->detachRole('mealManager');
-
-        return redirect()->route('home');
-    }
-
-
-    public function clculateExpA($msid){
-        $es = Expense::where('mealsystem_id', $msid)->where('a', 1)->get();
-        // total exp
-        $te = 0;
-        foreach ($es as $exp){
-            $te = $te + $exp->exp;
-        }
-
-        // all member get
-        $ms = Mealsystem::find($msid);
-        $users = $ms->users;
-        $uc = count($users);
-        $epu = $te / $uc;
-//            dd($users);
-
-        foreach ($users as $uu){
-//                dd($uu);
-            $eus = Expense::where('mealsystem_id', $msid)->where('a', 1)->where('user_id', $uu->id)->get();
-            $tue = 0;
-            foreach ($eus as $eu){
-                $tue = $tue + $eu->exp;
-            }
-            $ea = ($tue - $epu);
-
-            $cexpA = Amountu::where('mealsystem_id', $msid)->where('user_id', $uu->id)->first();
-            if ($cexpA){
-                $cexpA->expA = $ea;
-                $cexpA->update();
-            }else {
-                $exa = new Amountu;
-                $exa->user_id = $uu->id;
-                $exa->mealsystem_id = $msid;
-                $exa->expA = $ea;
-                $exa->save();
-            }
-        }
-    }
 
 
 }

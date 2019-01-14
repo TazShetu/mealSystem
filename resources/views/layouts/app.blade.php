@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Meal System (beta)</title>
+    <title>Less Mess</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('img/icon.png')}}" />
 
 
@@ -25,7 +25,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">Meal System</a>
+                <a class="navbar-brand" href="{{ url('/') }}">Less Mess</a>
                 {{--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">--}}
                     {{--<span class="navbar-toggler-icon"></span>--}}
                 {{--</button>--}}

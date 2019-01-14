@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Amountu;
 use App\Datam;
+use App\mealandbazargraph;
 use App\Memdata;
 use App\User;
 use Carbon\Carbon;
@@ -13,55 +14,17 @@ use App\Mealsystem;
 use Illuminate\Support\Facades\Session;
 use DateTime;
 
-class DatamController extends Controller
+class DatamController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        // find Auth-user mealSystem of current month
-        $a = Auth::user();
-        $mss = $a->mealsystems()->get();
-        $x = 0;
-        foreach ($mss as $m){
-            if ($m->month == Carbon::now()->month){
-                $ms = $m;
-                $x = 1;
-                return view('datam.create', compact('ms'));
-                break;
-            }
-        }
-        // for new month
-        if ($x != 1){
-            $ms = new Mealsystem;
-            $ms->month = Carbon::now()->month;
-            $ms->save();
-            $ms->users()->attach($a);
-            return view('datam.create', compact('ms'));
-        }
+        $va = $this->SideAndNav();
+        $users = $va['ms']->users()->get();
+        return view('datam.mM.create', compact('va', 'users'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, $id)
-        // $id is $msid
+    public function store(Request $request, $msid)
     {
         $this->validate($request, [
             'date' => 'required',
@@ -73,7 +36,9 @@ class DatamController extends Controller
             $month = Carbon::now()->month;
             $day = date("d", strtotime($request->date));
 
-            $mData = Memdata::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
+
+            ///////////////////////////member delete data//////////////////////////////////////////////
+            $mData = Memdata::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
             if ($mData){
                 $user = User::find($request->name);
                 if ($mData->dbm === null){
@@ -84,98 +49,57 @@ class DatamController extends Controller
                     return view('datam.memDataExist', compact('user', 'day', 'month', 'x'));
                 }
             }
+            ///////////////////////////////////////////////////////////////////////////////////////////
 
-            $check = Datam::where('user_id', $request->name)->where('mealsystem_id', $id)->where('day', $day)->where('month', $month)->first();
+
+            $check = Datam::where('user_id', $request->name)->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
             if ($check){
                 $check->delete();
             }
             $d = new Datam;
             $d->user_id = $request->name;
-            $d->mealsystem_id = $id;
+            $d->mealsystem_id = $msid;
             $d->month = $month;
             $d->day = $day;
-            if ($request->has('meal')){
+            if ($request->filled('meal')){
+                $this->validate($request, [
+                    'meal' => 'integer|min:0'
+                ]);
                 $d->meal = $request->meal;
             }
-            if ($request->has('bazar')){
+            if ($request->filled('bazar')){
+                $this->validate($request, [
+                    'bazar' => 'integer|min:0'
+                ]);
                 $d->bazar = $request->bazar;
             }
-            if ($request->has('deposit')){
+            if ($request->filled('deposit')){
+                $this->validate($request, [
+                    'deposit' => 'integer|min:0'
+                ]);
                 $d->deposit = $request->deposit;
             }
             $d->save();
-
-            $dCA = Datam::where('mealsystem_id', $id)->where('month', $month)->get();
-            $tb = 0;
-            $tm = 0;
-            foreach ($dCA as $dA){
-                $tb = $tb + $dA->bazar;
-                $tm = $tm + $dA->meal;
-            }
-            if ($tm){
-                $mr = $tb / $tm;
-            }else{
-                $mr = 0;
-            }
-            $mealS = Mealsystem::where('id', $id)->where('month', $month)->first();
-            $mealS->meal_rate = $mr;
-            $mealS->update();
-
-            $users = $mealS->users()->get();
-
-            $tdo = 0;
-            foreach ($users as $user){
-                $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
-                foreach ($dataA as $data){
-                    $tdo = $tdo + $data->deposit;
-                }
-            }
-            foreach ($users as $user){
-                $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
-                $tb = 0;
-                $tm = 0;
-                $td = 0;
-                foreach ($dataA as $data){
-                    $tb = $tb + $data->bazar;
-                    $tm = $tm + $data->meal;
-                    $td = $td + $data->deposit;
-                }
-
-                if ($user->hasRole('mealManager')){
-                    if ($mr){
-                        $mrr = round($mr);
-                        $amount = $td - $tdo + $tb - ($mrr * $tm);
-                    }else{
-                        $amount = $td - $tdo + $tb;
-                    }
-                }else{
-                    if ($mr){
-                        $mrr = round($mr);
-                        $amount = $td + $tb - ($mrr * $tm);
-                    }else{
-                        $amount = $td + $tb;
-                    }
-                }
-                $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $id)->first();
-                if ($ar){
-                    $ar->amount = $amount;
-                    $ar->update();
-                }else {
-                    $ar = new Amountu;
-                    $ar->user_id = $user->id;
-                    $ar->mealsystem_id = $id;
-                    $ar->amount = $amount;
-                    $ar->save();
-                }
-            }
-
-            return redirect()->route('home');
-
+            $this->mealRateAndAmountUpdate($msid, $month, $day);
+            $va = $this->SideAndNav();
+            return redirect()->back()->with('va', $va)->with('mealDataSuccess', 'Meal Data saved successfully.');
         }
         else {
-            return redirect()->back()->with('alert', 'Please Select a date from current month.');
+            return redirect()->back()->with('alertMeal', 'Please Select a date from current month.');
         }
 
+    }
+
+
+    public function destroy($did)
+    {
+        $d = Datam::find($did);
+        $msid = $d->mealsystem_id;
+        $month = $d->month;
+        $day = $d->day;
+        $d->delete();
+        $this->mealRateAndAmountUpdate($msid, $month, $day);
+        return redirect()->back();
     }
 
 
@@ -185,38 +109,45 @@ class DatamController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Datam  $datam
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function index()
+    {
+        //
+    }
+
     public function show(Datam $datam)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Datam  $datam
-     * @return \Illuminate\Http\Response
-     */
     public function edit($slug, $msid, $m, $d)
     {
-//        dd($d);
         $u = User::where('slug', $slug)->first();
         $data = Datam::where('user_id', $u->id)->where('mealsystem_id', $msid)->where('month', $m)->where('day', $d)->first();
         return view('datam.edit', compact('m', 'd', 'u', 'data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Datam  $datam
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $did)
     {
 //        dd($did);
@@ -298,87 +229,6 @@ class DatamController extends Controller
         return redirect()->route('f.table', ['msid' => $d->mealsystem_id]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Datam  $datam
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($did)
-    {
-//        dd($did);
-        $d = Datam::find($did);
-        $msid = $d->mealsystem_id;
-        $month = $d->month;
-        $d->delete();
-
-        $dCA = Datam::where('mealsystem_id', $msid)->where('month', $month)->get();
-        $tb = 0;
-        $tm = 0;
-        foreach ($dCA as $dA){
-            $tb = $tb + $dA->bazar;
-            $tm = $tm + $dA->meal;
-        }
-        if ($tm){
-            $mr = $tb / $tm;
-        }else{
-            $mr = 0;
-        }
-        $mealS = Mealsystem::where('id', $msid)->where('month', $month)->first();
-        $mealS->meal_rate = $mr;
-        $mealS->update();
-
-        $users = $mealS->users()->get();
-
-        $tdo = 0;
-        foreach ($users as $user){
-            $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
-            foreach ($dataA as $data){
-                $tdo = $tdo + $data->deposit;
-            }
-        }
-        foreach ($users as $user){
-            $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
-            $tb = 0;
-            $tm = 0;
-            $td = 0;
-            foreach ($dataA as $data){
-                $tb = $tb + $data->bazar;
-                $tm = $tm + $data->meal;
-                $td = $td + $data->deposit;
-            }
-
-            if ($user->hasRole('mealManager')){
-                if ($mr){
-                    $mrr = round($mr);
-                    $amount = $td - $tdo + $tb - ($mrr * $tm);
-                }else{
-                    $amount = $td - $tdo + $tb;
-                }
-            }else{
-                if ($mr){
-                    $mrr = round($mr);
-                    $amount = $td + $tb - ($mrr * $tm);
-                }else{
-                    $amount = $td + $tb;
-                }
-            }
-            $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $msid)->first();
-            if ($ar){
-                $ar->amount = $amount;
-                $ar->update();
-            }else {
-                $ar = new Amountu;
-                $ar->user_id = $user->id;
-                $ar->mealsystem_id = $msid;
-                $ar->amount = $amount;
-                $ar->save();
-            }
-        }
-
-        return redirect()->back();
-
-    }
 
 
     public function pcreate($msid)

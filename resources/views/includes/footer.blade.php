@@ -4,13 +4,15 @@
             Taz Inc. <span style="font-size: 17px;">Copyright &copy; 2018</span>
             <small><button class="btn btn-success btn-sm ml-2" data-toggle="modal" data-target="#usesModal">Usage</button></small>
         </h5>
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <a href="https://www.facebook.com/lessmessMessSystem/" class="btn btn-sm btn-secondary" target="_blank"><i class="fa fa-facebook"></i></a>
-            </div>
-            <div class="col-sm-6">
-                <a href="http://ttazs.com/" class="btn btn-default text-secondary" target="_blank">About</a>
-                <a href="{{route('contact')}}" class="btn btn-default text-secondary">Contact</a>
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <a href="https://www.facebook.com/lessmessMessSystem/" class="btn btn-sm btn-secondary" target="_blank"><i class="fa fa-facebook"></i></a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="http://ttazs.com/" class="btn btn-default text-secondary" target="_blank">About</a>
+                    <a href="{{route('contact')}}" class="btn btn-default text-secondary"><span class="acC">Contact</span></a>
+                </div>
             </div>
         </div>
     </div>
@@ -47,7 +49,7 @@
                 </ul>
             </div>
             <div class="modal-footer">
-                <p>Fell free to send your feedback <br><a href="{{route('contact')}}" class="btn btn-light pull-right">Contact</a></p>
+                <p>Feel free to send your feedback. <br><a href="{{route('contact')}}" class="btn btn-secondary pull-right"><i class="fa fa-envelope-o"></i></a></p>
             </div>
         </div>
     </div>

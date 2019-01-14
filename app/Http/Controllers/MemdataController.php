@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Expense;
 use App\Memdata;
 use App\User;
 use Illuminate\Http\Request;
@@ -11,41 +12,216 @@ use App\Datam;
 use App\Mealsystem;
 use App\Amountu;
 
-class MemdataController extends Controller
+class MemdataController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $a = Auth::user();
-        $mss = $a->mealsystems()->get();
+        $va = $this->SideAndNav();
+        $mss = $va['user']->mealsystems()->get();
         $x = 0;
+        $cmonth = Carbon::now()->month;
         foreach ($mss as $m){
-            if ($m->month == Carbon::now()->month){
-                $ms = $m;
+            if ((($m->month)*1) === ($cmonth*1)){
                 $x = 1;
-                return view('member.cdata', compact('ms'));
+                return view('datam.member.create', compact('va'));
                 break;
             }
         }
-        // for new month
+        // for new month ////////////////////////////////////////////////////////////////////////////////
         if ($x !== 1){
+            ///////////// Create a view ////////////////////////////////////////////
             return view('member.no_ms');
+
         }
+    }
+
+
+
+
+
+    public function store(Request $request, $msid)
+    {
+        $this->validate($request, [
+            'date' => 'required'
+        ]);
+        $date = $request->date;
+        if(date("m", strtotime($date)) == date("m"))
+        {
+            $month = Carbon::now()->month;
+            $day = date("d", strtotime($request->date));
+            $va = $this->SideAndNav();
+            $check = Memdata::where('user_id', Auth::id())->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
+            if ($check){
+                if ($check->dbm === null){
+                    $x = 0;
+                    return view('datam.member.duplicateEntry', compact('va','x', 'day'));
+                }else {
+                    $x = 1;
+                    return view('datam.member.duplicateEntry', compact('va','x', 'day'));
+                }
+            }
+            $d = new Memdata;
+            $d->user_id = Auth::id();
+            $d->mealsystem_id = $msid;
+            $d->month = $month;
+            $d->day = $day;
+            if ($request->filled('meal')){
+                $this->validate($request, [
+                    'meal' => 'integer|min:0'
+                ]);
+                $d->meal = $request->meal;
+            }
+            if ($request->filled('bazar')){
+                $this->validate($request, [
+                    'bazar' => 'integer|min:0'
+                ]);
+                $d->bazar = $request->bazar;
+            }
+            if ($request->filled('deposit')){
+                $this->validate($request, [
+                    'deposit' => 'integer|min:0'
+                ]);
+                $d->deposit = $request->deposit;
+            }
+            $d->save();
+            return redirect()->back()->with('va', $va)->with('mealDataSuccess', "Meal Data saved successfully. It will be added into calculation after mealmanager's acceptance.");
+        }
+        else {
+            return redirect()->back()->with('alertMeal', 'Please Select a date from current month.');
+        }
+    }
+
+
+
+
+    public function showMemberData($msid){
+        $mealData = Memdata::where('mealsystem_id', $msid)->get();
+        if (count($mealData) > 0){
+            foreach ($mealData as $d){
+                $d['name'] = $d->user->name;
+            }
+        }
+        $ms = Mealsystem::find($msid);
+        $month = $ms->month;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $monthName = $co->format('F');
+        $expData = Expense::where('mealsystem_id', $msid)->where('a', 0)->get();
+        if (count($expData) > 0){
+            foreach ($expData as $d){
+                $d['name'] = $d->user->name;
+            }
+        }
+        $va = $this->SideAndNav();
+        return view('tables.given', compact('va', 'mealData', 'expData', 'monthName'));
+    }
+
+
+    public function destroy($did)
+    {
+        $d = Memdata::find($did);
+        $d->delete();
+        return redirect()->back();
+    }
+
+
+    public function datamDeleteMember($did){
+        $datam = Datam::find($did);
+        $datam->dbm = 1;
+        $datam->update();
+        $memData = Memdata::where('user_id', $datam->user_id)->where('mealsystem_id', $datam->mealsystem_id)->where('day', $datam->day)->first();
+        if ($memData){
+            $memData->delete();
+        }
+        $dd = new Memdata;
+        $dd->user_id = $datam->user_id;
+        $dd->mealsystem_id = $datam->mealsystem_id;
+        $dd->month = $datam->month;
+        $dd->day = $datam->day;
+        $dd->dbm = 1;
+        $dd->save();
+        return redirect()->back()->with('successDatamDeleteMember', "It will be deleted after mealmanager's acceptance.");
+    }
+
+
+    public function datamDeleteMemberUndo($uid, $msid, $m, $d){
+        $datam = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        if ($datam){
+            $datam->dbm = null;
+            $datam->update();
+        }
+        $memData = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
+        if ($memData){
+            $memData->delete();
+        }
+        return redirect()->back()->with('restoreMemberDelete', 'Data Restored successfully.');
+    }
+
+
+
+    public function memdataDeleteMember($did){
+        $d = Memdata::find($did);
+        $d->delete();
+        return redirect()->back()->with('memdataDeleteMemberSuccess', 'Data deleted Successfully.');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function index()
+    {
+        //
     }
 
     public function Pcreate()
@@ -60,56 +236,6 @@ class MemdataController extends Controller
         $ms = $a->mealsystems()->where('month', $pm)->first();
         return view('member.Pcdata', compact('ms'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, $msid)
-    {
-        $this->validate($request, [
-            'date' => 'required'
-        ]);
-        $date = $request->date;
-        if(date("m", strtotime($date)) == date("m"))
-        {
-            $month = Carbon::now()->month;
-            $day = date("d", strtotime($request->date));
-
-            $check = Memdata::where('user_id', Auth::id())->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
-            if ($check){
-                if ($check->dbm === null){
-                    $x = 0;
-                    return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
-                }else {
-                    $x = 1;
-                    return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
-                }
-            }
-            $d = new Memdata;
-            $d->user_id = Auth::id();
-            $d->mealsystem_id = $msid;
-            $d->month = $month;
-            $d->day = $day;
-            if ($request->has('meal')){
-                $d->meal = $request->meal;
-            }
-            if ($request->has('bazar')){
-                $d->bazar = $request->bazar;
-            }
-            if ($request->has('deposit')){
-                $d->deposit = $request->deposit;
-            }
-            $d->save();
-            return redirect()->route('home');
-        }
-        else {
-            return redirect()->back()->with('alert', 'Please Select a date from current month.');
-        }
-    }
-
 
     public function Pstore(Request $request, $msid)
     {
@@ -148,95 +274,23 @@ class MemdataController extends Controller
         return redirect()->route('lhome', ['msid' => $msid]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Memdata  $memdata
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Memdata $memdata)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Memdata  $memdata
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Memdata $memdata)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Memdata  $memdata
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, Memdata $memdata)
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Memdata  $memdata
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $d = Memdata::find($id);
-        $d->delete();
-        return redirect()->back();
-    }
-
-
-
-    public function showmemd($month){
-        $pms = null;
-        $mm = Auth::user();
-        $ms = $mm->mealsystems()->where('month', $month)->first();
-        if ($ms){
-            $memdata = Memdata::where('mealsystem_id', $ms->id)->orderBy('day')->get();
-        } else {
-            $ms = new Mealsystem;
-            $ms->month = Carbon::now()->month;
-            $ms->save();
-            $ms->users()->attach($mm);
-            $memdata = Memdata::where('mealsystem_id', 0)->get();
-            // tecnique to create empty collection of array   (msid 0 is impossible)
-        }
-        $cm = Carbon::now()->month;
-        if (($month * 1) === $cm){
-            $mmm = $cm;
-            $nmm = 0;
-        }else {
-            // here we are in past month
-            if (($month * 1) === 12){
-                $nmm = 1;
-            }else{
-                $nmm = $month + 1;
-            }
-            $mmm = 0;
-        }
-
-        if ($cm === 1){
-            $pmonth = 12;
-        }else {
-            $pmonth = $cm - 1;
-        }
-
-        $pms = $mm->mealsystems()->where('month', $pmonth)->first();
-
-//        dd($nmm);
-        return view('member.datashowtable', compact('memdata', 'mmm', 'nmm', 'cm', 'pms'));
-    }
-
 
 
     public function saveE($id){
@@ -426,12 +480,6 @@ class MemdataController extends Controller
 
     }
 
-    public function deleteown($id){
-        $d = Memdata::find($id);
-        $d->delete();
-        return redirect()->back();
-    }
-
 
     public function esOwn($uid, $msid, $m, $d){
         $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
@@ -492,47 +540,6 @@ class MemdataController extends Controller
 
 
 
-    public function dataMemDelete($uid, $msid, $m, $d){
-        // make dbm of datam 1
-        $datam = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-        $datam->dbm = 1;
-        $datam->update();
-        // check if memData exist for same ........ if, then delete
-        $memData = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-        if ($memData){
-            $memData->delete();
-        }
-        // make dbm of memData 1 and every thing null (by default)
-        $dd = new Memdata;
-        $dd->user_id = $uid;
-        $dd->mealsystem_id = $msid;
-        $dd->month = $m;
-        $dd->day = $d;
-        $dd->dbm = 1;
-        $dd->save();
-
-        $u = User::find($uid);
-        return redirect()->route('p.table', ['slug' => $u->slug, 'id' => $msid]);
-    }
-
-
-
-    public function deleteUndo($uid, $msid, $m, $d){
-        // check if that exist in datam if then change dbm to null
-        $datam = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-        if ($datam){
-            $datam->dbm = null;
-            $datam->update();
-        }
-        // delete the row from memData
-        $memData = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-        if ($memData){
-            $memData->delete();
-        }
-
-        $u = User::find($uid);
-        return redirect()->route('p.table', ['slug' => $u->slug, 'id' => $msid]);
-    }
 
 
 }
