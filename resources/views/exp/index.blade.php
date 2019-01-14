@@ -44,6 +44,43 @@
                 <div class="container">
                     <div class="row mb-3">
                         <div class="col">
+                            @if(count($unacceptedExp) > 0)
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="text-uppercase mb-0">Unaccepted Expense</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive" style="background-color: #fffaef;">
+                                            <table class="table table-striped table-hover card-text">
+                                                <thead class="text-center">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Expense</th>
+                                                    <th>Remark</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="text-center">
+                                                @foreach($unacceptedExp as $e)
+                                                    <tr>
+                                                        <td>{{$e->day}} / {{$e->month}}</td>
+                                                        <td>{{$e->exp}}</td>
+                                                        <td>{{$e->remark}}</td>
+                                                        <td>
+                                                            <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+
+                                                            <a href="#" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            @endif
                             @if(count($allsxpenses) > 0)
                                 @foreach($allsxpenses->groupBy('day') as $ExpPD)
                                 <div class="card">
@@ -72,7 +109,7 @@
                                                         @role(['admin', 'mealManager'])
                                                             <td class="text-center">
                                                                 <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
-                                                                <a href="#" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
+                                                                <a href="{{route('exp.delete', ['eid' => $e->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
                                                             </td>
                                                         @endrole
                                                     </tr>
@@ -90,7 +127,7 @@
                                         <h6 class="text-uppercase mb-0">No Expense</h6>
                                     </div>
                                     <div class="card-body text-center">
-                                        No one has added any utility coast yet.
+                                        Mealmanager has not added any utility coast yet.
                                     </div>
                                 </div>
                             @endif

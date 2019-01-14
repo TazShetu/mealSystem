@@ -7,6 +7,7 @@ use App\Datam;
 use App\Expense;
 use App\mealandbazargraph;
 use App\Mealsystem;
+use App\Memdata;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,7 @@ class BaseController extends Controller
 {
     public function SideAndNav(){
         $ms = null;
+        $givenDataCount = null;
         $month = Carbon::now()->month;
         $user = Auth::user();
         $ms = $user->mealsystems()->where('month', $month)->first();
@@ -35,12 +37,18 @@ class BaseController extends Controller
             $pastM = 0;
             $pastMonthName = null;
         }
+        if ($user->hasRole('mealManager')){
+            $memData = Memdata::where('mealsystem_id', $ms->id)->get();
+            $unacceptedExpa = Expense::where('mealsystem_id', $ms->id)->where('a', 0)->get();
+            $givenDataCount = count($memData) + count($unacceptedExpa);
+        }
         $viewAdd = null;
         $viewAdd['ms'] = $ms;
         $viewAdd['monthName'] = $monthName;
         $viewAdd['pastM'] = $pastM;
         $viewAdd['pastMonthName'] = $pastMonthName;
         $viewAdd['user'] = $user;
+        $viewAdd['givenDataCount'] = $givenDataCount;
         return $viewAdd;
     }
 
@@ -94,13 +102,12 @@ class BaseController extends Controller
         $mealS = Mealsystem::find($msid);
         $mealS->meal_rate = $mr;
         $mealS->update();
-
         $users = $mealS->users()->get();
-        $tdo = 0;
+        $totalDepositsOfAllMembers = 0;
         foreach ($users as $user){
-            $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
+            $dataA = Datam::where('user_id', $user->id)->where('mealsystem_id' , $msid)->get();
             foreach ($dataA as $data){
-                $tdo = $tdo + $data->deposit;
+                $totalDepositsOfAllMembers = $totalDepositsOfAllMembers + $data->deposit;
             }
         }
         foreach ($users as $user){
@@ -115,15 +122,15 @@ class BaseController extends Controller
             }
             if ($user->hasRole('mealManager')){
                 if ($mr){
-                    $mrr = round($mr);
-                    $amount = $td - $tdo + $tb - ($mrr * $tm);
+//                    $mrr = round($mr);
+                    $amount = $td - $totalDepositsOfAllMembers + $tb - ($mr * $tm);
                 }else{
-                    $amount = $td - $tdo + $tb;
+                    $amount = $td - $totalDepositsOfAllMembers + $tb;
                 }
             }else{
                 if ($mr){
-                    $mrr = round($mr);
-                    $amount = $td + $tb - ($mrr * $tm);
+//                    $mrr = round($mr);
+                    $amount = $td + $tb - ($mr * $tm);
                 }else{
                     $amount = $td + $tb;
                 }
@@ -140,6 +147,7 @@ class BaseController extends Controller
                 $ar->save();
             }
         }
+        // home graph
         $allds = Datam::where('mealsystem_id', $msid)->where('month', $month)->where('day', $day)->get();
         $totalBazar = 0;
         $totalMeal = 0;

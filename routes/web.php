@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/test', function () {
     dd(\Carbon\Carbon::now()->month);
 });
@@ -73,10 +62,7 @@ Route::get('utility', [
     'uses' => 'ExpenseController@index',
     'as' => 'utility'
 ])->middleware('auth');
-//Route::get('create/utility-expense/{msid}', [
-//    'uses' => 'ExpenseController@create',
-//    'as' => 'create.exp'
-//])->middleware('auth', 'mM');
+
 Route::post('store/utility-expense/{msid}', [
     'uses' => 'ExpenseController@store',
     'as' => 'exp.store'
@@ -101,14 +87,50 @@ Route::post('/Member-Data-Store/{msid}', [
     'as' => 'member.store.mdata'
 ])->middleware('auth');
 
+Route::post('store/member/utility-expense/{uid}/{msid}', [
+    'uses' => 'ExpenseController@MemberStore',
+    'as' => 'exp.member.store'
+])->middleware('auth');
 
+Route::get('/Enter-Edit-Data-Member/{msid}', [
+    'uses' => 'MemdataController@showMemberData',
+    'as' => 'show.member.data'
+])->middleware('auth', 'mM');
 
+Route::get('/Datamdelete/{did}', [
+    'uses' => 'DatamController@destroy',
+    'as' => 'datam.delete'
+])->middleware('auth', 'mM');
 
+Route::get('/Delete-Data-Member/{did}', [
+    'uses' => 'MemdataController@destroy',
+    'as' => 'memdata.delete'
+])->middleware('auth', 'mM');
 
+Route::get('exp/delete/{eid}', [
+    'uses' => 'ExpenseController@destroy',
+    'as' => 'exp.delete'
+])->middleware('auth', 'mM');
 
+Route::get('exp/delete-unaccepted/{eid}', [
+    'uses' => 'ExpenseController@destroyUnaccepted',
+    'as' => 'exp.delete.unaccepted'
+])->middleware('auth', 'mM');
 
+Route::get('/Delete-Data-as-Member/{did}', [
+    'uses' => 'MemdataController@datamDeleteMember',
+    'as' => 'datam.delete.member'
+])->middleware('auth');
 
+Route::get('/Delete-Undo-as-Member/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'MemdataController@datamDeleteMemberUndo',
+    'as' => 'datam.delete.member.undo'
+])->middleware('auth');
 
+Route::get('Member/Data/Delete/{did}', [
+    'uses' => 'MemdataController@memdataDeleteMember',
+    'as' => 'memdata.delete.member'
+])->middleware('auth');
 
 
 
@@ -154,11 +176,6 @@ Route::post('/DatamUpdate/{did}', [
     'uses' => 'DatamController@update',
     'as' => 'datam.t.update'
 ])->middleware('auth', 'mM');
-Route::get('/Datamdelete/{did}', [
-    'uses' => 'DatamController@destroy',
-    'as' => 'datam.t.delete'
-])->middleware('auth', 'mM');
-
 
 Route::get('/old-member-attach/{id}', [
     'uses' => 'UserController@oldma',
@@ -201,17 +218,6 @@ Route::post('/Member-DataStore/Past-month/{msid}', [
     'as' => 'memdata.Pstore'
 ])->middleware('auth');
 
-
-Route::get('/Enter-Edit-Data-Member/{month}', [
-    'uses' => 'MemdataController@showmemd',
-    'as' => 'show.memd'
-])->middleware('auth', 'mM');
-
-Route::get('/Delete-Data-Member/{id}', [
-    'uses' => 'MemdataController@destroy',
-    'as' => 'memdata.delete'
-])->middleware('auth', 'mM');
-
 Route::get('/memdata/store/{id}', [
 //    this os npt working as post method
     'uses' => 'MemdataController@saveE',
@@ -224,10 +230,6 @@ Route::post('/Edit&Store-MemData/{uid}/{msid}/{m}/{d}', [
 ])->middleware('auth', 'mM');
 
 
-Route::get('Member/Data/Delete/{id}', [
-    'uses' => 'MemdataController@deleteown',
-    'as' => 'member.DownD'
-])->middleware('auth');
 Route::get('/Edit/{uid}/{msid}/{m}/{d}', [
     'uses' => 'MemdataController@esOwn',
     'as' => 'memdata.ea.own'
@@ -245,15 +247,6 @@ Route::get('/Edit-Data-as-Member/{uid}/{msid}/{m}/{d}', [
 Route::post('/Update-Data-as-Member/{uid}/{msid}/{m}/{d}', [
     'uses' => 'MemdataController@dataMemUpdate',
     'as' => 'memdata.up.data'
-])->middleware('auth');
-
-Route::get('/Delete-Data-as-Member/{uid}/{msid}/{m}/{d}', [
-    'uses' => 'MemdataController@dataMemDelete',
-    'as' => 'data.mem.delete'
-])->middleware('auth');
-Route::get('/Delete-Undo-as-Member/{uid}/{msid}/{m}/{d}', [
-    'uses' => 'MemdataController@deleteUndo',
-    'as' => 'delete.undo'
 ])->middleware('auth');
 
 Route::get('/accept-delete/{uid}/{msid}/{m}/{d}', [
@@ -295,11 +288,6 @@ Route::get('utility/details/{msid}', [
     'as' => 'details.exps'
 ])->middleware('auth');
 
-Route::get('exp/delete/{eid}/{msid}', [
-    'uses' => 'ExpenseController@destroy',
-    'as' => 'exp.delete'
-])->middleware('auth', 'mM');
-
 Route::get('expense/edit/{eid}/{msid}/{uid}/{month}/{day}', [
     'uses' => 'ExpenseController@edit',
     'as' => 'exp.edit'
@@ -309,26 +297,6 @@ Route::post('expense/update/{eid}/{msid}', [
     'uses' => 'ExpenseController@update',
     'as' => 'exp.update'
 ])->middleware('auth', 'mM');
-
-Route::get('create/m/utility-expense/{slug}/{msid}', [
-    'uses' => 'ExpenseController@Mcreate',
-    'as' => 'mcreate.exp'
-])->middleware('auth');
-
-//Route::get('past-create/utility-expense/{msid}', [
-//    'uses' => 'ExpenseController@pcreate',
-//    'as' => 'pcreate.exp'
-//])->middleware('auth', 'mM');
-
-Route::post('store/m/utility-expense/{uid}/{msid}', [
-    'uses' => 'ExpenseController@Mstore',
-    'as' => 'exp.Mstore'
-])->middleware('auth');
-
-//Route::post('past-store/utility-expense/{month}/{msid}', [
-//    'uses' => 'ExpenseController@pstore',
-//    'as' => 'pstore.exp'
-//])->middleware('auth', 'mM');
 
 Route::get('exp/m/delete/{eid}', [
     'uses' => 'ExpenseController@Mdestroy',

@@ -30,13 +30,19 @@
         @endrole
         @role(['admin','mealManager'])
             <li class="sidebar-list-item">
-                <a href="givendata.html" class="sidebar-link text-muted">
+                <a href="{{route('show.member.data', ['msid' => $va['ms']->id])}}" class="sidebar-link text-muted">
                     <div class="button">
                         <i class="far fa-arrow-alt-circle-down mr-3 text-gray"></i>
-                        &nbsp;<span class="button__badge bg-primary">10</span>
+                        @if(($va['givenDataCount'] * 1) > 0)
+                            &nbsp;<span class="button__badge bg-primary">{{$va['givenDataCount']}}</span>
+                        @endif
                     </div>
                     <!--                        this space is also conditional     -->
-                    <span>&nbsp; Given</span>
+                    @if(($va['givenDataCount'] * 1) > 0)
+                        <span>&nbsp; Given</span>
+                    @else
+                        <span> Given</span>
+                    @endif
                 </a>
             </li>
         @endrole

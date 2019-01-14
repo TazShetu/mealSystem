@@ -24,6 +24,11 @@ class PtableController extends BaseController
     public function fulltable($msid)
     {
         $datams = Datam::where('mealsystem_id', $msid)->orderBy('day')->get();
+        if (count($datams) > 0){
+            foreach ($datams as $d){
+                $d['name'] = $d->user->name;
+            }
+        }
         $va = $this->SideAndNav();
         $month = $va['ms']->month;
         $co = \DateTime::createFromFormat('!m', $month);

@@ -35,16 +35,34 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="text-center">
+                                                @if(session()->has('memdataDeleteMemberSuccess'))
+                                                    <div class="alert alert-danger text-center">
+                                                        {{ session()->get('memdataDeleteMemberSuccess') }}
+                                                    </div>
+                                                @elseif(session()->has('restoreMemberDelete'))
+                                                    <div class="alert alert-success text-center">
+                                                        {{ session()->get('restoreMemberDelete') }}
+                                                    </div>
+                                                @endif
                                                 @foreach($naD as $d)
                                                     <tr>
                                                         <td>{{$d->day}} / {{$d->month}}</td>
-                                                        <td>{{$d->meal}}</td>
-                                                        <td>{{$d->bazar}}</td>
-                                                        <td>{{$d->deposit}}</td>
-                                                        <td>
-                                                            <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
-                                                            <a href="#" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
-                                                        </td>
+                                                        @if($d->dbm === null)
+                                                            <td>{{$d->meal}}</td>
+                                                            <td>{{$d->bazar}}</td>
+                                                            <td>{{$d->deposit}}</td>
+                                                            <td>
+                                                                <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+                                                                <a href="{{route('memdata.delete.member', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Data ?')">&#10006;</a>
+                                                            </td>
+                                                        @else
+                                                            <td>&#10006;</td>
+                                                            <td>&#10006;</td>
+                                                            <td>&#10006;</td>
+                                                            <td>
+                                                                <a href="{{route('datam.delete.member.undo', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-info btn-sm mb-1" onclick="return confirm('Are you sure?')">Undo Delete</a>
+                                                            </td>
+                                                        @endif
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
@@ -75,16 +93,36 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="text-center">
+                                                @if(session()->has('successDatamDeleteMember'))
+                                                    <div class="alert alert-danger text-center">
+                                                        {{ session()->get('successDatamDeleteMember') }}
+                                                    </div>
+                                                @elseif(session()->has('restoreMemberDelete'))
+                                                    <div class="alert alert-success text-center">
+                                                        {{ session()->get('restoreMemberDelete') }}
+                                                    </div>
+                                                @endif
                                                 @foreach($aD as $d)
                                                     <tr>
                                                         <td>{{$d->day}} / {{$d->month}}</td>
                                                         <td>{{$d->meal}}</td>
                                                         <td>{{$d->bazar}}</td>
                                                         <td>{{$d->deposit}}</td>
-                                                        <td>
-                                                            <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
-                                                            <a href="#" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
-                                                        </td>
+                                                        @role(['admin', 'mealManager'])
+                                                            <td>
+                                                                <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+                                                                <a href="{{route('datam.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Entry ?')">&#10006;</a>
+                                                            </td>
+                                                        @else
+                                                            <td>
+                                                                @if($d->dbm === null)
+                                                                    <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+                                                                    <a href="{{route('datam.delete.member', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Entry ?')">&#10006;</a>
+                                                                @else
+                                                                    <a href="{{route('datam.delete.member.undo', ['uid' => $d->user_id, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-info btn-sm mb-1" onclick="return confirm('Are you sure?')">Undo Delete</a>
+                                                                @endif
+                                                            </td>
+                                                        @endrole
                                                     </tr>
                                                 @endforeach
                                                 </tbody>

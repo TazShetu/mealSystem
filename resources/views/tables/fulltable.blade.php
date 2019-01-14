@@ -42,14 +42,14 @@
 
                                                     @foreach($ds as $d)
                                                     <tr>
-                                                        <td>{{$d->user->name}}</td>
+                                                        <td>{{$d['name']}}</td>
                                                         <td>{{$d->meal}}</td>
                                                         <td>{{$d->bazar}}</td>
                                                         <td>{{$d->deposit}}</td>
                                                         @role(['admin', 'mealManager'])
                                                             <td>
                                                                 <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
-                                                                <a href="#" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
+                                                                <a href="{{route('datam.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Entry ?')">&#10006;</a>
                                                             </td>
                                                         @endrole
                                                     </tr>
@@ -59,6 +59,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <br>
                                 @endforeach
                             @else
                                 <div class="card">

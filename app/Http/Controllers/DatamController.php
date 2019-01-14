@@ -91,6 +91,18 @@ class DatamController extends BaseController
     }
 
 
+    public function destroy($did)
+    {
+        $d = Datam::find($did);
+        $msid = $d->mealsystem_id;
+        $month = $d->month;
+        $day = $d->day;
+        $d->delete();
+        $this->mealRateAndAmountUpdate($msid, $month, $day);
+        return redirect()->back();
+    }
+
+
 
 
 
@@ -217,87 +229,6 @@ class DatamController extends BaseController
         return redirect()->route('f.table', ['msid' => $d->mealsystem_id]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Datam  $datam
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($did)
-    {
-//        dd($did);
-        $d = Datam::find($did);
-        $msid = $d->mealsystem_id;
-        $month = $d->month;
-        $d->delete();
-
-        $dCA = Datam::where('mealsystem_id', $msid)->where('month', $month)->get();
-        $tb = 0;
-        $tm = 0;
-        foreach ($dCA as $dA){
-            $tb = $tb + $dA->bazar;
-            $tm = $tm + $dA->meal;
-        }
-        if ($tm){
-            $mr = $tb / $tm;
-        }else{
-            $mr = 0;
-        }
-        $mealS = Mealsystem::where('id', $msid)->where('month', $month)->first();
-        $mealS->meal_rate = $mr;
-        $mealS->update();
-
-        $users = $mealS->users()->get();
-
-        $tdo = 0;
-        foreach ($users as $user){
-            $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
-            foreach ($dataA as $data){
-                $tdo = $tdo + $data->deposit;
-            }
-        }
-        foreach ($users as $user){
-            $dataA = Datam::where('user_id', $user->id)->where('month' , $month)->get();
-            $tb = 0;
-            $tm = 0;
-            $td = 0;
-            foreach ($dataA as $data){
-                $tb = $tb + $data->bazar;
-                $tm = $tm + $data->meal;
-                $td = $td + $data->deposit;
-            }
-
-            if ($user->hasRole('mealManager')){
-                if ($mr){
-                    $mrr = round($mr);
-                    $amount = $td - $tdo + $tb - ($mrr * $tm);
-                }else{
-                    $amount = $td - $tdo + $tb;
-                }
-            }else{
-                if ($mr){
-                    $mrr = round($mr);
-                    $amount = $td + $tb - ($mrr * $tm);
-                }else{
-                    $amount = $td + $tb;
-                }
-            }
-            $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $msid)->first();
-            if ($ar){
-                $ar->amount = $amount;
-                $ar->update();
-            }else {
-                $ar = new Amountu;
-                $ar->user_id = $user->id;
-                $ar->mealsystem_id = $msid;
-                $ar->amount = $amount;
-                $ar->save();
-            }
-        }
-
-        return redirect()->back();
-
-    }
 
 
     public function pcreate($msid)

@@ -86,7 +86,7 @@
                                 @endif
                                 <p class="text-muted">Enter / Edit Expense</p>
                                 {{--  UTILITY       form--}}
-                                <form action="" method="post">
+                                <form action="{{route('exp.member.store', ['uid' => $va['user']->id, 'msid' => $va['ms']->id])}}" method="post">
                                     @csrf
                                     <div class="form-group {{$errors->has('date') ? 'has-error' : ''}}">
                                         <label class="form-control-label text-uppercase"><b>Date</b></label>
