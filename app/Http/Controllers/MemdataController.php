@@ -11,41 +11,151 @@ use App\Datam;
 use App\Mealsystem;
 use App\Amountu;
 
-class MemdataController extends Controller
+class MemdataController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $a = Auth::user();
-        $mss = $a->mealsystems()->get();
+        $va = $this->SideAndNav();
+        $mss = $va['user']->mealsystems()->get();
         $x = 0;
+        $cmonth = Carbon::now()->month;
         foreach ($mss as $m){
-            if ($m->month == Carbon::now()->month){
-                $ms = $m;
+            if ((($m->month)*1) === ($cmonth*1)){
                 $x = 1;
-                return view('member.cdata', compact('ms'));
+                return view('datam.member.create', compact('va'));
                 break;
             }
         }
-        // for new month
+        // for new month ////////////////////////////////////////////////////////////////////////////////
         if ($x !== 1){
+            ///////////// Create a view ////////////////////////////////////////////
             return view('member.no_ms');
+
         }
+    }
+
+
+
+
+
+    public function store(Request $request, $msid)
+    {
+        $this->validate($request, [
+            'date' => 'required'
+        ]);
+        $date = $request->date;
+        if(date("m", strtotime($date)) == date("m"))
+        {
+            $month = Carbon::now()->month;
+            $day = date("d", strtotime($request->date));
+
+
+            // restrict member from entering same date data //////////////////Create View////////////////////////////////////
+            $check = Memdata::where('user_id', Auth::id())->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
+            if ($check){
+                if ($check->dbm === null){
+                    $x = 0;
+                    return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
+                }else {
+                    $x = 1;
+                    return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
+                }
+            }
+            //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            $d = new Memdata;
+            $d->user_id = Auth::id();
+            $d->mealsystem_id = $msid;
+            $d->month = $month;
+            $d->day = $day;
+            if ($request->filled('meal')){
+                $this->validate($request, [
+                    'meal' => 'integer|min:0'
+                ]);
+                $d->meal = $request->meal;
+            }
+            if ($request->filled('bazar')){
+                $this->validate($request, [
+                    'bazar' => 'integer|min:0'
+                ]);
+                $d->bazar = $request->bazar;
+            }
+            if ($request->filled('deposit')){
+                $this->validate($request, [
+                    'deposit' => 'integer|min:0'
+                ]);
+                $d->deposit = $request->deposit;
+            }
+            $d->save();
+            $va = $this->SideAndNav();
+            return redirect()->back()->with('va', $va)->with('mealDataSuccess', 'Meal Data saved successfully. It will be added to calculation after mealmanager accept it.');
+        }
+        else {
+            return redirect()->back()->with('alertMeal', 'Please Select a date from current month.');
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function index()
+    {
+        //
     }
 
     public function Pcreate()
@@ -60,56 +170,6 @@ class MemdataController extends Controller
         $ms = $a->mealsystems()->where('month', $pm)->first();
         return view('member.Pcdata', compact('ms'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, $msid)
-    {
-        $this->validate($request, [
-            'date' => 'required'
-        ]);
-        $date = $request->date;
-        if(date("m", strtotime($date)) == date("m"))
-        {
-            $month = Carbon::now()->month;
-            $day = date("d", strtotime($request->date));
-
-            $check = Memdata::where('user_id', Auth::id())->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
-            if ($check){
-                if ($check->dbm === null){
-                    $x = 0;
-                    return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
-                }else {
-                    $x = 1;
-                    return view('datam.memDEU', compact('day', 'month', 'msid', 'x'));
-                }
-            }
-            $d = new Memdata;
-            $d->user_id = Auth::id();
-            $d->mealsystem_id = $msid;
-            $d->month = $month;
-            $d->day = $day;
-            if ($request->has('meal')){
-                $d->meal = $request->meal;
-            }
-            if ($request->has('bazar')){
-                $d->bazar = $request->bazar;
-            }
-            if ($request->has('deposit')){
-                $d->deposit = $request->deposit;
-            }
-            $d->save();
-            return redirect()->route('home');
-        }
-        else {
-            return redirect()->back()->with('alert', 'Please Select a date from current month.');
-        }
-    }
-
 
     public function Pstore(Request $request, $msid)
     {
@@ -148,46 +208,25 @@ class MemdataController extends Controller
         return redirect()->route('lhome', ['msid' => $msid]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Memdata  $memdata
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Memdata $memdata)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Memdata  $memdata
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Memdata $memdata)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Memdata  $memdata
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, Memdata $memdata)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Memdata  $memdata
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $d = Memdata::find($id);

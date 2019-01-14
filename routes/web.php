@@ -92,6 +92,25 @@ Route::get('/full-table/{msid}', [
     'as' => 'full.table'
 ])->middleware('auth');
 
+Route::get('/Member-Enter-Edit-Meal_Data-or-Expense', [
+    'uses' => 'MemdataController@create',
+    'as' => 'member.mdata.expense.create'
+])->middleware('auth');
+Route::post('/Member-Data-Store/{msid}', [
+    'uses' => 'MemdataController@store',
+    'as' => 'member.store.mdata'
+])->middleware('auth');
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -172,17 +191,6 @@ route::get('/sfdssffdgdtfhERFRGsdg', [
     'uses' => 'HomeController@admin',
     'as' => 'admin.delete'
 ])->middleware('admin');
-
-
-Route::get('/Enter-Data/Member', [
-    'uses' => 'MemdataController@create',
-    'as' => 'memdata.create'
-])->middleware('auth');
-Route::post('/Member-Data-Store/{msid}', [
-    'uses' => 'MemdataController@store',
-    'as' => 'memdata.store'
-])->middleware('auth');
-
 
 Route::get('/Enter-Data/Member/Past-Month', [
     'uses' => 'MemdataController@Pcreate',

@@ -24,9 +24,9 @@
     <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">Data</div>
     <ul class="sidebar-menu list-unstyled">
         @role(['admin','mealManager'])
-            <li class="sidebar-list-item"><a href="{{route('mM.mdata.expense.create')}}" class="sidebar-link text-muted"><i class="far fa-plus-square mr-3 text-gray"></i><span>New mM</span></a></li>
+            <li class="sidebar-list-item"><a href="{{route('mM.mdata.expense.create')}}" class="sidebar-link text-muted"><i class="far fa-plus-square mr-3 text-gray"></i><span>New</span></a></li>
         @else
-            <li class="sidebar-list-item"><a href="newdata.html" class="sidebar-link text-muted"><i class="far fa-plus-square mr-3 text-gray"></i><span>New m</span></a></li>
+            <li class="sidebar-list-item"><a href="{{route('member.mdata.expense.create')}}" class="sidebar-link text-muted"><i class="far fa-plus-square mr-3 text-gray"></i><span>New</span></a></li>
         @endrole
         @role(['admin','mealManager'])
             <li class="sidebar-list-item">
