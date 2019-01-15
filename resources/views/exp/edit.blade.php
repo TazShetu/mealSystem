@@ -1,73 +1,77 @@
-@include('includes.header')
-<!--....NAV BAR....  -->
-@include('includes.navbar')
-@role(['admin', 'mealManager'])
-<header id="home-section" class="utility">
-    <div class="dark-overlay">
-        <div class="home-inner">
-            <h1 class="text-center">Enter/Edit Expense</h1>
-            <br>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3"></div>
-                    <div class="col-lg-6">
-                        <div class="card bg-success">
+<!DOCTYPE html>
+<html>
+@include('v2includes.head')
+<body>
+
+<!-- navbar-->
+@include('v2includes.navHeader')
+
+
+<div class="d-flex align-items-stretch " id="gradient">
+
+    @include('v2includes.sidebar')
+
+    <div class="page-holder w-100 d-flex flex-wrap">
+        <div class="container-fluid px-xl-5">
+            <section class="pt-5">
+                <div class="row mt-3">
+                    <div class="col-lg-2 col-md-1"></div>
+                    <div class="col-lg-8 col-md-10 mb-5">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="h6 text-uppercase mb-0">Edit Expense</h3>
+                            </div>
                             <div class="card-body">
-                                {{--@if(session('alert'))--}}
-                                    {{--<div class="alert alert-danger">--}}
-                                        {{--{{session('alert')}}--}}
-                                    {{--</div>--}}
-                                {{--@endif--}}
-                                <form action="{{route('exp.update', ['eid' => $exp->id, 'msid' => $msid])}}" method="post">
-                                    {{csrf_field()}}
-                                    <div class="form-group">
-                                        <label class="lead"><b>Date</b></label>
-                                        <h3 class="bg-light text-dark p-1">{{$day}} - {{$mn}}</h3>
+                                {{--<p class="text-muted">Edit Meal Data</p>--}}
+                                <form action="{{route('exp.update', ['eid' => $exp->id])}}" method="post">
+                                    @csrf
+                                    <div class="form-group {{$errors->has('date') ? 'has-error' : ''}}">
+                                        <label class="form-control-label text-uppercase"><b>Date</b></label>
+                                        <p class="bg-light text-dark p-1">{{$day}} - {{$monthName}}</p>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="lead">Name</label>
-                                        <h3 class="bg-light text-dark p-1">{{$un}}</h3>
+                                    <div class="form-group {{$errors->has('name') ? 'has-error' : ''}}">
+                                        <label class="form-control-label text-uppercase"><b>Name</b></label>
+                                        <p class="bg-light text-dark p-1">{{$userName}}</p>
                                     </div>
                                     <div class="form-group {{$errors->has('exp') ? 'has-error' : ''}}">
-                                        <label class="lead"><b>Expense</b></label>
+                                        <label class="form-control-label text-uppercase"><b>Expense</b></label>
                                         <input type="number" min="0" class="form-control" name="exp" value="{{$exp->exp}}" required>
                                         @if($errors->has('exp'))
-                                            <span class="help-block">{{$errors->first('exp')}}</span>
+                                            <span class="help-block text-danger">{{$errors->first('exp')}}</span>
                                         @endif
                                     </div>
                                     <div class="form-group {{$errors->has('remark') ? 'has-error' : ''}}">
-                                        <label class="lead"><b>Remark</b></label>
-                                        <input type="text" maxlength="50" class="form-control" name="remark" value="{{$exp->remark}}">
+                                        <label class="form-control-label text-uppercase"><b>Remark</b></label>
+                                        <textarea class="form-control" name="remark" cols="30" rows="4" maxlength="50">{{$exp->remark}}</textarea>
                                         @if($errors->has('remark'))
-                                            <span class="help-block">{{$errors->first('remark')}}</span>
+                                            <span class="help-block text-danger">{{$errors->first('remark')}}</span>
                                         @endif
                                     </div>
-                                    <div class="form-group">
-                                        <div class="text-center">
-                                            <button class="btn btn-primary btn-block" type="submit">Submit</button>
-                                        </div>
+                                    <div class="form-group text-center">
+                                        <button type="submit" class="btn btn-primary">Edit</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3"></div>
+                    <div class="col-lg-2 col-md-1"></div>
                 </div>
-            </div>
+            </section>
         </div>
+        @include('v2includes.footer')
     </div>
-</header>
-@endrole
 
-@include('includes.euModal')
 
-@include('includes.footer')
+</div>
 
-<script src="{{asset('js/jquery.js')}}"></script>
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
-<!--<script src="js/fontawesome.min.js"></script>-->
+
+@include('v2includes.buttonTheme')
+
+<!-- JavaScript files-->
+@include('v2includes.scriptTag')
+
 
 
 </body>
-</html>
 
+</html>

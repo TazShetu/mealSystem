@@ -14,8 +14,17 @@ use vendor\project\StatusTest;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
-class MealsystemController extends Controller
+class MealsystemController extends BaseController
 {
+    public function usage(){
+        return view('Usage.Usage');
+    }
+    public function usageAuth(){
+        $va = $this->SideAndNav();
+        return view('Usage.UsageAuth', compact('va'));
+    }
+
+
 
     public function store(Request $request)
     {
@@ -83,15 +92,13 @@ class MealsystemController extends Controller
 
 
 
-    public function index()
-    {
-        //
-    }
+
 
 
     public function contact(){
         return view('contact');
     }
+
 
     public function contactSent(Request $request){
         $this->validate($request, [
@@ -104,67 +111,4 @@ class MealsystemController extends Controller
         return redirect()->back();
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Mealsystem  $mealsystem
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Mealsystem $mealsystem)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Mealsystem  $mealsystem
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Mealsystem $mealsystem)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Mealsystem  $mealsystem
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Mealsystem $mealsystem)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Mealsystem  $mealsystem
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Mealsystem $mealsystem)
-    {
-        //
-    }
 }

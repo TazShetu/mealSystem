@@ -7,7 +7,7 @@
             <div class="col-md-6 text-center text-md-right text-gray-400">
                 <a href="contact.html" class="external text-gray-400 mr-1" target="_blank">Contact</a>
                 <a href="http://www.ttazs.com/" class="external text-gray-400 mr-1" target="_blank">About</a>
-                <a href="usage.html" class="external" target="_blank">Usage</a>
+                <a href="{{route('usageAuth')}}" class="external" target="_blank">Usage</a>
             </div>
         </div>
     </div>

@@ -36,15 +36,26 @@
                                                     <tbody class="text-center">
                                                     @foreach($ds as $d)
                                                         <tr>
-                                                            <td>{{$d['name']}}</td>
-                                                            <td>{{$d->meal}}</td>
-                                                            <td>{{$d->bazar}}</td>
-                                                            <td>{{$d->deposit}}</td>
-                                                            <td>
-                                                                <a href="#" class="btn btn-outline-primary btn-sm mb-1">Accept</a>
-                                                                <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
-                                                                <a href="{{route('memdata.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Data?')">Reject</a>
-                                                            </td>
+                                                            @if($d->dbm === null)
+                                                                <td>{{$d['name']}}</td>
+                                                                <td>{{$d->meal}}</td>
+                                                                <td>{{$d->bazar}}</td>
+                                                                <td>{{$d->deposit}}</td>
+                                                                <td>
+                                                                    <a href="{{route('member.data.accept', ['did' => $d->id])}}" class="btn btn-outline-primary btn-sm mb-1">Accept</a>
+                                                                    <a href="{{route('datam.mM.edit.given', ['slug' => $d->user->slug, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+                                                                    <a href="{{route('memdata.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Data?')">Reject</a>
+                                                                </td>
+                                                            @else
+                                                                <td>{{$d['name']}}</td>
+                                                                <td>&#10006;</td>
+                                                                <td>&#10006;</td>
+                                                                <td>&#10006;</td>
+                                                                <td>
+                                                                    <a href="{{route('accept.delete', ['did' => $d->id])}}" class="btn btn-outline-primary btn-sm mb-1" onclick="return confirm('Are you sure ?')">Accept Delete</a>
+                                                                    <a href="{{route('reject.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure ?')">Reject</a>
+                                                                </td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -91,8 +102,8 @@
                                                         <td>{{$e->exp}}</td>
                                                         <td>{{$e->remark}}</td>
                                                         <td>
-                                                            <a href="#" class="btn btn-outline-primary btn-sm mb-1">Accept</a>
-                                                            <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+                                                            <a href="{{route('mM.accept.exp', ['eid' => $e->id])}}" class="btn btn-outline-primary btn-sm mb-1">Accept</a>
+                                                            <a href="{{route('exp.edit', ['eid' => $e->id])}}" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
                                                             <a href="{{route('exp.delete.unaccepted', ['eid' => $e->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">Reject</a>
                                                         </td>
                                                     </tr>

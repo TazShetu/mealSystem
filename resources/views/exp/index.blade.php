@@ -61,16 +61,23 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody class="text-center">
+                                                @if(session()->has('expMemberDeleteSuccess'))
+                                                    <div class="alert alert-danger text-center">
+                                                        {{ session()->get('expMemberDeleteSuccess') }}
+                                                    </div>
+                                                @elseif(session()->has('MemberUpdateSuccess'))
+                                                    <div class="alert alert-success text-center">
+                                                        {{ session()->get('MemberUpdateSuccess') }}
+                                                    </div>
+                                                @endif
                                                 @foreach($unacceptedExp as $e)
                                                     <tr>
                                                         <td>{{$e->day}} / {{$e->month}}</td>
                                                         <td>{{$e->exp}}</td>
                                                         <td>{{$e->remark}}</td>
                                                         <td>
-                                                            <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
-
-                                                            <a href="#" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
-                                                            
+                                                            <a href="{{route('exp.member.edit', ['eid' => $e->id])}}" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+                                                            <a href="{{route('exp.member.delete', ['eid' => $e->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -108,7 +115,7 @@
                                                         <td>{{$e->remark}}</td>
                                                         @role(['admin', 'mealManager'])
                                                             <td class="text-center">
-                                                                <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+                                                                <a href="{{route('exp.edit', ['eid' => $e->id])}}" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
                                                                 <a href="{{route('exp.delete', ['eid' => $e->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Expense?')">&#10006;</a>
                                                             </td>
                                                         @endrole

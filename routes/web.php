@@ -17,6 +17,15 @@ Route::post('/MealManagerCreateWithMealSystem', [
     'as' => 'store.mM.mS'
 ]);
 
+Route::get('/Usage', [
+    'uses' => 'MealsystemController@usage',
+    'as' => 'usage'
+]);
+Route::get('/How-To-Use', [
+    'uses' => 'MealsystemController@usageAuth',
+    'as' => 'usageAuth'
+])->middleware('auth');
+
 Route::get('/home', [
     'uses' => 'HomeController@home',
     'as' => 'home'
@@ -92,9 +101,9 @@ Route::post('store/member/utility-expense/{uid}/{msid}', [
     'as' => 'exp.member.store'
 ])->middleware('auth');
 
-Route::get('/Enter-Edit-Data-Member/{msid}', [
-    'uses' => 'MemdataController@showMemberData',
-    'as' => 'show.member.data'
+Route::get('/Accept-Edit-Reject-Given-Data/{msid}', [
+    'uses' => 'PtableController@givenTable',
+    'as' => 'given.table'
 ])->middleware('auth', 'mM');
 
 Route::get('/Datamdelete/{did}', [
@@ -132,6 +141,84 @@ Route::get('Member/Data/Delete/{did}', [
     'as' => 'memdata.delete.member'
 ])->middleware('auth');
 
+Route::get('exp/m/delete/{eid}', [
+    'uses' => 'ExpenseController@destroyMember',
+    'as' => 'exp.member.delete'
+])->middleware('auth');
+
+Route::get('/accept-delete/{did}', [
+    'uses' => 'DatamController@acceptDelete',
+    'as' => 'accept.delete'
+])->middleware('auth', 'mM');
+
+Route::get('/reject-delete/{did}', [
+    'uses' => 'DatamController@rejectDelete',
+    'as' => 'reject.delete'
+])->middleware('auth', 'mM');
+
+Route::get('/Edit-Data-Mealmanager-Personal-Table/{slug}/{msid}/{m}/{d}', [
+    'uses' => 'DatamController@edit',
+    'as' => 'datam.mM.edit'
+])->middleware('auth', 'mM');
+Route::post('/DatamUpdate/{did}', [
+    'uses' => 'DatamController@update',
+    'as' => 'datam.mM.update'
+])->middleware('auth', 'mM');
+
+Route::get('/Edit-Data-Mealmanager-Given-Table/{slug}/{msid}/{m}/{d}', [
+    'uses' => 'DatamController@editGiven',
+    'as' => 'datam.mM.edit.given'
+])->middleware('auth', 'mM');
+Route::post('/DatamUpdate/{uid}/{msid}/{m}/{d}', [
+    'uses' => 'DatamController@updateGiven',
+    'as' => 'datam.mM.update.given'
+])->middleware('auth', 'mM');
+
+Route::get('Edit-Expense/{eid}', [
+    'uses' => 'ExpenseController@edit',
+    'as' => 'exp.edit'
+])->middleware('auth', 'mM');
+Route::post('expense/update/{eid}', [
+    'uses' => 'ExpenseController@update',
+    'as' => 'exp.update'
+])->middleware('auth', 'mM');
+
+Route::get('/Edit-Data-As-Member/{did}', [
+    'uses' => 'MemdataController@dataMemEdit',
+    'as' => 'datam.member.edit'
+])->middleware('auth');
+Route::post('/Update-Data-as-Member/{did}', [
+    'uses' => 'MemdataController@dataMemUpdate',
+    'as' => 'datam.member.update'
+])->middleware('auth');
+
+Route::get('/Edit-Data-Personal-Table/{did}', [
+    'uses' => 'MemdataController@editGivenMember',
+    'as' => 'datam.member.edit.given'
+])->middleware('auth');
+Route::post('/Update-Data-Personal-Table/{did}', [
+    'uses' => 'MemdataController@updateGivenMember',
+    'as' => 'datam.member.update.given'
+])->middleware('auth');
+
+Route::get('/Edit-Expense-As-Member/{eid}', [
+    'uses' => 'ExpenseController@MemberEdit',
+    'as' => 'exp.member.edit'
+])->middleware('auth');
+Route::post('Update-Expense-As-Member/{eid}', [
+    'uses' => 'ExpenseController@MemberUpdate',
+    'as' => 'exp.member.update'
+])->middleware('auth');
+
+Route::get('/memdata/store/{did}', [
+    'uses' => 'MemdataController@memberDataAccept',
+    'as' => 'member.data.accept'
+])->middleware('auth', 'mM');
+
+Route::get('mM/accept/expense/{eid}', [
+    'uses' => 'ExpenseController@mMAcceptExp',
+    'as' => 'mM.accept.exp'
+])->middleware('auth', 'mM');
 
 
 
@@ -168,15 +255,6 @@ Route::post('/contact/sent', [
     'as' => 'contact.sent'
 ]);
 
-Route::get('/Edit-Data/{slug}/{msid}/{m}/{d}', [
-    'uses' => 'DatamController@edit',
-    'as' => 'datam.t.edit'
-])->middleware('auth', 'mM');
-Route::post('/DatamUpdate/{did}', [
-    'uses' => 'DatamController@update',
-    'as' => 'datam.t.update'
-])->middleware('auth', 'mM');
-
 Route::get('/old-member-attach/{id}', [
     'uses' => 'UserController@oldma',
     'as' => 'oldm.attach'
@@ -200,15 +278,6 @@ Route::post('/DatamStoreP/{msid}', [
     'as' => 'store.pdatam'
 ])->middleware('auth', 'mM');
 
-
-
-
-// ADMIN
-route::get('/sfdssffdgdtfhERFRGsdg', [
-    'uses' => 'HomeController@admin',
-    'as' => 'admin.delete'
-])->middleware('admin');
-
 Route::get('/Enter-Data/Member/Past-Month', [
     'uses' => 'MemdataController@Pcreate',
     'as' => 'memdata.p.create'
@@ -218,60 +287,10 @@ Route::post('/Member-DataStore/Past-month/{msid}', [
     'as' => 'memdata.Pstore'
 ])->middleware('auth');
 
-Route::get('/memdata/store/{id}', [
-//    this os npt working as post method
-    'uses' => 'MemdataController@saveE',
-    'as' => 'memdata.accept'
-])->middleware('auth', 'mM');
-
-Route::post('/Edit&Store-MemData/{uid}/{msid}/{m}/{d}', [
-    'uses' => 'MemdataController@es',
-    'as' => 'memdata.ea'
-])->middleware('auth', 'mM');
-
-
-Route::get('/Edit/{uid}/{msid}/{m}/{d}', [
-    'uses' => 'MemdataController@esOwn',
-    'as' => 'memdata.ea.own'
-])->middleware('auth');
-Route::post('/update/{uid}/{msid}/{m}/{d}', [
-    'uses' => 'MemdataController@upOwn',
-    'as' => 'memdata.up.own'
-])->middleware('auth');
-
-
-Route::get('/Edit-Data-as-Member/{uid}/{msid}/{m}/{d}', [
-    'uses' => 'MemdataController@dataMemEdit',
-    'as' => 'data.mem.edit'
-])->middleware('auth');
-Route::post('/Update-Data-as-Member/{uid}/{msid}/{m}/{d}', [
-    'uses' => 'MemdataController@dataMemUpdate',
-    'as' => 'memdata.up.data'
-])->middleware('auth');
-
-Route::get('/accept-delete/{uid}/{msid}/{m}/{d}', [
-    'uses' => 'DatamController@ad',
-    'as' => 'accept.delete'
-])->middleware('auth', 'mM');
-
-Route::get('/reject-delete/{uid}/{msid}/{m}/{d}', [
-    'uses' => 'DatamController@rd',
-    'as' => 'reject.delete'
-])->middleware('auth', 'mM');
-
-Route::get('all-balance/{msid}', [
-    'uses' => 'HomeController@allbalance',
-    'as' => 'allbalance'
-])->middleware('auth', 'mM');
-
-
-
 Route::get('past-utility/{pmsid}', [
     'uses' => 'ExpenseController@pindex',
     'as' => 'p.utility'
 ])->middleware('auth');
-
-
 
 Route::get('past-create/utility-expense/{msid}', [
     'uses' => 'ExpenseController@pcreate',
@@ -288,36 +307,6 @@ Route::get('utility/details/{msid}', [
     'as' => 'details.exps'
 ])->middleware('auth');
 
-Route::get('expense/edit/{eid}/{msid}/{uid}/{month}/{day}', [
-    'uses' => 'ExpenseController@edit',
-    'as' => 'exp.edit'
-])->middleware('auth', 'mM');
-
-Route::post('expense/update/{eid}/{msid}', [
-    'uses' => 'ExpenseController@update',
-    'as' => 'exp.update'
-])->middleware('auth', 'mM');
-
-Route::get('exp/m/delete/{eid}', [
-    'uses' => 'ExpenseController@Mdestroy',
-    'as' => 'exp.Mdelete'
-])->middleware('auth');
-
-Route::get('/m-expense/edit/{eid}/{msid}/{month}/{day}', [
-    'uses' => 'ExpenseController@Medit',
-    'as' => 'expMedit'
-])->middleware('auth');
-
-Route::post('expense/m/update/{eid}/{msid}', [
-    'uses' => 'ExpenseController@Mupdate',
-    'as' => 'exp.Mupdate'
-])->middleware('auth');
-
-Route::get('mM/accept/expense/{eid}/{msid}', [
-    'uses' => 'ExpenseController@mMAcceptExp',
-    'as' => 'mM.accept.exp'
-])->middleware('auth', 'mM');
-
 Route::get('create/m/past/utility-expense/{slug}/{msid}', [
     'uses' => 'ExpenseController@MPcreate',
     'as' => 'mpcreate.exp'
@@ -327,3 +316,10 @@ Route::post('store/m/past/utility-expense/{uid}/{msid}/{month}', [
     'uses' => 'ExpenseController@MPstore',
     'as' => 'exp.MPstore'
 ])->middleware('auth');
+
+
+// ADMIN
+route::get('/sfdssffdgdtfhERFRGsdg', [
+    'uses' => 'HomeController@admin',
+    'as' => 'admin.delete'
+])->middleware('admin');

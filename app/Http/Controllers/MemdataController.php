@@ -37,8 +37,6 @@ class MemdataController extends BaseController
 
 
 
-
-
     public function store(Request $request, $msid)
     {
         $this->validate($request, [
@@ -92,30 +90,6 @@ class MemdataController extends BaseController
     }
 
 
-
-
-    public function showMemberData($msid){
-        $mealData = Memdata::where('mealsystem_id', $msid)->get();
-        if (count($mealData) > 0){
-            foreach ($mealData as $d){
-                $d['name'] = $d->user->name;
-            }
-        }
-        $ms = Mealsystem::find($msid);
-        $month = $ms->month;
-        $co = \DateTime::createFromFormat('!m', $month);
-        $monthName = $co->format('F');
-        $expData = Expense::where('mealsystem_id', $msid)->where('a', 0)->get();
-        if (count($expData) > 0){
-            foreach ($expData as $d){
-                $d['name'] = $d->user->name;
-            }
-        }
-        $va = $this->SideAndNav();
-        return view('tables.given', compact('va', 'mealData', 'expData', 'monthName'));
-    }
-
-
     public function destroy($did)
     {
         $d = Memdata::find($did);
@@ -165,64 +139,159 @@ class MemdataController extends BaseController
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function index()
-    {
-        //
+    public function dataMemEdit($did){
+        $this->redirectBackBack();
+        $data = Datam::find($did);
+        $month = $data->month;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $monthName = $co->format('F');
+        $u = User::find($data->user_id);
+        $userName = $u->name;
+        $va = $this->SideAndNav();
+        return view('datam.member.edit', compact('va', 'data', 'monthName', 'userName'));
     }
+
+
+    public function dataMemUpdate(Request $request, $did){
+        $this->redirectBackBack();
+        $data = Datam::find($did);
+        $uid = $data->user_id;
+        $msid = $data->mealsystem_id;
+        $day = $data->day;
+        $month = $data->month;
+        $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $day)->where('month', $month)->first();
+        if ($memD){
+            $memD->delete();
+        }
+        $dd = new Memdata;
+        $dd->user_id = $uid;
+        $dd->mealsystem_id = $msid;
+        $dd->month = $month;
+        $dd->day = $day;
+        if ($request->filled('meal')){
+            $dd->meal = $request->meal;
+        }
+        if ($request->filled('bazar')){
+            $dd->bazar = $request->bazar;
+        }
+        if ($request->filled('deposit')){
+            $dd->deposit = $request->deposit;
+        }
+        $dd->save();
+        return redirect(session('links')[2])->with('dataMemUpdateSuccess', "Data updated successfully but it will be added to calculation after melamanager's acceptance.");
+    }
+
+
+
+    public function editGivenMember($did){
+        $this->redirectBackBack();
+        $data = Memdata::find($did);
+        $month = $data->month;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $monthName = $co->format('F');
+        $u = User::find($data->user_id);
+        $userName = $u->name;
+        $va = $this->SideAndNav();
+        return view('datam.member.editGiven', compact('va','data', 'monthName', 'userName'));
+    }
+
+
+    public function updateGivenMember(Request $request, $did){
+        $this->redirectBackBack();
+        $data = Memdata::find($did);
+        if ($request->filled('meal')){
+            $data->meal = $request->meal;
+        }
+        if ($request->filled('bazar')){
+            $data->bazar = $request->bazar;
+        }
+        if ($request->filled('deposit')){
+            $data->deposit = $request->deposit;
+        }
+        $data->update();
+        return redirect(session('links')[2])->with('updateGivenMemberSuccess', 'Data Updated Successfully.');
+    }
+
+
+
+
+    public function memberDataAccept($did){
+        $md = Memdata::find($did);
+        $check = Datam::where('user_id', $md->user_id)->where('mealsystem_id', $md->mealsystem_id)->where('day', $md->day)->where('month', $md->month)->first();
+        if ($check){
+            $check->delete();
+        }
+        $d = new Datam;
+        $d->user_id = $md->user_id;
+        $d->mealsystem_id = $md->mealsystem_id;
+        $d->month = $md->month;
+        $d->day = $md->day;
+        if ($md->meal){
+            $d->meal = $md->meal;
+        }
+        if ($md->bazar){
+            $d->bazar = $md->bazar;
+        }
+        if ($md->deposit){
+            $d->deposit = $md->deposit;
+        }
+        $d->save();
+        $md->delete();
+        $this->mealRateAndAmountUpdate($d->mealsystem_id, $d->month, $d->day);
+        return redirect()->back();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function Pcreate()
     {
@@ -274,269 +343,6 @@ class MemdataController extends BaseController
         return redirect()->route('lhome', ['msid' => $msid]);
     }
 
-
-    public function show(Memdata $memdata)
-    {
-        //
-    }
-
-
-    public function edit(Memdata $memdata)
-    {
-        //
-    }
-
-
-    public function update(Request $request, Memdata $memdata)
-    {
-        //
-    }
-
-
-    public function saveE($id){
-        $md = Memdata::find($id);
-        $check = Datam::where('user_id', $md->user_id)->where('mealsystem_id', $md->mealsystem_id)->where('day', $md->day)->where('month', $md->month)->first();
-        if ($check){
-            $check->delete();
-        }
-        $d = new Datam;
-        $d->user_id = $md->user_id;
-        $d->mealsystem_id = $md->mealsystem_id;
-        $d->month = $md->month;
-        $d->day = $md->day;
-        if ($md->meal){
-            $d->meal = $md->meal;
-        }
-        if ($md->bazar){
-            $d->bazar = $md->bazar;
-        }
-        if ($md->deposit){
-            $d->deposit = $md->deposit;
-        }
-        $d->save();
-
-
-        $md->delete();
-
-
-        $dCA = Datam::where('mealsystem_id', $d->mealsystem_id)->where('month', $d->month)->get();
-        $tb = 0;
-        $tm = 0;
-        foreach ($dCA as $dA){
-            $tb = $tb + $dA->bazar;
-            $tm = $tm + $dA->meal;
-        }
-        if ($tm){
-            $mr = $tb / $tm;
-        }else{
-            $mr = 0;
-        }
-        $mealS = Mealsystem::where('id', $d->mealsystem_id)->where('month', $d->month)->first();
-        $mealS->meal_rate = $mr;
-        $mealS->update();
-
-        $users = $mealS->users()->get();
-
-        $tdo = 0;
-        foreach ($users as $user){
-            $dataA = Datam::where('user_id', $user->id)->where('month' , $d->month)->get();
-            foreach ($dataA as $data){
-                $tdo = $tdo + $data->deposit;
-            }
-        }
-        foreach ($users as $user){
-            $dataA = Datam::where('user_id', $user->id)->where('month' , $d->month)->get();
-            $tb = 0;
-            $tm = 0;
-            $td = 0;
-            foreach ($dataA as $data){
-                $tb = $tb + $data->bazar;
-                $tm = $tm + $data->meal;
-                $td = $td + $data->deposit;
-            }
-
-            if ($user->hasRole('mealManager')){
-                if ($mr){
-                    $mrr = round($mr);
-                    $amount = $td - $tdo + $tb - ($mrr * $tm);
-                }else{
-                    $amount = $td - $tdo + $tb;
-                }
-            }else{
-                if ($mr){
-                    $mrr = round($mr);
-                    $amount = $td + $tb - ($mrr * $tm);
-                }else{
-                    $amount = $td + $tb;
-                }
-            }
-            $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $d->mealsystem_id)->first();
-            if ($ar){
-                $ar->amount = $amount;
-                $ar->update();
-            }else {
-                $ar = new Amountu;
-                $ar->user_id = $user->id;
-                $ar->mealsystem_id = $d->mealsystem_id;
-                $ar->amount = $amount;
-                $ar->save();
-            }
-        }
-
-        return redirect()->back();
-    }
-
-
-    public function es(Request $request, $uid, $msid, $m, $d){
-        $check = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-        if ($check){
-            $check->delete();
-        }
-        $data = new Datam;
-        $data->user_id = $uid;
-        $data->mealsystem_id = $msid;
-        $data->month = $m;
-        $data->day = $d;
-        if ($request->has('meal')){
-            $data->meal = $request->meal;
-        }
-        if ($request->has('bazar')){
-            $data->bazar = $request->bazar;
-        }
-        if ($request->has('deposit')){
-            $data->deposit = $request->deposit;
-        }
-        $data->save();
-
-        // delete memdata
-        $mdata = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-        $mdata->delete();
-
-
-        $dCA = Datam::where('mealsystem_id', $msid)->where('month', $m)->get();
-        $tb = 0;
-        $tm = 0;
-        foreach ($dCA as $dA){
-            $tb = $tb + $dA->bazar;
-            $tm = $tm + $dA->meal;
-        }
-        if ($tm){
-            $mr = $tb / $tm;
-        }else{
-            $mr = 0;
-        }
-        $mealS = Mealsystem::find($msid);
-        $mealS->meal_rate = $mr;
-        $mealS->update();
-
-        $users = $mealS->users()->get();
-
-        $tdo = 0;
-        foreach ($users as $user){
-            $dataA = Datam::where('user_id', $user->id)->where('month' , $m)->get();
-            foreach ($dataA as $data){
-                $tdo = $tdo + $data->deposit;
-            }
-        }
-        foreach ($users as $user){
-            $dataA = Datam::where('user_id', $user->id)->where('month' , $m)->get();
-            $tb = 0;
-            $tm = 0;
-            $td = 0;
-            foreach ($dataA as $data){
-                $tb = $tb + $data->bazar;
-                $tm = $tm + $data->meal;
-                $td = $td + $data->deposit;
-            }
-
-            if ($user->hasRole('mealManager')){
-                if ($mr){
-                    $mrr = round($mr);
-                    $amount = $td - $tdo + $tb - ($mrr * $tm);
-                }else{
-                    $amount = $td - $tdo + $tb;
-                }
-            }else{
-                if ($mr){
-                    $mrr = round($mr);
-                    $amount = $td + $tb - ($mrr * $tm);
-                }else{
-                    $amount = $td + $tb;
-                }
-            }
-            $ar = Amountu::where('user_id', $user->id)->where('mealsystem_id', $msid)->first();
-            if ($ar){
-                $ar->amount = $amount;
-                $ar->update();
-            }else {
-                $ar = new Amountu;
-                $ar->user_id = $user->id;
-                $ar->mealsystem_id = $msid;
-                $ar->amount = $amount;
-                $ar->save();
-            }
-        }
-        return redirect()->back();
-
-    }
-
-
-    public function esOwn($uid, $msid, $m, $d){
-        $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-        return view('member.editown', compact('memD'));
-    }
-
-
-    public function upOwn(Request $request, $uid, $msid, $m, $d){
-        $data = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-//        $data->user_id = $uid;
-//        $data->mealsystem_id = $msid;
-//        $data->month = $m;
-//        $data->day = $d;
-        if ($request->has('meal')){
-            $data->meal = $request->meal;
-        }
-        if ($request->has('bazar')){
-            $data->bazar = $request->bazar;
-        }
-        if ($request->has('deposit')){
-            $data->deposit = $request->deposit;
-        }
-        $data->update();
-        return redirect()->route('p.table', ['slug' => $data->user->slug, 'id' => $msid]);
-    }
-
-
-    public function dataMemEdit($uid, $msid, $m, $d){
-        $data = Datam::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-        return view('member.editdata', compact('data'));
-    }
-
-    public function dataMemUpdate(Request $request, $uid, $msid, $m, $d){
-        $memD = Memdata::where('user_id', $uid)->where('mealsystem_id', $msid)->where('day', $d)->where('month', $m)->first();
-        if ($memD){
-            $memD->delete();
-        }
-        $dd = new Memdata;
-        $dd->user_id = $uid;
-        $dd->mealsystem_id = $msid;
-        $dd->month = $m;
-        $dd->day = $d;
-        if ($request->has('meal')){
-            $dd->meal = $request->meal;
-        }
-        if ($request->has('bazar')){
-            $dd->bazar = $request->bazar;
-        }
-        if ($request->has('deposit')){
-            $dd->deposit = $request->deposit;
-        }
-        $dd->save();
-
-        $u = User::find($uid);
-        return redirect()->route('p.table', ['slug' => $u->slug, 'id' => $msid]);
-
-    }
 
 
 

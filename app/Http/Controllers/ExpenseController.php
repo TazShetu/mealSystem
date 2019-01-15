@@ -16,6 +16,7 @@ class ExpenseController extends BaseController
 {
     public function index()
     {
+        $this->redirectBackBack();
         $va = $this->SideAndNav();
         if (is_null($va['ms'])) {
             return redirect()->route('home');
@@ -144,6 +145,96 @@ class ExpenseController extends BaseController
         $exp->delete();
         return redirect()->back();
     }
+
+    public function destroyMember($eid)
+    {
+        $exp = Expense::find($eid);
+        $exp->delete();
+        return redirect()->back()->with('expMemberDeleteSuccess', 'Expense Deleted Successfully.');
+    }
+
+
+    public function edit($eid)
+    {
+        $this->redirectBackBack();
+        $exp = Expense::find($eid);
+        $day = $exp->day;
+        $month = $exp->month;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $monthName = $co->format('F');
+        $u = User::find($exp->user_id);
+        $userName = $u->name;
+        $va = $this->SideAndNav();
+        return view('exp.edit', compact('va','exp', 'userName', 'day', 'monthName'));
+    }
+
+    public function update(Request $request, $eid)
+    {
+        $this->redirectBackBack();
+        $this->validate($request, [
+            'exp' => 'required'
+        ]);
+        $e = Expense::find($eid);
+        $e->exp = $request->exp;
+        if ($request->filled('remark')){
+            $this->validate($request, [
+                'remark' => 'string|max:50'
+            ]);
+            $e->remark = $request->remark;
+        }
+        $e->a = 1;
+        $e->update();
+        $this->clculateExpA($e->mealsystem_id);
+        return redirect(session('links')[2]);
+    }
+
+
+    public function MemberEdit($eid)
+    {
+        $this->redirectBackBack();
+        $exp = Expense::find($eid);
+        $month = $exp->month;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $monthName = $co->format('F');
+        $day = $exp->day;
+        $u = User::find($exp->user_id);
+        $userName = $u->name;
+        $va = $this->SideAndNav();
+        return view('exp.member.edit', compact('va','exp', 'day', 'monthName', 'userName'));
+    }
+
+
+    public function MemberUpdate(Request $request, $eid)
+    {
+        $this->redirectBackBack();
+        $this->validate($request, [
+            'exp' => 'required'
+        ]);
+        $e = Expense::find($eid);
+        $e->exp = $request->exp;
+        if ($request->filled('remark')){
+            $this->validate($request, [
+                'remark' => 'string|max:50'
+            ]);
+            $e->remark = $request->remark;
+        }
+        $e->update();
+        return redirect(session('links')[2])->with('MemberUpdateSuccess', 'Expense Updated Successfully.');
+    }
+
+
+    public function mMAcceptExp($eid){
+        $e = Expense::find($eid);
+        $e->a = 1;
+        $e->update();
+        $this->clculateExpA($e->mealsystem_id);
+        return redirect()->back();
+    }
+
+
+
+
+
 
 
 
@@ -311,86 +402,6 @@ class ExpenseController extends BaseController
         return redirect()->route('p.utility', ['pmsid' => $msid]);
     }
 
-
-    public function show(Expense $expense)
-    {
-        //
-    }
-
-
-    public function edit($eid, $msid, $uid, $month, $day)
-    {
-        $exp = Expense::find($eid);
-        $u = User::find($uid);
-        $un = $u->name;
-        $co = \DateTime::createFromFormat('!m', $month);
-        $mn = $co->format('F');
-        return view('exp.edit', compact('exp', 'un', 'day', 'mn', 'msid'));
-    }
-
-
-    public function Medit($eid, $msid, $month, $day)
-    {
-        $exp = Expense::find($eid);
-//        $u = User::find($uid);
-//        $un = $u->name;
-        $co = \DateTime::createFromFormat('!m', $month);
-        $mn = $co->format('F');
-        return view('exp.member.edit', compact('exp', 'day', 'mn', 'msid'));
-    }
-
-
-    public function update(Request $request, $eid, $msid)
-    {
-        $this->validate($request, [
-            'exp' => 'required'
-        ]);
-        $e = Expense::find($eid);
-        $e->exp = $request->exp;
-        if ($request->has('remark')){
-            $this->validate($request, [
-                'remark' => 'max:50'
-            ]);
-            $e->remark = $request->remark;
-        }
-        $e->a = 1;
-        $e->update();
-        $this->clculateExpA($msid);
-        return redirect()->route('details.exps', ['msid' => $msid]);
-    }
-
-    public function Mupdate(Request $request, $eid, $msid)
-    {
-        $this->validate($request, [
-            'exp' => 'required'
-        ]);
-        $e = Expense::find($eid);
-        $e->exp = $request->exp;
-        if ($request->has('remark')){
-            $this->validate($request, [
-                'remark' => 'max:50'
-            ]);
-            $e->remark = $request->remark;
-        }
-        $e->update();
-        return redirect()->route('details.exps', ['msid' => $msid]);
-    }
-
-
-    public function Mdestroy($eid)
-    {
-        $exp = Expense::find($eid);
-        $exp->delete();
-        return redirect()->back();
-    }
-
-    public function mMAcceptExp($eid, $msid){
-        $e = Expense::find($eid);
-        $e->a = 1;
-        $e->update();
-        $this->clculateExpA($msid);
-        return redirect()->route('details.exps', ['msid' => $msid]);
-    }
 
 
     public function de($msid){

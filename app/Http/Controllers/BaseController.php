@@ -54,6 +54,9 @@ class BaseController extends Controller
 
 
 
+
+
+
     public function clculateExpA($msid){
         $es = Expense::where('mealsystem_id', $msid)->where('a', 1)->get();
         $te = 0;
@@ -84,6 +87,10 @@ class BaseController extends Controller
             }
         }
     }
+
+
+
+
 
 
     public function mealRateAndAmountUpdate($msid, $month, $day){
@@ -159,6 +166,19 @@ class BaseController extends Controller
         $MandB->totalMeal = $totalMeal;
         $MandB->totalBazar = $totalBazar;
         $MandB->update();
+    }
+
+
+
+
+
+
+
+    public function redirectBackBack(){
+        $links = session()->has('links') ? session('links') : [];
+        $currentLink = request()->path(); // Getting current URI like 'category/books/'
+        array_unshift($links, $currentLink); // Putting it in the beginning of links array
+        session(['links' => $links]); // Saving links array to the session
     }
 
 

@@ -19,31 +19,39 @@
                     <div class="col-lg-8 col-md-10 mb-5">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="h6 text-uppercase mb-0">Edit Expense</h3>
+                                <h3 class="h6 text-uppercase mb-0">Edit Meal</h3>
                             </div>
                             <div class="card-body">
-                                <form action="{{route('exp.member.update', ['eid' => $exp->id])}}" method="post">
+                                {{--<p class="text-muted">Edit Meal Data</p>--}}
+                                <form action="{{route('datam.member.update', ['did' => $data->id])}}" method="post">
                                     @csrf
                                     <div class="form-group {{$errors->has('date') ? 'has-error' : ''}}">
                                         <label class="form-control-label text-uppercase"><b>Date</b></label>
-                                        <p class="bg-light text-dark p-1">{{$day}} - {{$monthName}}</p>
+                                        <p class="bg-light text-dark p-1">{{$data->day}} - {{$monthName}}</p>
                                     </div>
                                     <div class="form-group {{$errors->has('name') ? 'has-error' : ''}}">
                                         <label class="form-control-label text-uppercase"><b>Name</b></label>
                                         <p class="bg-light text-dark p-1">{{$userName}}</p>
                                     </div>
-                                    <div class="form-group {{$errors->has('exp') ? 'has-error' : ''}}">
-                                        <label class="form-control-label text-uppercase"><b>Expense</b></label>
-                                        <input type="number" min="0" class="form-control" name="exp" value="{{$exp->exp}}" required>
-                                        @if($errors->has('exp'))
-                                            <span class="help-block text-danger">{{$errors->first('exp')}}</span>
+                                    <div class="form-group {{$errors->has('meal') ? 'has-error' : ''}}">
+                                        <label class="form-control-label text-uppercase"><b>Meal</b></label>
+                                        <input type="number" min="0" class="form-control" name="meal" value="{{$data->meal}}">
+                                        @if($errors->has('meal'))
+                                            <span class="help-block text-danger">{{$errors->first('meal')}}</span>
                                         @endif
                                     </div>
-                                    <div class="form-group {{$errors->has('remark') ? 'has-error' : ''}}">
-                                        <label class="form-control-label text-uppercase"><b>Remark</b></label>
-                                        <textarea class="form-control" name="remark" cols="30" rows="4" maxlength="50">{{$exp->remark}}</textarea>
-                                        @if($errors->has('remark'))
-                                            <span class="help-block text-danger">{{$errors->first('remark')}}</span>
+                                    <div class="form-group {{$errors->has('bazar') ? 'has-error' : ''}}">
+                                        <label class="form-control-label text-uppercase"><b>Bazar</b></label>
+                                        <input type="number" min="0" class="form-control" name="bazar" value="{{$data->bazar}}">
+                                        @if($errors->has('bazar'))
+                                            <span class="help-block text-danger">{{$errors->first('bazar')}}</span>
+                                        @endif
+                                    </div>
+                                    <div class="form-group {{$errors->has('deposit') ? 'has-error' : ''}}">
+                                        <label class="form-control-label text-uppercase"><b>Deposit</b></label>
+                                        <input type="number" min="0" class="form-control" name="deposit" value="{{$data->deposit}}">
+                                        @if($errors->has('deposit'))
+                                            <span class="help-block text-danger">{{$errors->first('deposit')}}</span>
                                         @endif
                                     </div>
                                     <div class="form-group text-center">

@@ -30,7 +30,7 @@
         @endrole
         @role(['admin','mealManager'])
             <li class="sidebar-list-item">
-                <a href="{{route('show.member.data', ['msid' => $va['ms']->id])}}" class="sidebar-link text-muted">
+                <a href="{{route('given.table', ['msid' => $va['ms']->id])}}" class="sidebar-link text-muted">
                     <div class="button">
                         <i class="far fa-arrow-alt-circle-down mr-3 text-gray"></i>
                         @if(($va['givenDataCount'] * 1) > 0)

@@ -36,9 +36,9 @@
     <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow border-bottom border-primary fixed-top">
         @if (Route::has('login'))
             @auth
-                <a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead">
-                    <i class="fas fa-align-left"></i>
-                </a>
+                {{--<a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead">--}}
+                    {{--<i class="fas fa-align-left"></i>--}}
+                {{--</a>--}}
                 <a href="{{route('home')}}" class="navbar-brand font-weight-bold text-uppercase text-base">LessMess</a>
                 <ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
                     <li class="nav-item dropdown mr-3">
@@ -78,67 +78,6 @@
 
 
 <div class="d-flex align-items-stretch " id="gradient">
-
-    @if (Route::has('login'))
-        @auth
-    {{--<!--   SIDEBAR    -->--}}
-    <div id="sidebar" class="sidebar py-3">
-        <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">MAIN</div>
-        <ul class="sidebar-menu list-unstyled">
-            <li class="sidebar-list-item"><a href="{{route('home')}}" class="sidebar-link text-muted active"><i class="fa fa-home mr-3 text-gray"></i><span>Home</span></a></li>
-            <!--              <li class="sidebar-list-item"><a href="charts.html" class="sidebar-link text-muted"><i class="o-sales-up-1 mr-3 text-gray"></i><span>Charts</span></a></li>-->
-            <li class="sidebar-list-item"><a href="utility.html" class="sidebar-link text-muted"><i class="far fa-money-bill-alt mr-3 text-gray"></i><span>Utility</span></a></li>
-            <!--          <li class="sidebar-list-item"><a href="tables.html" class="sidebar-link text-muted"><i class="o-table-content-1 mr-3 text-gray"></i><span>Tables</span></a></li>-->
-            <li class="sidebar-list-item"><a href="#" data-toggle="collapse" data-target="#tables" aria-expanded="false" aria-controls="pages" class="sidebar-link text-muted"><i class="fa fa-table mr-3 text-gray"></i><span>Tables</span></a>
-                <div id="tables" class="collapse">
-                    <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
-                        <li class="sidebar-list-item"><a href="personaltable.html" class="sidebar-link text-muted pl-lg-5">Personal</a></li>
-                        <li class="sidebar-list-item"><a href="fulltable.html" class="sidebar-link text-muted pl-lg-5">Full</a></li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-        <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">Data</div>
-        <ul class="sidebar-menu list-unstyled">
-            <li class="sidebar-list-item"><a href="newdata.html" class="sidebar-link text-muted"><i class="far fa-plus-square mr-3 text-gray"></i><span>New</span></a></li>
-            @role(['admin','mealManager'])
-                <li class="sidebar-list-item">
-                    <a href="givendata.html" class="sidebar-link text-muted">
-                        <div class="button">
-                            <i class="far fa-arrow-alt-circle-down mr-3 text-gray"></i>
-                            {{--this is conditional--}}
-                            &nbsp;<span class="button__badge bg-primary">10</span>
-                        </div>
-                        <!--   this space is also conditional     -->
-                        <span>&nbsp; Given</span>
-                    </a>
-                </li>
-            @endrole
-        </ul>
-        <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">Info</div>
-        <ul class="sidebar-menu list-unstyled">
-            <li class="sidebar-list-item">
-                <a href="info.html" class="sidebar-link text-muted">
-                    <div class="button">
-                        <i class="fas fa-info mr-3 text-gray"></i>
-                        &nbsp;<span class="button__badge text-primary" style="font-size: 13px">3</span>
-                    </div>
-                </a>
-            </li>
-        </ul>
-        @role(['admin','mealManager'])
-            <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">Member</div>
-            <ul class="sidebar-menu list-unstyled">
-                <li class="sidebar-list-item"><a href="{{route('create.user')}}" class="sidebar-link text-muted"><i class="fas fa-user-plus mr-3 text-gray"></i><span>Add New</span></a></li>
-                <li class="sidebar-list-item"><a href="attachold.html" class="sidebar-link text-muted"><i class="fas fa-user-tag mr-3 text-gray"></i><span>Attach Old</span></a></li>
-            </ul>
-        @endrole
-    </div>
-    {{--<!--   SIDEBAR end     -->--}}
-        @endauth
-    @endif
-
-
 
     <div class="page-holder w-100 d-flex flex-wrap">
 
@@ -185,7 +124,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 mt-5 pl-lg-5">
-                            <div class="card"><a href="usage.html" class="btn btn-block btn-outline-primary">Guideline !</a></div>
+                            <div class="card"><a href="{{route('usage')}}" class="btn btn-block btn-outline-primary">Guideline !</a></div>
                             <br>
                             @if (Route::has('login'))
                                 @auth
@@ -259,7 +198,7 @@
                     <div class="col-md-6 text-center text-md-right text-gray-400">
                         <a href="#" class="external text-gray-400 mr-1" target="_blank">Contact</a>
                         <a href="http://www.ttazs.com/" class="external text-gray-400 mr-1" target="_blank">About</a>
-                        <a href="https://bootstrapious.com/admin-templates" class="external" target="_blank">Usage</a>
+                        <a href="{{route('usage')}}" class="external" target="_blank">Usage</a>
                     </div>
                 </div>
             </div>

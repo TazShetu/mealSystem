@@ -39,21 +39,20 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody class="text-center">
-
-                                                    @foreach($ds as $d)
-                                                    <tr>
-                                                        <td>{{$d['name']}}</td>
-                                                        <td>{{$d->meal}}</td>
-                                                        <td>{{$d->bazar}}</td>
-                                                        <td>{{$d->deposit}}</td>
-                                                        @role(['admin', 'mealManager'])
-                                                            <td>
-                                                                <a href="#" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
-                                                                <a href="{{route('datam.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Entry ?')">&#10006;</a>
-                                                            </td>
-                                                        @endrole
-                                                    </tr>
-                                                    @endforeach
+                                                        @foreach($ds as $d)
+                                                            <tr>
+                                                                <td>{{$d['name']}}</td>
+                                                                <td>{{$d->meal}}</td>
+                                                                <td>{{$d->bazar}}</td>
+                                                                <td>{{$d->deposit}}</td>
+                                                                @role(['admin', 'mealManager'])
+                                                                    <td>
+                                                                        <a href="{{route('datam.mM.edit', ['slug' => $d->user->slug, 'msid' => $d->mealsystem_id, 'm' => $d->month, 'd' => $d->day])}}" class="btn btn-outline-primary btn-sm mb-1">Edit</a>
+                                                                        <a href="{{route('datam.delete', ['did' => $d->id])}}" class="btn btn-outline-danger btn-sm mb-1" onclick="return confirm('Are you sure, you want to delete this Entry ?')">&#10006;</a>
+                                                                    </td>
+                                                                @endrole
+                                                            </tr>
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
