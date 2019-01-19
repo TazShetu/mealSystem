@@ -32,34 +32,60 @@ class HomeController extends BaseController
         $maxMeal = null;
         $maxBazar = null;
 
-
-        // check mS exist or not, if note create for mM only and attach him ////////////////////////////
-
-
-
-
-        // for member without ms return a alert message
-
-
-
-        $va = $this->SideAndNav();
         $u = Auth::user();
-        if(array_key_exists('ms', $va)){
-            $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $va['ms']->id)->get();
-            foreach ($datams as $d){
-                $totalMeal = $d->meal + $totalMeal;
-                $totalbazarDeposit = $d->bazar + $d->deposit + $totalbazarDeposit;
+        $userMealSystems = $u->mealsystems()->get();
+        $month = Carbon::now()->month;
+        $x = 0;
+        foreach ($userMealSystems as $m){
+            if (($m->month * 1) === ($month * 1)){
+                $x = 1;
             }
-            $mealRate = $va['ms']->meal_rate;
-            $am = $u->amountus()->where('mealsystem_id', $va['ms']->id)->first();
-            $amounts = Amountu::where('mealsystem_id', $va['ms']->id)->get();
-            foreach ($amounts as $a){
-                // add name to each amounts
-                $a['name'] = $a->user->name;
-                $a['username'] = $a->user->username;
+        }
+        if ($x !== 1){
+            if ($u->hasRole('mealManager')) {
+                $ms = new Mealsystem;
+                $ms->month = $month;
+                $ms->save();
+                $ms->users()->attach($u);
+                if ($month == 1 || $month == 3 || $month == 5 || $month == 7 || $month == 8 || $month == 10 || $month == 12){
+                    $days = 31;
+                } elseif ($month == 4 || $month == 6 || $month == 9 || $month == 11){
+                    $days = 30;
+                } else {
+                    $days = 28;
+                }
+                for ($i = 1; $i <= $days; $i++){
+                    $newMaB = new mealandbazargraph;
+                    $newMaB->mealsystem_id = $ms->id;
+                    $newMaB->day = $i;
+                    $newMaB->month = $month;
+                    $newMaB->save();
+                }
+            } else {
+                if (($month * 1) === 1){
+                    $pmonth = 12;
+                }else {
+                    $pmonth = $month - 1 ;
+                }
+                $po = \DateTime::createFromFormat('!m', $pmonth);
+                $pastMonthName = $po->format('F');
+                $pms = $u->mealsystems()->where('month', $pmonth)->first();
+                return view('member.no_ms', compact('u', 'pastMonthName', 'pms'));
             }
-        } else {
-            $am = 0;
+        }
+        $va = $this->SideAndNav();
+        $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $va['ms']->id)->get();
+        foreach ($datams as $d){
+            $totalMeal = $d->meal + $totalMeal;
+            $totalbazarDeposit = $d->bazar + $d->deposit + $totalbazarDeposit;
+        }
+        $mealRate = $va['ms']->meal_rate;
+        $am = $u->amountus()->where('mealsystem_id', $va['ms']->id)->first();
+        $amounts = Amountu::where('mealsystem_id', $va['ms']->id)->get();
+        foreach ($amounts as $a){
+            // add name to each amounts
+            $a['name'] = $a->user->name;
+            $a['username'] = $a->user->username;
         }
         if ($am){
             $myBalance = $am->amount + $am->expA;
@@ -67,32 +93,29 @@ class HomeController extends BaseController
             $myBalance = 0;
         }
         //  GRAPH starts
-
-        if(array_key_exists('ms', $va)){
-            $usersForMBD = $va['ms']->users()->orderBy('name', 'desc')->get();
-            foreach ($usersForMBD as $u){
-                $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $va['ms']->id)->get();
-                $tm = 0;
-                $tbd = 0;
-                foreach ($datams as $d){
-                    $tm = $d->meal + $tm;
-                    $tbd = $d->bazar + $d->deposit + $tbd;
-                }
-                $u['totalMeal'] = $tm;
-                $u['totalBazarDeposit'] = $tbd;
+        $usersForMBD = $va['ms']->users()->orderBy('name', 'desc')->get();
+        foreach ($usersForMBD as $u){
+            $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $va['ms']->id)->get();
+            $tm = 0;
+            $tbd = 0;
+            foreach ($datams as $d){
+                $tm = $d->meal + $tm;
+                $tbd = $d->bazar + $d->deposit + $tbd;
             }
-            $maxBazarDeposit = 0;
-            foreach ($usersForMBD as $u) {
-                if ($maxBazarDeposit < ( ($u['totalBazarDeposit']) * 1 )){
-                    $maxBazarDeposit = $u['totalBazarDeposit'];
-                }
-            }
-            // MEAL & BAZAR (sort the data by day, check asc or desc which works)
-            $mealandbazars = mealandbazargraph::where('mealsystem_id', $va['ms']->id)->get();
-            $maxMeal = $mealandbazars->max('totalMeal');
-            $maxBazar = $mealandbazars->max('totalBazar');
+            $u['totalMeal'] = $tm;
+            $u['totalBazarDeposit'] = $tbd;
         }
-        $va = $this->SideAndNav();
+        $maxBazarDeposit = 0;
+        foreach ($usersForMBD as $u) {
+            if ($maxBazarDeposit < ( ($u['totalBazarDeposit']) * 1 )){
+                $maxBazarDeposit = $u['totalBazarDeposit'];
+            }
+        }
+            // MEAL & BAZAR (sort the data by day, check asc or desc which works)
+        $mealandbazars = mealandbazargraph::where('mealsystem_id', $va['ms']->id)->get();
+        $maxMeal = $mealandbazars->max('totalMeal');
+        $maxBazar = $mealandbazars->max('totalBazar');
+
         return view('home', compact('va','mealRate', 'myBalance', 'totalMeal', 'totalbazarDeposit', 'amounts', 'usersForMBD', 'maxBazarDeposit', 'mealandbazars', 'maxMeal', 'maxBazar'));
 
     }
@@ -100,43 +123,87 @@ class HomeController extends BaseController
 
 
 
+    public function homePast($pmsid){
+        $va = $this->SideAndNavPast($pmsid);
+        $u = Auth::user();
+        $mealRate = $va['pms']->meal_rate;
+        $am = $u->amountus()->where('mealsystem_id', $va['pms']->id)->first();
+        if ($am){
+            $myBalance = $am->amount + $am->expA;
+        }else {
+            $myBalance = 0;
+        }
+        $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $va['pms']->id)->get();
+        $totalbazarDeposit = 0;
+        $totalMeal = 0;
+        foreach ($datams as $d){
+            $totalMeal = $d->meal + $totalMeal;
+            $totalbazarDeposit = $d->bazar + $d->deposit + $totalbazarDeposit;
+        }
+        $amounts = Amountu::where('mealsystem_id', $va['pms']->id)->get();
+        foreach ($amounts as $a){
+            // add name to each amounts
+            $a['name'] = $a->user->name;
+            $a['username'] = $a->user->username;
+        }
+        //  GRAPH starts
+        $usersForMBD = $va['pms']->users()->orderBy('name', 'desc')->get();
+        foreach ($usersForMBD as $u){
+            $datams = Datam::where('user_id', $u->id)->where('mealsystem_id', $va['pms']->id)->get();
+            $tm = 0;
+            $tbd = 0;
+            foreach ($datams as $d){
+                $tm = $d->meal + $tm;
+                $tbd = $d->bazar + $d->deposit + $tbd;
+            }
+            $u['totalMeal'] = $tm;
+            $u['totalBazarDeposit'] = $tbd;
+        }
+        $maxBazarDeposit = 0;
+        foreach ($usersForMBD as $u) {
+            if ($maxBazarDeposit < ( ($u['totalBazarDeposit']) * 1 )){
+                $maxBazarDeposit = $u['totalBazarDeposit'];
+            }
+        }
+        $mealandbazars = mealandbazargraph::where('mealsystem_id', $va['pms']->id)->get();
+        $maxMeal = $mealandbazars->max('totalMeal');
+        $maxBazar = $mealandbazars->max('totalBazar');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    public function index()
-//    {
-//        return view('home');
-//    }
-
-    public function lmonth($msid){
-        $ms = Mealsystem::find($msid);
-        return view('pastHome', compact('ms'));
+        return view('homePast', compact('va', 'mealRate', 'myBalance', 'totalMeal', 'totalbazarDeposit', 'amounts', 'usersForMBD', 'maxBazarDeposit', 'mealandbazars', 'maxMeal', 'maxBazar'));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public function admin(){

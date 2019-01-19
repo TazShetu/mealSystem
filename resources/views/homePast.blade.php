@@ -4,12 +4,12 @@
 <body>
 
 <!-- navbar-->
-@include('v2includes.navHeader')
+@include('v2includes.navHeaderPast')
 
 
 <div class="d-flex align-items-stretch" id="gradient">
 
-    @include('v2includes.sidebar')
+    @include('v2includes.sidebarPast')
 
     <div class="page-holder w-100 d-flex flex-wrap">
         <div class="container-fluid px-xl-5">

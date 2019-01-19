@@ -44,6 +44,7 @@ class BaseController extends Controller
         }
         $viewAdd = null;
         $viewAdd['ms'] = $ms;
+        $viewAdd['pms'] = $pms;
         $viewAdd['monthName'] = $monthName;
         $viewAdd['pastM'] = $pastM;
         $viewAdd['pastMonthName'] = $pastMonthName;
@@ -53,6 +54,31 @@ class BaseController extends Controller
     }
 
 
+
+    public function SideAndNavPast($pmsid){
+        $givenDataCount = null;
+        $pms = Mealsystem::find($pmsid);
+        $month = $pms->month;
+        $po = \DateTime::createFromFormat('!m', $month);
+        $monthName = $po->format('F');
+        $month = Carbon::now()->month;
+        $co = \DateTime::createFromFormat('!m', $month);
+        $CurrentMonthName = $co->format('F');
+        $user = Auth::user();
+        if ($user->hasRole('mealManager')){
+            $memData = Memdata::where('mealsystem_id', $pms->id)->get();
+            $unacceptedExpa = Expense::where('mealsystem_id', $pms->id)->where('a', 0)->get();
+            $givenDataCount = count($memData) + count($unacceptedExpa);
+        }
+
+        $viewAdd['pms'] = $pms;
+            // monthName actually past month name
+        $viewAdd['monthName'] = $monthName;
+        $viewAdd['currentMonthName'] = $CurrentMonthName;
+        $viewAdd['user'] = $user;
+        $viewAdd['givenDataCount'] = $givenDataCount;
+        return $viewAdd;
+    }
 
 
 

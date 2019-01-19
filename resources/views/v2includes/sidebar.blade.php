@@ -51,7 +51,7 @@
         <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">Member</div>
         <ul class="sidebar-menu list-unstyled">
             <li class="sidebar-list-item"><a href="{{route('create.user')}}" class="sidebar-link text-muted"><i class="fas fa-user-plus mr-3 text-gray"></i><span>Add New</span></a></li>
-            <li class="sidebar-list-item"><a href="attachold.html" class="sidebar-link text-muted"><i class="fas fa-user-tag mr-3 text-gray"></i><span>Attach Old</span></a></li>
+            <li class="sidebar-list-item"><a href="{{route('attach.old.member', ['msid' => $va['ms']->id])}}" class="sidebar-link text-muted"><i class="fas fa-user-tag mr-3 text-gray"></i><span>Attach Old</span></a></li>
         </ul>
     @endrole
 </div>

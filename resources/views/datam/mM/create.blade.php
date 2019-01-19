@@ -123,7 +123,7 @@
                                         <label class="form-control-label text-uppercase"><b>Expense</b></label>
                                         <input type="number" min="0" class="form-control" name="exp" value="{{old('exp')}}" required>
                                         @if($errors->has('exp'))
-                                        <span class="help-block">{{$errors->first('exp')}}</span>
+                                            <span class="help-block text-danger">Expense field is required.</span>
                                         @endif
                                     </div>
                                     <div class="form-group {{$errors->has('remark') ? 'has-error' : ''}}">

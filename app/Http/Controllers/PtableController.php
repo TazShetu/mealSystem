@@ -35,9 +35,7 @@ class PtableController extends BaseController
             }
         }
         $va = $this->SideAndNav();
-        $month = $va['ms']->month;
-        $co = \DateTime::createFromFormat('!m', $month);
-        $monthName = $co->format('F');
+        $monthName = $va['monthName'];
         return view('tables.fulltable', compact('va','datams', 'monthName'));
     }
 
@@ -51,10 +49,6 @@ class PtableController extends BaseController
                 $d['name'] = $d->user->name;
             }
         }
-        $ms = Mealsystem::find($msid);
-        $month = $ms->month;
-        $co = \DateTime::createFromFormat('!m', $month);
-        $monthName = $co->format('F');
         $expData = Expense::where('mealsystem_id', $msid)->where('a', 0)->orderBy('day')->get();
         if (count($expData) > 0){
             foreach ($expData as $d){
@@ -62,7 +56,58 @@ class PtableController extends BaseController
             }
         }
         $va = $this->SideAndNav();
+        $monthName = $va['monthName'];
         return view('tables.given', compact('va', 'mealData', 'expData', 'monthName'));
+    }
+
+
+
+    public function indexPast($slug, $pmsid)
+    {
+        $this->redirectBackBack();
+        $u = User::where('slug', $slug)->first();
+        $uid = $u->id;
+        $aD = Datam::where('user_id', $u->id)->where('mealsystem_id', $pmsid)->orderBy('day')->get();
+        $naD = Memdata::where('user_id', $uid)->where('mealsystem_id', $pmsid)->orderBy('day')->get();
+        $va = $this->SideAndNavPast($pmsid);
+        return view('tables.past.personal', compact('va','aD' , 'naD'));
+    }
+
+
+
+    public function fulltablePast($pmsid)
+    {
+        $this->redirectBackBack();
+        $datams = Datam::where('mealsystem_id', $pmsid)->orderBy('day')->get();
+        if (count($datams) > 0){
+            foreach ($datams as $d){
+                $d['name'] = $d->user->name;
+            }
+        }
+        $va = $this->SideAndNavPast($pmsid);
+        $monthName = $va['monthName'];
+        return view('tables.past.full', compact('va','datams', 'monthName'));
+    }
+
+
+
+    public function givenTablePast($pmsid){
+        $this->redirectBackBack();
+        $mealData = Memdata::where('mealsystem_id', $pmsid)->orderBy('day')->get();
+        if (count($mealData) > 0){
+            foreach ($mealData as $d){
+                $d['name'] = $d->user->name;
+            }
+        }
+        $expData = Expense::where('mealsystem_id', $pmsid)->where('a', 0)->orderBy('day')->get();
+        if (count($expData) > 0){
+            foreach ($expData as $d){
+                $d['name'] = $d->user->name;
+            }
+        }
+        $va = $this->SideAndNavPast($pmsid);
+        $monthName = $va['monthName'];
+        return view('tables.past.given', compact('va', 'mealData', 'expData', 'monthName'));
     }
 
 

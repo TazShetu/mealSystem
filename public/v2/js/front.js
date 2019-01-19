@@ -11,7 +11,7 @@ $(function () {
 
 
     // ------------------------------------------------------ //
-    // For demo purposes, can be deleted
+    // Theme Color Change Button
     // ------------------------------------------------------ //
 
     var stylesheet = $('link#theme-stylesheet');
@@ -32,10 +32,8 @@ $(function () {
             alternateColour.attr("href", theme_csspath);
             $.cookie("theme_csspath", theme_csspath, { expires: 365, path: window.location.origin });
         }
-
         return false;
     });
-
 });
 
 

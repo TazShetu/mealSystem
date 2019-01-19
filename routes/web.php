@@ -220,10 +220,62 @@ Route::get('mM/accept/expense/{eid}', [
     'as' => 'mM.accept.exp'
 ])->middleware('auth', 'mM');
 
+Route::get('/Attach-Old-Member', [
+    'uses' => 'UserController@attachOldMember',
+    'as' => 'attach.old.member'
+])->middleware('auth', 'mM');
+Route::post('/attach-old-member-update/{msid}', [
+    'uses' => 'UserController@attachOldMemberUpdate',
+    'as' => 'attach.old.member.update'
+])->middleware('auth', 'mM');
 
 
 
+Route::get('home-last-month-{pmsid}', [
+    'uses' => 'HomeController@homePast',
+    'as' => 'home.Past'
+])->middleware('auth');
 
+Route::get('/personal-table-past/{slug}/{pmsid}', [
+    'uses' => 'PtableController@indexPast',
+    'as' => 'personal.table.past'
+])->middleware('auth');
+
+Route::get('/full-table-past/{pmsid}', [
+    'uses' => 'PtableController@fulltablePast',
+    'as' => 'full.table.past'
+])->middleware('auth');
+
+Route::get('/Accept-Edit-Reject-Given-Data-Past/{pmsid}', [
+    'uses' => 'PtableController@givenTablePast',
+    'as' => 'given.table.past'
+])->middleware('auth', 'mM');
+
+
+Route::get('utility-last-month-{pmsid}', [
+    'uses' => 'ExpenseController@indexPast',
+    'as' => 'utility.past'
+])->middleware('auth');
+
+//Route::get('/Enter-Edit-Meal_Data-or-Expense', [
+//    'uses' => 'DatamController@create',
+//    'as' => 'mM.mdata.expense.create'
+//])->middleware('auth', 'mM');
+//Route::post('/Enter-Edit-Data-Save/{msid}', [
+//    'uses' => 'DatamController@store',
+//    'as' => 'mM.store.mdata'
+//])->middleware('auth', 'mM');
+
+
+
+//Route::get('/Member-Enter-Edit-Meal_Data-or-Expense', [
+//    'uses' => 'MemdataController@create',
+//    'as' => 'member.mdata.expense.create'
+//])->middleware('auth');
+//Route::post('/Member-Data-Store/{msid}', [
+//    'uses' => 'MemdataController@store',
+//    'as' => 'member.store.mdata'
+//])->middleware('auth');
 
 
 
@@ -240,34 +292,6 @@ Route::get('mM/accept/expense/{eid}', [
 
 
 //  OLD Starts
-
-
-
-
-// contact
-Route::get('/contact', [
-    'uses' => 'MealsystemController@contact',
-    'as' => 'contact'
-]);
-
-Route::post('/contact/sent', [
-    'uses' => 'MealsystemController@contactSent',
-    'as' => 'contact.sent'
-]);
-
-Route::get('/old-member-attach/{id}', [
-    'uses' => 'UserController@oldma',
-    'as' => 'oldm.attach'
-])->middleware('auth', 'mM');
-Route::post('/old-member-store/{msid}', [
-    'uses' => 'UserController@oldMadd',
-    'as' => 'old.add'
-])->middleware('auth', 'mM');
-
-Route::get('home/{msid}/Previous/month', [
-    'uses' => 'HomeController@lmonth',
-    'as' => 'lhome'
-])->middleware('auth');
 
 Route::get('/Enter-Edit-Old-Data/{msid}', [
     'uses' => 'DatamController@pcreate',
@@ -287,35 +311,35 @@ Route::post('/Member-DataStore/Past-month/{msid}', [
     'as' => 'memdata.Pstore'
 ])->middleware('auth');
 
-Route::get('past-utility/{pmsid}', [
-    'uses' => 'ExpenseController@pindex',
-    'as' => 'p.utility'
-])->middleware('auth');
-
 Route::get('past-create/utility-expense/{msid}', [
     'uses' => 'ExpenseController@pcreate',
     'as' => 'pcreate.exp'
 ])->middleware('auth', 'mM');
-
 Route::post('past-store/utility-expense/{month}/{msid}', [
     'uses' => 'ExpenseController@pstore',
     'as' => 'pstore.exp'
 ])->middleware('auth', 'mM');
 
-Route::get('utility/details/{msid}', [
-    'uses' => 'ExpenseController@de',
-    'as' => 'details.exps'
-])->middleware('auth');
-
 Route::get('create/m/past/utility-expense/{slug}/{msid}', [
     'uses' => 'ExpenseController@MPcreate',
     'as' => 'mpcreate.exp'
 ])->middleware('auth');
-
 Route::post('store/m/past/utility-expense/{uid}/{msid}/{month}', [
     'uses' => 'ExpenseController@MPstore',
     'as' => 'exp.MPstore'
 ])->middleware('auth');
+
+
+// contact
+Route::get('/contact', [
+    'uses' => 'MealsystemController@contact',
+    'as' => 'contact'
+]);
+
+Route::post('/contact/sent', [
+    'uses' => 'MealsystemController@contactSent',
+    'as' => 'contact.sent'
+]);
 
 
 // ADMIN

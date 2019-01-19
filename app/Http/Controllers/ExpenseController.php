@@ -18,38 +18,34 @@ class ExpenseController extends BaseController
     {
         $this->redirectBackBack();
         $va = $this->SideAndNav();
-        if (is_null($va['ms'])) {
-            return redirect()->route('home');
-        }else{
-            // Gaph
-            $uepm = $va['ms']->users()->orderBy('name', 'desc')->get();
-            foreach ($uepm as $user){
-                $totalexpense = 0;
-                $expenses = Expense::where('mealsystem_id', $va['ms']->id)->where('user_id', $user->id)->where('a', 1)->get();
-                if ($expenses){
-                    foreach ($expenses as $e){
-                        $totalexpense = $e->exp + $totalexpense;
-                    }
-                }
-                $user['totalexpense'] = $totalexpense;
-                $expA = Amountu::where('user_id', $user->id)->where('mealsystem_id', $va['ms']->id)->first();
-                if ($expA){
-                    $user['expA'] = $expA->expA;
-                }else {
-                    $user['expA'] = 0;
+        // Gaph
+        $uepm = $va['ms']->users()->orderBy('name', 'desc')->get();
+        foreach ($uepm as $user){
+            $totalexpense = 0;
+            $expenses = Expense::where('mealsystem_id', $va['ms']->id)->where('user_id', $user->id)->where('a', 1)->get();
+            if ($expenses){
+                foreach ($expenses as $e){
+                    $totalexpense = $e->exp + $totalexpense;
                 }
             }
-            // table
-            $allsxpenses = Expense::where('mealsystem_id', $va['ms']->id)->where('a', 1)->orderBy('day')->get();
-            if ($allsxpenses){
-                foreach ($allsxpenses as $e){
-                    $e['name'] = $e->user->name;
-                }
+            $user['totalexpense'] = $totalexpense;
+            $expA = Amountu::where('user_id', $user->id)->where('mealsystem_id', $va['ms']->id)->first();
+            if ($expA){
+                $user['expA'] = $expA->expA;
+            }else {
+                $user['expA'] = 0;
             }
-            // unaccepted data of auth user
-            $unacceptedExp = Expense::where('mealsystem_id', $va['ms']->id)->where('user_id', $va['user']->id)->where('a', 0)->orderBy('day')->get();
-            return view('exp.index', compact('va', 'uepm', 'allsxpenses', 'unacceptedExp'));
         }
+        // table
+        $allsxpenses = Expense::where('mealsystem_id', $va['ms']->id)->where('a', 1)->orderBy('day')->get();
+        if ($allsxpenses){
+            foreach ($allsxpenses as $e){
+                $e['name'] = $e->user->name;
+            }
+        }
+        // unaccepted data of auth user
+        $unacceptedExp = Expense::where('mealsystem_id', $va['ms']->id)->where('user_id', $va['user']->id)->where('a', 0)->orderBy('day')->get();
+        return view('exp.index', compact('va', 'uepm', 'allsxpenses', 'unacceptedExp'));
     }
 
 
@@ -232,70 +228,81 @@ class ExpenseController extends BaseController
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function pindex($pmsid){
-        $amounts = Amountu::where('mealsystem_id', $pmsid)->get();
-        $ms = Mealsystem::find($pmsid);
-        $pm = $ms->month;
-        $o = \DateTime::createFromFormat('!m', $pm);
-        $mn = $o->format('F');
-        $pms = null;
-        $pmn = null;
-        $x = null;
-        if (($pm * 1) === 12){
-            $nm = 1;
-        }else {
-            $nm = $pm + 1;
+    public function indexPast($pmsid){
+        $this->redirectBackBack();
+        $va = $this->SideAndNavPast($pmsid);
+        // Gaph
+        $uepm = $va['pms']->users()->orderBy('name', 'desc')->get();
+        foreach ($uepm as $user){
+            $totalexpense = 0;
+            $expenses = Expense::where('mealsystem_id', $va['pms']->id)->where('user_id', $user->id)->where('a', 1)->get();
+            if ($expenses){
+                foreach ($expenses as $e){
+                    $totalexpense = $e->exp + $totalexpense;
+                }
+            }
+            $user['totalexpense'] = $totalexpense;
+            $expA = Amountu::where('user_id', $user->id)->where('mealsystem_id', $va['pms']->id)->first();
+            if ($expA){
+                $user['expA'] = $expA->expA;
+            }else {
+                $user['expA'] = 0;
+            }
         }
-        $no = \DateTime::createFromFormat('!m', $nm);
-        $nmn = $no->format('F');
-        $nd = 2;
-        $u = Auth::user();
-        return view('exp.index', compact('amounts', 'ms', 'mn', 'pmn', 'x', 'pms', 'nmn', 'nd', 'u'));
-
+        // table
+        $allsxpenses = Expense::where('mealsystem_id', $pmsid)->where('a', 1)->orderBy('day')->get();
+        if ($allsxpenses){
+            foreach ($allsxpenses as $e){
+                $e['name'] = $e->user->name;
+            }
+        }
+        $unacceptedExp = Expense::where('mealsystem_id', $pmsid)->where('user_id', $va['user']->id)->where('a', 0)->orderBy('day')->get();
+        return view('exp.PAST.index', compact('va', 'uepm','allsxpenses', 'unacceptedExp'));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public function pcreate($msid)

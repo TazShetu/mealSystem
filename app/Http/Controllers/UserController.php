@@ -14,11 +14,10 @@ class UserController extends BaseController
 {
     public function create()
     {
-//        $aaa = $this->test(2);
-//        dd($aaa);
         $va = $this->SideAndNav();
         return view('createMember', compact('va'));
     }
+
 
     public function store(Request $request)
     {
@@ -45,12 +44,14 @@ class UserController extends BaseController
         return redirect()->back()->with(['va' => $va])->with('success', 'Member Created Successfully.');
     }
 
+
     public function edit($slug)
     {
         $user = User::where('slug', $slug)->first();
         $va = $this->SideAndNav();
         return view('editMember', compact('va', 'user'));
     }
+
 
     public function update(Request $request, $slug)
     {
@@ -84,6 +85,7 @@ class UserController extends BaseController
         return redirect()->route('home', compact('va'))->with('success', 'Your Profile Updated Successfully.');
     }
 
+
     public function mmchange(){
         $va = $this->SideAndNav();
         $CMembers = $va['ms']->users()->get();
@@ -96,6 +98,7 @@ class UserController extends BaseController
         return view('member.mealManagerChange', compact('va','members'));
     }
 
+
     public function mmchangestore(Request $request)
     {
         $this->validate($request, [
@@ -105,81 +108,17 @@ class UserController extends BaseController
         $Nmm = User::find($request->member_id);
         $Nmm->attachRole('mealManager');
         $mm->detachRole('mealManager');
-        // redirect home with session alert u r no longer a mealmanager
         $va = $this->SideAndNav();
         return redirect()->route('home', compact('va'))->with('alert', 'You are no longer a Mealmanager.');
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function index()
+    public function attachOldMember()
     {
-        //
-    }
-    public function show($id)
-    {
-        //
-    }
-    public function destroy($id)
-    {
-        //
-    }
-
-
-    public function oldma($id)
-    {
-        $mM = User::find($id);
+        $va = $this->SideAndNav();
+        $mM = $va['user'];
         $msOmm = $mM->mealsystems()->get();
-        $x = 0 ;
-        foreach ($msOmm as $m){
-            if ($m->month == Carbon::now()->month){
-                $x = 1;
-                break;
-            }
-        }
-        if ($x != 1){
-            $ms = new Mealsystem;
-            $ms->month = Carbon::now()->month;
-            $ms->save();
-            $ms->users()->attach($mM);
-        }
         $cmonth = Carbon::now()->month;
-
-
         $msCm = $mM->mealsystems()->where('month', $cmonth)->first();
         $CMembers = $msCm->users()->get();
         $members = [];
@@ -187,29 +126,25 @@ class UserController extends BaseController
             $Pmembers = $pMs->users()->get();
             foreach ($Pmembers as $pmm){
                 // $pmm is an user object
-                if (!$CMembers->contains('name', $pmm->name)){
+                if (!$CMembers->contains('username', $pmm->username)){
                     // here we het $pmm as user object that is not in current month
                     $members[] = $pmm;
                 }
             }
         }
-        $userdupe=array();
+        $userDuplicate=array();
         foreach ($members as $index=>$t) {
-            if (isset($userdupe[$t["slug"]])) {
+            if (isset($userDuplicate[$t["slug"]])) {
                 unset($members[$index]);
                 continue;
             }
-            $userdupe[$t["slug"]]=true;
+            $userDuplicate[$t["slug"]]=true;
         }
-        $msid = $msCm->id;
-
-        return view('member.addOldMember', compact('members', 'msid'));
-
-
+        return view('member.attachOldMember', compact('va', 'members'));
     }
 
 
-    public function oldMadd(Request $request, $msid)
+    public function attachOldMemberUpdate(Request $request, $msid)
     {
         $this->validate($request, [
             'names' => 'required'
@@ -223,9 +158,6 @@ class UserController extends BaseController
         $this->clculateExpA($msid);
         return redirect()->route('home');
     }
-
-
-
 
 
 
