@@ -257,14 +257,22 @@ Route::get('utility-last-month-{pmsid}', [
     'as' => 'utility.past'
 ])->middleware('auth');
 
-//Route::get('/Enter-Edit-Meal_Data-or-Expense', [
-//    'uses' => 'DatamController@create',
-//    'as' => 'mM.mdata.expense.create'
-//])->middleware('auth', 'mM');
-//Route::post('/Enter-Edit-Data-Save/{msid}', [
-//    'uses' => 'DatamController@store',
-//    'as' => 'mM.store.mdata'
-//])->middleware('auth', 'mM');
+
+Route::get('/Enter-Edit-Meal_Data-or-Expense-Last-Month/{pmsid}', [
+    'uses' => 'DatamController@createPast',
+    'as' => 'mM.mdata.expense.create.past'
+])->middleware('auth', 'mM');
+Route::post('/Enter-Edit-Data-Save-Past/{pmsid}', [
+    'uses' => 'DatamController@storePast',
+    'as' => 'mM.store.mdata.past'
+])->middleware('auth', 'mM');
+
+
+Route::post('store-past/utility-expense/{pmsid}', [
+    'uses' => 'ExpenseController@storePast',
+    'as' => 'exp.store.past'
+])->middleware('auth', 'mM');
+
 
 
 
@@ -276,13 +284,14 @@ Route::get('utility-last-month-{pmsid}', [
 //    'uses' => 'MemdataController@store',
 //    'as' => 'member.store.mdata'
 //])->middleware('auth');
-
-
-
-
-
-
-
+Route::get('/Enter-Data/Member/Past-Month', [
+    'uses' => 'MemdataController@Pcreate',
+    'as' => 'memdata.p.create'
+])->middleware('auth');
+Route::post('/Member-DataStore/Past-month/{msid}', [
+    'uses' => 'MemdataController@Pstore',
+    'as' => 'memdata.Pstore'
+])->middleware('auth');
 
 
 
@@ -293,37 +302,6 @@ Route::get('utility-last-month-{pmsid}', [
 
 //  OLD Starts
 
-Route::get('/Enter-Edit-Old-Data/{msid}', [
-    'uses' => 'DatamController@pcreate',
-    'as' => 'datam.pcreate'
-])->middleware('auth', 'mM');
-Route::post('/DatamStoreP/{msid}', [
-    'uses' => 'DatamController@pstore',
-    'as' => 'store.pdatam'
-])->middleware('auth', 'mM');
-
-Route::get('/Enter-Data/Member/Past-Month', [
-    'uses' => 'MemdataController@Pcreate',
-    'as' => 'memdata.p.create'
-])->middleware('auth');
-Route::post('/Member-DataStore/Past-month/{msid}', [
-    'uses' => 'MemdataController@Pstore',
-    'as' => 'memdata.Pstore'
-])->middleware('auth');
-
-Route::get('past-create/utility-expense/{msid}', [
-    'uses' => 'ExpenseController@pcreate',
-    'as' => 'pcreate.exp'
-])->middleware('auth', 'mM');
-Route::post('past-store/utility-expense/{month}/{msid}', [
-    'uses' => 'ExpenseController@pstore',
-    'as' => 'pstore.exp'
-])->middleware('auth', 'mM');
-
-Route::get('create/m/past/utility-expense/{slug}/{msid}', [
-    'uses' => 'ExpenseController@MPcreate',
-    'as' => 'mpcreate.exp'
-])->middleware('auth');
 Route::post('store/m/past/utility-expense/{uid}/{msid}/{month}', [
     'uses' => 'ExpenseController@MPstore',
     'as' => 'exp.MPstore'

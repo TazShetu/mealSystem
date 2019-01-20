@@ -4,11 +4,11 @@
 <body>
 
 <!-- navbar-->
-@include('v2includes.navHeader')
+@include('v2includes.navHeaderPast')
 
 <div class="d-flex align-items-stretch " id="gradient">
 
-    @include('v2includes.sidebar')
+    @include('v2includes.sidebarPast')
 
     <div class="page-holder w-100 d-flex flex-wrap">
         <div class="container-fluid px-xl-5">
@@ -23,10 +23,10 @@
                             <div class="card-body text-center">
                                 @if(($x * 1) === 0)
                                     {{$user->name}} has already given data for {{$day}} - {{$va['monthName']}}.<hr>
-                                    Please edit that on <a href="{{route('show.member.data', ['msid' => $va['ms']->id])}}">Given Table</a>.
+                                    Please edit that on <a href="{{route('given.table.past', ['pmsid' => $va['pms']->id])}}">Given Table</a>.
                                 @elseif(($x * 1) === 1)
                                     {{$user->name}} has already deleted data for {{$day}} - {{$va['monthName']}}.<hr>
-                                    Please undo that first on <a href="{{route('show.member.data', ['msid' => $va['ms']->id])}}">Given Table</a>.
+                                    Please undo that first on <a href="{{route('given.table.past', ['pmsid' => $va['pms']->id])}}">Given Table</a>.
                                 @endif
                             </div>
                         </div>

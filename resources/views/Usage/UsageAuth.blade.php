@@ -29,6 +29,7 @@
                                         <li class="list-group-item">Member created by meal-manager has a default password 123456</li>
                                         <li class="list-group-item">Change the default password from edit profile menu.</li>
                                         <li class="list-group-item"><b>Provide a valid email address at edit profile menu to recover forgotten password.</b></li>
+                                        <li class="list-group-item">The web page only shows data of a single month, <b>you can select month at top right corner.</b></li>
                                         <li class="list-group-item">Member can enter/edit/delete data but it will not be added into calculation until meal-manager accepts that.</li>
                                         <li class="list-group-item">Name and date in table can not be edited. If you want to change those, better delete and enter again.</li>
                                         <li class="list-group-item">If meal-manager enters or accepts new data for the same date and same member, it will auto overwrite the old data.</li>

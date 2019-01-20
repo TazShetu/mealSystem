@@ -61,15 +61,15 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody class="text-center">
-                                                @if(session()->has('expMemberDeleteSuccess'))
-                                                    <div class="alert alert-danger text-center">
-                                                        {{ session()->get('expMemberDeleteSuccess') }}
-                                                    </div>
-                                                @elseif(session()->has('MemberUpdateSuccess'))
-                                                    <div class="alert alert-success text-center">
-                                                        {{ session()->get('MemberUpdateSuccess') }}
-                                                    </div>
-                                                @endif
+                                                {{--@if(session()->has('expMemberDeleteSuccess'))--}}
+                                                    {{--<div class="alert alert-danger text-center">--}}
+                                                        {{--{{ session()->get('expMemberDeleteSuccess') }}--}}
+                                                    {{--</div>--}}
+                                                {{--@elseif(session()->has('MemberUpdateSuccess'))--}}
+                                                    {{--<div class="alert alert-success text-center">--}}
+                                                        {{--{{ session()->get('MemberUpdateSuccess') }}--}}
+                                                    {{--</div>--}}
+                                                {{--@endif--}}
                                                 @foreach($unacceptedExp as $e)
                                                     <tr>
                                                         <td>{{$e->day}} / {{$e->month}}</td>
